@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouLoveCake</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Noto Sans KR", sans-serif;
+  background: #fffaf7;
+  color: #4e3940;
+}
+
+.wrap {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.hero {
+  height: 360px;
+  background:
+    linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5)),
+    url('hero.png') center/cover no-repeat;
+  display: flex;
+  align-items: flex-end;
+  padding: 24px;
+  color: white;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 800;
+}
+
+.hero p {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: #ffe7ee;
+}
+
+.section {
+  background: #fff4f7;
+  margin: 16px;
+  padding: 20px;
+  border-radius: 24px;
+}
+
+.section h2 {
+  margin: 0 0 14px;
+  font-size: 24px;
+  font-weight: 800;
+  color: #4e3940;
+}
+
+.subtext {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: #7d6970;
+  line-height: 1.7;
+}
+
+.field {
+  margin-bottom: 12px;
+}
+
+.field label {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #4e3940;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  border: 1px solid #e5cfd6;
+  border-radius: 14px;
+  padding: 13px 14px;
+  font-size: 15px;
+  background: white;
+  color: #4e3940;
+  outline: none;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.chip-title {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #4e3940;
+}
+
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.chip-group input {
+  display: none;
+}
+
+.chip {
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #f1e7ea;
+  color: #4e3940;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid transparent;
+  user-select: none;
+}
+
+.chip-group input:checked + .chip {
+  background: #b7848f;
+  color: white;
+}
+
+.btn {
+  width: 100%;
+  padding: 15px;
+  border-radius: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+.btn-copy {
+  background: #e9d7dd;
+  color: #4e3940;
+}
+
+.btn-kakao {
+  background: #b7848f;
+  color: white;
+}
+
+.music-btn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background: #b7848f;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  z-index: 999;
+}
+
+.info-line {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.notice-text {
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+/* 음악 제목 흐름 */
+.music-marquee {
+  position: fixed;
+  top: 14px;
+  right: 76px;
+  width: 250px;
+  height: 22px;
+  overflow: hidden;
+  z-index: 998;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+}
+
+.music-marquee.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.music-marquee-track {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  min-width: max-content;
+  animation: appleMarquee 14s linear infinite;
+}
+
+.music-line {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(183, 132, 143, 0.95);
+  text-shadow: 0 0 8px rgba(255,255,255,0.45);
+  animation: shimmer 2.4s ease-in-out infinite;
+}
+
+.music-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 6px;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  color: white;
+  background: #b7848f;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(183, 132, 143, 0.25);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.music-gap {
+  width: 48px;
+}
+
+.order-preview {
+  margin-top: 12px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e7d4da;
+  border-radius: 18px;
+}
+
+.order-preview h3 {
+  margin: 0 0 12px;
+  font-size: 17px;
+  font-weight: 800;
+  color: #4e3940;
+}
+
+.preview-box {
+  white-space: pre-line;
+  line-height: 1.8;
+  font-size: 14px;
+  color: #5a464d;
+}
+
+@keyframes appleMarquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 24px)); }
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.65; }
+  50% { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+</style>
+</head>
+
+<body>
+
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵 음악 켜기</button>
+
+<div class="music-marquee" id="musicMarquee">
+  <div class="music-marquee-track">
+    <span class="music-badge">♪</span>
+    <span class="music-line" id="musicLineA">Have you heard of Youlovecake? · Joko Park</span>
+    <span class="music-gap"></span>
+    <span class="music-badge">♪</span>
+    <span class="music-line" id="musicLineB">Have you heard of Youlovecake? · Joko Park</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section class="hero">
+    <div>
+      <h1>유럽케이크(Youlovecake)</h1>
+      <p>평택 안중 감성 케이크</p>
+      <p>레터링 케이크 · 플라워 케이크 · 맞춤 제작</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>♥ 간편 주문 ♥</h2>
+    <p class="subtext">
+      아래 주문서를 작성한 뒤 <strong>주문서 복사</strong> 버튼을 눌러주세요.<br>
+      복사한 주문서를 카카오톡 채팅방에서 <strong>붙여넣기 후 메세지 보내기</strong>를 눌러주시면 됩니다.
+    </p>
+
+    <div class="field">
+      <label for="name">성함</label>
+      <input id="name" type="text" placeholder="성함을 입력해주세요">
+    </div>
+
+    <div class="field">
+      <label for="phone">연락처</label>
+      <input id="phone" type="tel" placeholder="연락처를 입력해주세요">
+    </div>
+
+    <div class="field">
+      <label for="pickup">픽업 날짜/시간</label>
+      <input id="pickup" type="text" placeholder="예: 4월 2일 오후 2시">
+    </div>
+
+    <label class="chip-title">케이크 종류</label>
+    <div class="chip-group">
+      <input type="radio" name="cakeType" id="type-basic" value="기본" checked>
+      <label class="chip" for="type-basic">기본</label>
+
+      <input type="radio" name="cakeType" id="type-flower" value="플라워">
+      <label class="chip" for="type-flower">플라워</label>
+
+      <input type="radio" name="cakeType" id="type-tier" value="2단">
+      <label class="chip" for="type-tier">2단</label>
+    </div>
+
+    <label class="chip-title">케이크 사이즈</label>
+    <div class="chip-group">
+      <input type="radio" name="cakeSize" id="size-xmini" value="초미니">
+      <label class="chip" for="size-xmini">초미니</label>
+
+      <input type="radio" name="cakeSize" id="size-mini" value="미니">
+      <label class="chip" for="size-mini">미니</label>
+
+      <input type="radio" name="cakeSize" id="size-1" value="1호" checked>
+      <label class="chip" for="size-1">1호</label>
+
+      <input type="radio" name="cakeSize" id="size-2" value="2호">
+      <label class="chip" for="size-2">2호</label>
+    </div>
+
+    <label class="chip-title">시트 선택</label>
+    <div class="chip-group">
+      <input type="radio" name="sheetType" id="sheet-oreo" value="오레오" checked>
+      <label class="chip" for="sheet-oreo">오레오</label>
+
+      <input type="radio" name="sheetType" id="sheet-strawberry" value="딸기">
+      <label class="chip" for="sheet-strawberry">딸기</label>
+
+      <input type="radio" name="sheetType" id="sheet-blueberry" value="블루베리">
+      <label class="chip" for="sheet-blueberry">블루베리</label>
+
+      <input type="radio" name="sheetType" id="sheet-carrot" value="당근케이크">
+      <label class="chip" for="sheet-carrot">당근케이크</label>
+    </div>
+
+    <div class="field">
+      <label for="mood">색감 또는 분위기</label>
+      <input id="mood" type="text" placeholder="예: 핑크, 파스텔, 심플, 화이트톤">
+    </div>
+
+    <div class="field">
+      <label for="lettering">레터링 문구</label>
+      <input id="lettering" type="text" placeholder="레터링 문구를 입력해주세요">
+    </div>
+
+    <div class="field">
+      <label for="design">디자인</label>
+      <input id="design" type="text" placeholder="원하시는 디자인 설명 또는 사진 첨부 예정">
+    </div>
+
+    <div class="field">
+      <label for="request">요청사항</label>
+      <textarea id="request" placeholder="기타 요청사항을 입력해주세요"></textarea>
+    </div>
+
+    <div class="order-preview">
+      <h3>주문서 확인</h3>
+      <div class="preview-box" id="orderPreview"></div>
+    </div>
+
+    <button class="btn btn-copy" onclick="copyOrder()">주문서 복사</button>
+    <button class="btn btn-kakao" onclick="goKakao()">주문하기</button>
+  </section>
+
+
+  <section class="section">
+    <h2>♥ 픽업 안내 ♥</h2>
+    <p class="info-line"><strong>픽업</strong> 10:00 ~ 17:00</p>
+    <p class="info-line"><strong>무인 픽업</strong> 17시 이후 가능</p>
+    <p class="info-line"><strong>안내</strong> 비밀번호는 당일 별도 안내</p>
+    <p class="info-line"><strong>주차안내</strong> 매장 앞 정차 가능 [20분]</p>
+  </section>
+
+  <section class="section">
+    <h2>♥ 케이크 이용 안내 ♥</h2>
+    <p class="notice-text">
+      케이크는 수령 후 반드시 <strong>냉장 보관</strong>해 주세요.<br>
+      장시간 보관이 필요한 경우 냉동 보관도 가능합니다.<br><br>
+
+      더운 날씨에는 변형 방지를 위해 <strong>보냉백 사용</strong>을 권장드립니다.<br>
+      매장에서도 보냉백 구매가 가능하며, 보냉백이 있으신 경우 지참 부탁드립니다.<br> <br>   
+      
+      이동 시에는 케이크가 기울어지지 않도록 <strong>수평을 유지</strong>해주시고, 차량 이동 시 좌석이 아닌 바닥에 두는 것을 권장드립니다.<br><br>
+
+      수령 후 <strong>1시간 이상 장거리 이동</strong>은 변형의 원인이 될 수 있으며, 2호 이상 케이크는 바닥을 받쳐 이동해 주세요.<br><br>
+
+      제품 특성상 충격이나 기울어짐에 따라 디자인이 변형될 수 있는 점 양해 부탁드립니다.<br><br>
+
+    </p>
+  </section>
+
+<section class="section">
+    <h2>♥ 취소 및 환불 안내 ♥</h2>
+    <p class="notice-text">
+     모든 케이크는 한 분 한 분을 위해 정성껏 제작되는 주문제작 케이크입니다.<br><br>
+
+     재료 준비 및 제작 특성 상 픽업일 기준 2일 전부터는 취소 및 변경, 환불이 어려운 점 양해 부탁드립니다.<br><br>
+     
+    고객님의 소중한 일정에 맞춰 최선을 다해 준비하겠습니다.<br><br>
+
+    </p>
+  </section>
+
+
+
+</div>
+
+<audio id="bgm" preload="auto" playsinline></audio>
+
+<script>
+const playlist = [
+  { src: "bgm1.mp3", title: "Have you heard of Youlovecake?", artist: "Joko Park" },
+  { src: "bgm2.mp3", title: "come in", artist: "Joko Park" },
+  { src: "bgm3.mp3", title: "Cake lover", artist: "Joko Park" }
+];
+
+const bgm = document.getElementById("bgm");
+const musicBtn = document.getElementById("musicBtn");
+const musicMarquee = document.getElementById("musicMarquee");
+const musicLineA = document.getElementById("musicLineA");
+const musicLineB = document.getElementById("musicLineB");
+const orderPreview = document.getElementById("orderPreview");
+
+let isPlaying = false;
+let currentTrack = 0;
+
+function updateMusicTitle() {
+  const track = playlist[currentTrack];
+  const text = track.title + " · " + track.artist;
+  musicLineA.textContent = text;
+  musicLineB.textContent = text;
+}
+
+function playTrack(index) {
+  currentTrack = index;
+  updateMusicTitle();
+  bgm.src = playlist[currentTrack].src;
+  bgm.load();
+  return bgm.play();
+}
+
+bgm.addEventListener("ended", function() {
+  currentTrack = (currentTrack + 1) % playlist.length;
+  playTrack(currentTrack).catch(function() {});
+});
+
+function toggleMusic() {
+  if (isPlaying) {
+    bgm.pause();
+    musicBtn.textContent = "🎵 음악 켜기";
+    musicMarquee.classList.remove("show");
+    isPlaying = false;
+  } else {
+    playTrack(currentTrack).then(function() {
+      musicBtn.textContent = "🎵 음악 끄기";
+      musicMarquee.classList.add("show");
+      isPlaying = true;
+    }).catch(function() {
+      alert("브라우저에서 한 번 더 눌러주세요");
+    });
+  }
+}
+
+function getSelectedValue(name) {
+  const checked = document.querySelector('input[name="' + name + '"]:checked');
+  return checked ? checked.value : "";
+}
+
+function safeValue(id) {
+  const el = document.getElementById(id);
+  if (!el) return "";
+  return el.value.trim();
+}
+
+function buildOrderText() {
+  return [
+    "❤️ 성함 : " + safeValue("name"),
+    "❤️ 연락처 : " + safeValue("phone"),
+    "❤️ 픽업 날짜/시간 : " + safeValue("pickup"),
+    "❤️ 케이크 종류 : " + getSelectedValue("cakeType"),
+    "❤️ 케이크 사이즈 : " + getSelectedValue("cakeSize"),
+    "❤️ 시트 선택 : " + getSelectedValue("sheetType"),
+    "❤️ 색감 또는 분위기 : " + safeValue("mood"),
+    "❤️ 레터링 문구 : " + safeValue("lettering"),
+    "❤️ 디자인 : " + safeValue("design"),
+    "❤️ 요청사항 : " + safeValue("request")
+  ].join("\n");
+}
+
+function updatePreview() {
+  const previewText = [
+    "❤️ 성함 : " + (safeValue("name") || "-"),
+    "❤️ 연락처 : " + (safeValue("phone") || "-"),
+    "❤️ 픽업 날짜/시간 : " + (safeValue("pickup") || "-"),
+    "❤️ 케이크 종류 : " + (getSelectedValue("cakeType") || "-"),
+    "❤️ 케이크 사이즈 : " + (getSelectedValue("cakeSize") || "-"),
+    "❤️ 시트 선택 : " + (getSelectedValue("sheetType") || "-"),
+    "❤️ 색감 또는 분위기 : " + (safeValue("mood") || "-"),
+    "❤️ 레터링 문구 : " + (safeValue("lettering") || "-"),
+    "❤️ 디자인 : " + (safeValue("design") || "-"),
+    "❤️ 요청사항 : " + (safeValue("request") || "-")
+  ].join("\n");
+
+  orderPreview.textContent = previewText;
+}
+
+function copyOrder() {
+  const text = buildOrderText();
+
+  navigator.clipboard.writeText(text)
+    .then(function() {
+      alert("주문서 복사 완료");
+    })
+    .catch(function() {
+      alert("복사에 실패했습니다. 한 번 더 시도해주세요.");
+    });
+}
+
+function goKakao() {
+  window.open("https://pf.kakao.com/_cxkzzX/chat", "_blank");
+}
+
+document.querySelectorAll("input, textarea").forEach(function(el) {
+  el.addEventListener("input", updatePreview);
+  el.addEventListener("change", updatePreview);
+});
+
+updateMusicTitle();
+updatePreview();
+</script>
+
+</body>
+</html>
