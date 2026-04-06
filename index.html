@@ -325,6 +325,10 @@ body {
 
       <input type="radio" name="cakeType" id="type-tier" value="2단">
       <label class="chip" for="type-tier">2단</label>
+
+      <input type="radio" name="cakeType" id="type-tier" value="생크림">
+      <label class="chip" for="type-tier">생크림</label>
+
     </div>
 
     <label class="chip-title">케이크 사이즈</label>
@@ -353,6 +357,9 @@ body {
       <input type="radio" name="sheetType" id="sheet-blueberry" value="블루베리">
       <label class="chip" for="sheet-blueberry">블루베리</label>
 
+      <input type="radio" name="sheetType" id="sheet-blueberry" value="생크림">
+      <label class="chip" for="sheet-blueberry">생크림</label>
+
       <input type="radio" name="sheetType" id="sheet-carrot" value="당근케이크">
       <label class="chip" for="sheet-carrot">당근케이크</label>
     </div>
@@ -373,8 +380,8 @@ body {
     </div>
 
     <div class="field">
-      <label for="request">요청사항</label>
-      <textarea id="request" placeholder="기타 요청사항을 입력해주세요"></textarea>
+      <label for="request">리뷰이벤트</label>
+      <textarea id="request" placeholder="영수증리뷰 / 블로그리뷰 / 해당사항없음"></textarea>
     </div>
 
     <div class="order-preview">
@@ -507,7 +514,7 @@ function buildOrderText() {
     "❤️ 색감 또는 분위기 : " + safeValue("mood"),
     "❤️ 레터링 문구 : " + safeValue("lettering"),
     "❤️ 디자인 : " + safeValue("design"),
-    "❤️ 요청사항 : " + safeValue("request")
+    "❤️ 리뷰이벤트 : " + safeValue("request")
   ].join("\n");
 }
 
@@ -522,7 +529,7 @@ function updatePreview() {
     "❤️ 색감 또는 분위기 : " + (safeValue("mood") || "-"),
     "❤️ 레터링 문구 : " + (safeValue("lettering") || "-"),
     "❤️ 디자인 : " + (safeValue("design") || "-"),
-    "❤️ 요청사항 : " + (safeValue("request") || "-")
+    "❤️ 리뷰이벤트 : " + (safeValue("request") || "-")
   ].join("\n");
 
   orderPreview.textContent = previewText;
