@@ -1,4 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouLoveCake</title>
 
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Noto Sans KR", sans-serif;
+  background: #fffaf7;
+  color: #4e3940;
+}
+
+.wrap {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.hero {
+  height: 360px;
+  background:
+    linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5)),
+    url('hero.png') center/cover no-repeat;
+  display: flex;
+  align-items: flex-end;
+  padding: 24px;
+  color: white;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 800;
+}
+
+.hero p {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: #ffe7ee;
+}
+
+.section {
+  background: #fff4f7;
+  margin: 16px;
+  padding: 20px;
+  border-radius: 24px;
+}
+
+.section h2 {
+  margin: 0 0 14px;
+  font-size: 24px;
+  font-weight: 800;
+  color: #4e3940;
+}
+
+.subtext {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: #7d6970;
+  line-height: 1.7;
+}
+
+.field {
+  margin-bottom: 12px;
+}
+
+.field label {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #4e3940;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  border: 1px solid #e5cfd6;
+  border-radius: 14px;
   padding: 13px 14px;
   font-size: 15px;
   background: white;
@@ -170,6 +252,17 @@
   color: #5a464d;
 }
 
+.review-notice {
+  margin: 6px 0 14px;
+  padding: 12px 14px;
+  background: #fff;
+  border: 1px solid #ead7dd;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #6c565d;
+}
+
 @keyframes appleMarquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(calc(-50% - 24px)); }
@@ -243,6 +336,9 @@
 
       <input type="radio" name="cakeType" id="type-tier" value="2단">
       <label class="chip" for="type-tier">2단</label>
+
+      <input type="radio" name="cakeType" id="type-fresh" value="생크림">
+      <label class="chip" for="type-fresh">생크림</label>
     </div>
 
     <label class="chip-title">케이크 사이즈</label>
@@ -271,6 +367,9 @@
       <input type="radio" name="sheetType" id="sheet-blueberry" value="블루베리">
       <label class="chip" for="sheet-blueberry">블루베리</label>
 
+      <input type="radio" name="sheetType" id="sheet-fresh" value="생크림">
+      <label class="chip" for="sheet-fresh">생크림</label>
+
       <input type="radio" name="sheetType" id="sheet-carrot" value="당근케이크">
       <label class="chip" for="sheet-carrot">당근케이크</label>
     </div>
@@ -290,10 +389,22 @@
       <input id="design" type="text" placeholder="원하시는 디자인 설명 또는 사진 첨부 예정">
     </div>
 
-    <div class="field">
-      <label for="request">요청사항</label>
-      <textarea id="request" placeholder="기타 요청사항을 입력해주세요"></textarea>
+    <label class="chip-title">리뷰 이벤트</label>
+    <div class="chip-group">
+      <input type="radio" name="reviewEvent" id="review-receipt" value="영수증리뷰" checked>
+      <label class="chip" for="review-receipt">영수증리뷰</label>
+
+      <input type="radio" name="reviewEvent" id="review-blog" value="블로그리뷰">
+      <label class="chip" for="review-blog">블로그리뷰</label>
+
+      <input type="radio" name="reviewEvent" id="review-none" value="해당사항없음">
+      <label class="chip" for="review-none">해당사항없음</label>
     </div>
+
+    <p class="review-notice">
+      리뷰 이벤트 참여 고객님께는 감사의 마음을 담아 <strong>작은 서비스</strong>를 드리고 있습니다.<br>
+      영수증 리뷰 또는 블로그 리뷰 작성 후 매장에 보여주세요 ♥
+    </p>
 
     <div class="order-preview">
       <h3>주문서 확인</h3>
@@ -303,7 +414,6 @@
     <button class="btn btn-copy" onclick="copyOrder()">주문서 복사</button>
     <button class="btn btn-kakao" onclick="goKakao()">주문하기</button>
   </section>
-
 
   <section class="section">
     <h2>♥ 픽업 안내 ♥</h2>
@@ -320,30 +430,24 @@
       장시간 보관이 필요한 경우 냉동 보관도 가능합니다.<br><br>
 
       더운 날씨에는 변형 방지를 위해 <strong>보냉백 사용</strong>을 권장드립니다.<br>
-      매장에서도 보냉백 구매가 가능하며, 보냉백이 있으신 경우 지참 부탁드립니다.<br> <br>   
-      
+      매장에서도 보냉백 구매가 가능하며, 보냉백이 있으신 경우 지참 부탁드립니다.<br><br>
+
       이동 시에는 케이크가 기울어지지 않도록 <strong>수평을 유지</strong>해주시고, 차량 이동 시 좌석이 아닌 바닥에 두는 것을 권장드립니다.<br><br>
 
       수령 후 <strong>1시간 이상 장거리 이동</strong>은 변형의 원인이 될 수 있으며, 2호 이상 케이크는 바닥을 받쳐 이동해 주세요.<br><br>
 
       제품 특성상 충격이나 기울어짐에 따라 디자인이 변형될 수 있는 점 양해 부탁드립니다.<br><br>
-
     </p>
   </section>
 
-<section class="section">
+  <section class="section">
     <h2>♥ 취소 및 환불 안내 ♥</h2>
     <p class="notice-text">
-     모든 케이크는 한 분 한 분을 위해 정성껏 제작되는 주문제작 케이크입니다.<br><br>
-
-     재료 준비 및 제작 특성 상 픽업일 기준 2일 전부터는 취소 및 변경, 환불이 어려운 점 양해 부탁드립니다.<br><br>
-     
-    고객님의 소중한 일정에 맞춰 최선을 다해 준비하겠습니다.<br><br>
-
+      모든 케이크는 한 분 한 분을 위해 정성껏 제작되는 주문제작 케이크입니다.<br><br>
+      재료 준비 및 제작 특성 상 픽업일 기준 2일 전부터는 취소 및 변경, 환불이 어려운 점 양해 부탁드립니다.<br><br>
+      고객님의 소중한 일정에 맞춰 최선을 다해 준비하겠습니다.<br><br>
     </p>
   </section>
-
-
 
 </div>
 
@@ -425,7 +529,7 @@ function buildOrderText() {
     "❤️ 색감 또는 분위기 : " + safeValue("mood"),
     "❤️ 레터링 문구 : " + safeValue("lettering"),
     "❤️ 디자인 : " + safeValue("design"),
-    "❤️ 요청사항 : " + safeValue("request")
+    "❤️ 리뷰 이벤트 : " + getSelectedValue("reviewEvent")
   ].join("\n");
 }
 
@@ -440,7 +544,7 @@ function updatePreview() {
     "❤️ 색감 또는 분위기 : " + (safeValue("mood") || "-"),
     "❤️ 레터링 문구 : " + (safeValue("lettering") || "-"),
     "❤️ 디자인 : " + (safeValue("design") || "-"),
-    "❤️ 요청사항 : " + (safeValue("request") || "-")
+    "❤️ 리뷰 이벤트 : " + (getSelectedValue("reviewEvent") || "-")
   ].join("\n");
 
   orderPreview.textContent = previewText;
