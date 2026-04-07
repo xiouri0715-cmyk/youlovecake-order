@@ -375,8 +375,8 @@ body {
     </div>
 
     <div class="field">
-      <label for="mood">색감 또는 분위기</label>
-      <input id="mood" type="text" placeholder="예: 핑크, 파스텔, 심플, 화이트톤">
+      <label for="mood">색감 또는 분위기, 디자인</label>
+      <input id="mood" type="text" placeholder="원하시는 디자인, 색감, 분위기를 편하게 작성해 주세요">
     </div>
 
     <div class="field">
@@ -384,11 +384,7 @@ body {
       <input id="lettering" type="text" placeholder="레터링 문구를 입력해주세요">
     </div>
 
-    <div class="field">
-      <label for="design">디자인</label>
-      <input id="design" type="text" placeholder="원하시는 디자인 설명 또는 사진 첨부 예정">
-    </div>
-
+    
     <label class="chip-title">리뷰 이벤트</label>
     <div class="chip-group">
       <input type="radio" name="reviewEvent" id="review-receipt" value="영수증리뷰" checked>
@@ -402,7 +398,7 @@ body {
     </div>
 
     <p class="review-notice">
-      리뷰 작성 시, 마음에 드시는 초 하나를 함께 드립니다 ♥<br>
+      영수증리뷰 예쁜 초 증정 ♥, 블로그리뷰 3천원 적립 ♥<br>
       
     </p>
 
@@ -526,9 +522,8 @@ function buildOrderText() {
     "❤️ 케이크 종류 : " + getSelectedValue("cakeType"),
     "❤️ 케이크 사이즈 : " + getSelectedValue("cakeSize"),
     "❤️ 시트 선택 : " + getSelectedValue("sheetType"),
-    "❤️ 색감 또는 분위기 : " + safeValue("mood"),
+    "❤️ 색감 또는 분위기, 디자인 : " + safeValue("mood"),
     "❤️ 레터링 문구 : " + safeValue("lettering"),
-    "❤️ 디자인 : " + safeValue("design"),
     "❤️ 리뷰 이벤트 : " + getSelectedValue("reviewEvent")
   ].join("\n");
 }
@@ -541,9 +536,8 @@ function updatePreview() {
     "❤️ 케이크 종류 : " + (getSelectedValue("cakeType") || "-"),
     "❤️ 케이크 사이즈 : " + (getSelectedValue("cakeSize") || "-"),
     "❤️ 시트 선택 : " + (getSelectedValue("sheetType") || "-"),
-    "❤️ 색감 또는 분위기 : " + (safeValue("mood") || "-"),
+    "❤️ 색감 또는 분위기, 디자인 : " + (safeValue("mood") || "-"),
     "❤️ 레터링 문구 : " + (safeValue("lettering") || "-"),
-    "❤️ 디자인 : " + (safeValue("design") || "-"),
     "❤️ 리뷰 이벤트 : " + (getSelectedValue("reviewEvent") || "-")
   ].join("\n");
 
