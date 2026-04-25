@@ -1,1 +1,1078 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <title>YouLoveCake 가정의달 카네이션 케이크 주문서</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Sans+KR:wght@300;400;500;600&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: 'Noto Sans KR', 'DM Sans', sans-serif;
+      background: #FAF8F5;
+      color: #3A3A3A;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    button { font-family: inherit; border: none; cursor: pointer; outline: none; }
+    input { font-family: inherit; outline: none; }
 
+    /* ===== TYPOGRAPHY ===== */
+    .font-serif { font-family: 'Cormorant Garamond', 'Noto Sans KR', serif; }
+    .font-display { font-family: 'DM Sans', 'Noto Sans KR', sans-serif; }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes scaleX {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0) translateX(-50%); }
+      50% { transform: translateY(6px) translateX(-50%); }
+    }
+    .animate-fadeInUp { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .animate-fadeIn { animation: fadeIn 0.8s ease forwards; }
+    .animate-scaleX { animation: scaleX 0.8s ease forwards; }
+
+    /* Intersection Observer reveal */
+    .reveal { opacity: 0; transform: translateY(54px) scale(0.965); transition: opacity 1.05s cubic-bezier(0.16, 1, 0.3, 1), transform 1.05s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.visible { opacity: 1; transform: translateY(0) scale(1); }
+    .reveal-delay-1 { transition-delay: 0.16s; }
+    .reveal-delay-2 { transition-delay: 0.32s; }
+    .reveal-delay-3 { transition-delay: 0.48s; }
+    .reveal-delay-4 { transition-delay: 0.64s; }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-image: url('https://files.manuscdn.com/user_upload_by_module/session_file/310519663579288517/pIaoeqhVputhwhLt.jpg');
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.15), rgba(0,0,0,0.45));
+    }
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 0 24px;
+      max-width: 640px;
+    }
+    .hero-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      letter-spacing: 0.35em;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      animation: fadeIn 0.8s 0.3s ease both;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.2rem;
+      font-weight: 300;
+      color: white;
+      line-height: 1.1;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .hero-line {
+      width: 64px;
+      height: 1px;
+      margin: 28px auto;
+      background: linear-gradient(90deg, transparent, #D4B896, transparent);
+      animation: scaleX 0.8s 0.5s ease both;
+    }
+    .hero-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      color: rgba(255,255,255,0.7);
+      font-style: italic;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+    .hero-location {
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.2em;
+      margin-bottom: 48px;
+    }
+   .hero-cta {
+      display: inline-block;
+      padding: 12px 34px;
+      border: 1px solid #E8E2D8;
+      background: #FDFBF8;
+      color: #7A1B2E;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      border-radius: 0px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+      transition: all 0.35s ease;
+    }
+
+    .hero-cta:hover {
+      border-color: #7A1B2E;
+      background: rgba(122,27,46,0.05);
+      color: #7A1B2E;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      animation: bounce 2.5s ease-in-out infinite;
+    }
+    .scroll-indicator span {
+      font-size: 9px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .scroll-indicator .line {
+      width: 1px;
+      height: 32px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+    }
+
+    /* ===== SECTION DIVIDER ===== */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 16px 0;
+    }
+    .divider-line-left {
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(212,184,150,0.5));
+    }
+    .divider-line-right {
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(to left, transparent, rgba(212,184,150,0.5));
+    }
+    .divider-star { color: #D4B896; opacity: 0.6; }
+
+    /* ===== SECTIONS COMMON ===== */
+    .section { padding: 72px 16px; }
+    .section-lg { padding: 96px 16px; }
+    .section-bg { background: #F8F5F0; }
+    .section-header {
+      text-align: center;
+      margin-bottom: 42px;
+    }
+    .section-label {
+      color: #B8956A;
+      font-size: 10px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.75rem;
+      font-weight: 300;
+      color: #3A3A3A;
+      margin-bottom: 20px;
+      line-height: 1.22;
+      word-break: keep-all;
+      white-space: nowrap;
+    }
+    .section-line {
+      width: 40px;
+      height: 1px;
+      background: #D4B896;
+      margin: 0 auto;
+    }
+
+    /* ===== PRODUCT SECTION ===== */
+    .products-wrapper { max-width: 960px; margin: 0 auto; }
+    .products-hero-img {
+      max-width: 768px;
+      margin: 0 auto 64px;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .products-hero-img img { width: 100%; }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .product-card {
+      background: white;
+      overflow: hidden;
+      box-shadow: 0 1px 12px rgba(0,0,0,0.04);
+      transition: box-shadow 0.6s ease;
+    }
+    .product-card:hover { box-shadow: 0 6px 30px rgba(0,0,0,0.09); }
+    .product-img {
+      position: relative;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+    }
+    .product-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+    .product-card:hover .product-img img { transform: scale(1.04); }
+    .product-info {
+      padding: 16px;
+      text-align: center;
+    }
+    .product-en {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: #B8956A;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .product-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      color: #3A3A3A;
+      margin-bottom: 4px;
+    }
+    .product-desc {
+      font-size: 10px;
+      color: #999;
+      line-height: 1.5;
+    }
+
+    /* ===== PROMO / NOTICE SECTION ===== */
+    .notice-wrapper { max-width: 640px; margin: 0 auto; }
+    .notice-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 14px 18px;
+      margin-bottom: 8px;
+      background: white;
+      border: 1px solid #E8E2D8;
+      transition: all 0.3s ease;
+    }
+    .notice-card.highlight {
+      background: rgba(122,27,46,0.03);
+      border-color: rgba(122,27,46,0.15);
+    }
+    .notice-icon { flex-shrink: 0; margin-top: 2px; color: #C4B59A; }
+    .notice-card.highlight .notice-icon { color: #7A1B2E; }
+    .notice-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #3A3A3A;
+      margin-bottom: 4px;
+    }
+    .notice-card.highlight .notice-title { color: #7A1B2E; }
+    .single-notice { align-items: center; }
+    .notice-desc { font-size: 12px; color: #999; line-height: 1.6; }
+    .notice-list-card { align-items: flex-start; }
+    .notice-lines p {
+      position: relative;
+      padding-left: 18px;
+      font-size: 12px;
+      color: #777;
+      line-height: 1.8;
+      margin-bottom: 4px;
+      word-break: keep-all;
+    }
+    .notice-lines p::before {
+      content: '♥';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #B8956A;
+      font-size: 10px;
+      line-height: 2.1;
+    }
+    .notice-lines p:first-child::before { color: #7A1B2E; }
+    .notice-lines p:last-child { margin-bottom: 0; }
+    .notice-lines strong {
+      display: block;
+      color: #7A1B2E;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+    .notice-card.visible,
+    .product-card.visible,
+    .info-card.visible,
+    .form-box.visible,
+    .order-instructions.visible,
+    .products-hero-img.visible {
+      will-change: opacity, transform;
+    }
+
+
+    /* ===== ORDER FORM ===== */
+    .order-wrapper { max-width: 560px; margin: 0 auto; }
+    .order-instructions {
+      background: white;
+      border: 1px solid #E8E2D8;
+      padding: 20px;
+      margin-bottom: 20px;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .order-instructions h4 {
+      font-size: 11px;
+      font-weight: 500;
+      color: #3A3A3A;
+      margin-bottom: 12px;
+    }
+    .order-instructions p {
+      font-size: 11px;
+      color: #777;
+      line-height: 1.8;
+    }
+    .order-instructions .step-num { color: #B8956A; margin-right: 6px; }
+    .order-instructions strong { color: #3A3A3A; font-weight: 500; }
+    .order-instructions .note {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #F0EBE3;
+      font-size: 10px;
+      color: #B8956A;
+    }
+    .form-box {
+      background: white;
+      border: 1px solid #E8E2D8;
+      padding: 20px;
+      box-shadow: 0 2px 24px rgba(0,0,0,0.04);
+    }
+    .form-group { margin-bottom: 14px; }
+    .form-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      color: #3A3A3A;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #E8E2D8;
+      background: #FDFBF8;
+      font-size: 13px;
+      color: #3A3A3A;
+      transition: border-color 0.3s ease;
+    }
+    .form-input::placeholder { color: #CCC; font-size: 12px; }
+    .form-input:focus { border-color: #D4B896; background: white; }
+    .btn-grid { display: grid; gap: 8px; }
+    .btn-grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .btn-grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .btn-grid-5 { grid-template-columns: repeat(3, 1fr); }
+    .select-btn {
+      padding: 9px 8px;
+      font-size: 11px;
+      border: 1px solid #E8E2D8;
+      background: #FDFBF8;
+      color: #999;
+      transition: all 0.3s ease;
+    }
+    .select-btn:hover { border-color: rgba(212,184,150,0.5); color: #666; }
+    .select-btn.active {
+      border-color: #7A1B2E;
+      background: rgba(122,27,46,0.04);
+      color: #7A1B2E;
+      font-weight: 500;
+    }
+    .review-note {
+      font-size: 10px;
+      color: #B8956A;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+    .form-divider {
+      margin: 20px 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(212,184,150,0.3), transparent);
+    }
+
+    /* Preview */
+    .preview-box {
+      background: #FDFBF8;
+      border: 1px solid #EDE8E0;
+      padding: 16px;
+    }
+    .preview-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      color: #3A3A3A;
+      margin-bottom: 16px;
+    }
+    .preview-line {
+      display: flex;
+      align-items: baseline;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+    .preview-heart { color: #C4956A; margin-right: 8px; }
+    .preview-label {
+      color: #3A3A3A;
+      font-weight: 500;
+      min-width: 90px;
+    }
+    .preview-colon { color: #CCC; margin: 0 6px; font-size: 11px; }
+    .preview-value { color: #666; }
+    .preview-notice {
+      font-size: 10px;
+      color: #B8956A;
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid #EDE8E0;
+    }
+
+    /* Action buttons */
+    .action-buttons { margin-top: 32px; }
+    .btn-copy {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #3A3A3A;
+      background: transparent;
+      color: #3A3A3A;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.4s ease;
+      margin-bottom: 12px;
+    }
+    .btn-copy:hover { background: #3A3A3A; color: white; }
+    .btn-copy.copied { background: #3A3A3A; color: white; }
+    .btn-kakao {
+      width: 100%;
+      padding: 14px;
+      background: #7A1B2E;
+      color: white;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.4s ease;
+    }
+    .btn-kakao:hover { background: #5E1524; }
+
+    /* ===== INFO SECTION ===== */
+    .info-wrapper { max-width: 640px; margin: 0 auto; }
+    .info-card {
+      background: white;
+      border: 1px solid #E8E2D8;
+      padding: 18px 24px;
+      margin-bottom: 20px;
+    }
+    .info-label {
+      color: #B8956A;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .info-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 300;
+      color: #3A3A3A;
+      margin-bottom: 24px;
+    }
+    .info-row {
+      display: flex;
+      align-items: baseline;
+      margin-bottom: 12px;
+    }
+    .info-row-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #3A3A3A;
+      min-width: 72px;
+    }
+    .info-row-value {
+      font-size: 13px;
+      color: #999;
+      margin-left: 16px;
+    }
+    .info-text {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.85;
+      margin-bottom: 12px;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      position: relative;
+      padding: 80px 24px;
+      overflow: hidden;
+    }
+    .footer-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-image: url('https://files.manuscdn.com/user_upload_by_module/session_file/310519663579288517/qaRypIgoHniqKMLj.jpg');
+    }
+    .footer-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
+    .footer-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+    }
+    .footer-msg {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .footer-line {
+      width: 48px;
+      height: 1px;
+      background: #D4B896;
+      margin: 24px auto;
+    }
+    .footer-love {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      color: #D4B896;
+      font-style: italic;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+    }
+    .footer-brand {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .footer-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #3A3A3A;
+      color: white;
+      padding: 12px 24px;
+      font-size: 13px;
+      z-index: 9999;
+      opacity: 0;
+      transition: all 0.4s ease;
+      white-space: nowrap;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (min-width: 640px) {
+      .hero-title { font-size: 5.5rem; }
+      .hero-subtitle { font-size: 3.2rem; }
+      .section-title { font-size: 2.5rem; }
+      .products-grid { gap: 24px; }
+      .product-info { padding: 20px; }
+      .product-en { font-size: 10px; }
+      .product-name { font-size: 18px; }
+      .product-desc { font-size: 12px; }
+      .form-box { padding: 32px; }
+      .btn-grid-5 { grid-template-columns: repeat(5, 1fr); }
+      .notice-card { padding: 24px; }
+    }
+    @media (min-width: 1024px) {
+      .products-grid { grid-template-columns: repeat(4, 1fr); }
+      .divider-line-left, .divider-line-right { width: 112px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="top">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content animate-fadeInUp">
+      <p class="hero-brand">Youlovecake</p>
+      <h1 class="hero-title font-serif">가정의달</h1>
+      <h2 class="hero-subtitle font-serif">카네이션 케이크</h2>
+      <div class="hero-line"></div>
+      <p class="hero-tagline font-serif">Thank you always, Love you.</p>
+      <p class="hero-location">평택 안중 감성 케이크</p>
+      <button class="hero-cta" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">주문하기</button>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="line"></div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="section-divider">
+    <div class="divider-line-left"></div>
+    <svg class="divider-star" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5L8 0Z" fill="currentColor"/></svg>
+    <div class="divider-line-right"></div>
+  </div>
+
+  <!-- ===== PRODUCTS ===== -->
+  <section class="section" id="products">
+    <div class="products-wrapper">
+      <div class="section-header reveal">
+        <p class="section-label font-display">Family Month Collection</p>
+        <h2 class="section-title font-serif">가정의달 케이크 &amp; 꽃 패키지</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="products-hero-img reveal">
+        <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663579288517/CwRkxdZVgsCYVith.jpg" alt="가정의달 케이크 & 꽃 패키지 전체 구성" loading="lazy" />
+      </div>
+
+      <div class="products-grid">
+        <div class="product-card reveal">
+          <div class="product-img">
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663579288517/RHbEOHfBTfRBDoHR.jpg" alt="미니 케이크" loading="lazy" />
+          </div>
+          <div class="product-info">
+            <p class="product-en font-display">Mini Cake</p>
+            <h3 class="product-name font-serif">미니 케이크</h3>
+            <p class="product-desc">사랑스러운 미니 사이즈 홀 케이크</p>
+          </div>
+        </div>
+        <div class="product-card reveal reveal-delay-1">
+          <div class="product-img">
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663579288517/yffIxvhjQsCwNacp.jpg" alt="1호 사각케이크" loading="lazy" />
+          </div>
+          <div class="product-info">
+            <p class="product-en font-display">Square Cake</p>
+            <h3 class="product-name font-serif">1호 사각케이크</h3>
+            <p class="product-desc">정성 가득 풍성한 사각 케이크</p>
+          </div>
+        </div>
+        <div class="product-card reveal reveal-delay-2">
+          <div class="product-img">
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663579288517/pGgLQqJUGZPWJpRn.jpg" alt="와인잔 패키지" loading="lazy" />
+          </div>
+          <div class="product-info">
+            <p class="product-en font-display">Wine Glass Set</p>
+            <h3 class="product-name font-serif">와인잔 패키지</h3>
+            <p class="product-desc">와인잔 카네이션 세트</p>
+          </div>
+        </div>
+        <div class="product-card reveal reveal-delay-3">
+          <div class="product-img">
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663579288517/sqBQMywOhZIYrDaD.jpg" alt="달항아리 패키지" loading="lazy" />
+          </div>
+          <div class="product-info">
+            <p class="product-en font-display">Moon Jar Package</p>
+            <h3 class="product-name font-serif">달항아리 패키지</h3>
+            <p class="product-desc">달항아리(초미니) 플라워 박스</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="section-divider">
+    <div class="divider-line-left"></div>
+    <svg class="divider-star" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5L8 0Z" fill="currentColor"/></svg>
+    <div class="divider-line-right"></div>
+  </div>
+
+  <!-- ===== NOTICE / PROMO ===== -->
+  <section class="section section-bg" id="notice">
+    <div class="notice-wrapper">
+      <div class="section-header reveal">
+        <p class="section-label font-display">Notice</p>
+        <h2 class="section-title font-serif">예약 안내</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="notice-card highlight reveal notice-list-card">
+        <div class="notice-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="notice-lines">
+          <p><strong>4월 말까지 사전 예약 할인</strong></p>
+          <p>미리 예약하시면 3,000원 할인 혜택을 드립니다.</p>
+          <p>최소 2~3일 전 예약 부탁드립니다.</p>
+          <p>신선한 꽃과 맛있는 케이크 준비를 위해 여유 있게 예약해 주세요.</p>
+          <p>카카오채널 또는 매장 방문으로 주문 가능합니다.</p>
+          <p>매장 앞 20분 정차 가능합니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="section-divider">
+    <div class="divider-line-left"></div>
+    <svg class="divider-star" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5L8 0Z" fill="currentColor"/></svg>
+    <div class="divider-line-right"></div>
+  </div>
+
+  <!-- ===== ORDER FORM ===== -->
+  <section class="section" id="order">
+    <div class="order-wrapper">
+      <div class="section-header reveal">
+        <p class="section-label font-display">Order Form</p>
+        <h2 class="section-title font-serif">간편 주문</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <!-- Instructions -->
+      <div class="order-instructions reveal" style="text-align:left;">
+        <h4>주문 방법 안내</h4>
+        <p><span class="step-num">1.</span> 아래 주문서를 작성해주세요.</p>
+        <p><span class="step-num">2.</span> <strong>[주문서 복사]</strong> 버튼을 눌러주세요.</p>
+        <p><span class="step-num">3.</span> <strong>[카카오톡 채팅방 열기]</strong> 버튼을 눌러 이동해주세요.</p>
+        <p><span class="step-num">4.</span> 복사된 주문서를 채팅창에 <strong>붙여넣고 전송</strong>해주세요.</p>
+        <p class="note">※ 카카오톡에 직접 메시지를 보내주셔야 최종 접수됩니다.</p>
+      </div>
+
+      <!-- Form -->
+      <div class="form-box reveal">
+        <div class="form-group">
+          <label class="form-label">성함</label>
+          <input type="text" class="form-input" id="f-name" placeholder="성함을 입력해주세요" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">연락처</label>
+          <input type="tel" class="form-input" id="f-phone" placeholder="연락처를 입력해주세요" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">픽업 날짜/시간</label>
+          <input type="text" class="form-input" id="f-pickup" placeholder="예: 5월 7일 오후 2시" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">패키지 선택</label>
+          <div class="btn-grid btn-grid-2" id="pkg-grid">
+            <button class="select-btn active" data-group="pkg" data-value="미니 케이크">미니 케이크</button>
+            <button class="select-btn" data-group="pkg" data-value="1호 사각케이크">1호 사각케이크</button>
+            <button class="select-btn" data-group="pkg" data-value="와인잔 패키지">와인잔 패키지</button>
+            <button class="select-btn" data-group="pkg" data-value="달항아리 패키지">달항아리 패키지</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">시트 선택</label>
+          <div class="btn-grid btn-grid-5" id="sheet-grid">
+            <button class="select-btn active" data-group="sheet" data-value="오레오">오레오</button>
+            <button class="select-btn" data-group="sheet" data-value="딸기">딸기</button>
+            <button class="select-btn" data-group="sheet" data-value="블루베리">블루베리</button>
+            <button class="select-btn" data-group="sheet" data-value="생크림">생크림</button>
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <label class="form-label">레터링 문구</label>
+          <input type="text" class="form-input" id="f-lettering" placeholder="레터링 문구를 입력해주세요" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">리뷰 이벤트</label>
+          <div class="btn-grid btn-grid-3" id="review-grid">
+            <button class="select-btn active" data-group="review" data-value="영수증리뷰">영수증리뷰</button>
+            <button class="select-btn" data-group="review" data-value="블로그리뷰">블로그리뷰</button>
+            <button class="select-btn" data-group="review" data-value="해당사항없음">해당사항없음</button>
+          </div>
+          <p class="review-note">영수증리뷰 — 예쁜 초 증정 ♥ &nbsp;|&nbsp; 블로그리뷰 — 예쁜 초 증정 + 3천원 적립 ♥</p>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <!-- Preview -->
+        <div class="preview-box" id="preview-box">
+          <h3 class="preview-title font-serif">주문서 확인</h3>
+          <div id="preview-content"></div>
+          <p class="preview-notice">※ 아직 주문이 완료된 상태가 아닙니다. 카카오톡 채팅방에 주문서를 직접 붙여넣고 전송해주셔야 접수됩니다.</p>
+        </div>
+
+        <!-- Buttons -->
+        <div class="action-buttons">
+          <button class="btn-copy" id="btn-copy" onclick="copyOrder()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>1) 주문서 복사</span>
+          </button>
+          <button class="btn-kakao" onclick="window.open('https://pf.kakao.com/_cxkzzX/chat','_blank')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span>2) 카카오톡 채팅방 열기</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="section-divider">
+    <div class="divider-line-left"></div>
+    <svg class="divider-star" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5L8 0Z" fill="currentColor"/></svg>
+    <div class="divider-line-right"></div>
+  </div>
+
+  <!-- ===== INFO SECTION ===== -->
+  <section class="section section-bg" id="info">
+    <div class="info-wrapper">
+      <!-- Pickup Info -->
+      <div class="info-card reveal">
+        <p class="info-label font-display">Pickup Information</p>
+        <h3 class="info-title font-serif">픽업 안내</h3>
+        <div class="info-row">
+          <span class="info-row-label">픽업</span>
+          <span class="info-row-value">10:00 ~ 17:00</span>
+        </div>
+        <div class="info-row">
+          <span class="info-row-label">무인 픽업</span>
+          <span class="info-row-value">17시 이후 가능</span>
+        </div>
+        <div class="info-row">
+          <span class="info-row-label">안내</span>
+          <span class="info-row-value">비밀번호는 당일 별도 안내</span>
+        </div>
+        <div class="info-row">
+          <span class="info-row-label">주차안내</span>
+          <span class="info-row-value">매장 앞 정차 가능 [20분]</span>
+        </div>
+      </div>
+
+      <!-- Cake Care -->
+      <div class="info-card reveal">
+        <p class="info-label font-display">Cake Care Guide</p>
+        <h3 class="info-title font-serif">케이크 이용 안내</h3>
+        <p class="info-text">케이크는 수령 후 반드시 냉장 보관해 주세요. 장시간 보관이 필요한 경우 냉동 보관도 가능합니다.</p>
+        <p class="info-text">더운 날씨에는 변형 방지를 위해 보냉백 사용을 권장드립니다. 매장에서도 보냉백 구매가 가능하며, 보냉백이 있으신 경우 지참 부탁드립니다.</p>
+        <p class="info-text">이동 시에는 케이크가 기울어지지 않도록 수평을 유지해주시고, 차량 이동 시 좌석이 아닌 바닥에 두는 것을 권장드립니다.</p>
+        <p class="info-text">수령 후 1시간 이상 장거리 이동은 변형의 원인이 될 수 있으며, 2호 이상 케이크는 바닥을 받쳐 이동해 주세요.</p>
+        <p class="info-text">제품 특성상 충격이나 기울어짐에 따라 디자인이 변형될 수 있는 점 양해 부탁드립니다.</p>
+      </div>
+
+      <!-- Cancellation -->
+      <div class="info-card reveal">
+        <p class="info-label font-display">Cancellation Policy</p>
+        <h3 class="info-title font-serif">취소 및 환불 안내</h3>
+        <p class="info-text">모든 케이크는 한 분 한 분을 위해 정성껏 제작되는 주문제작 케이크입니다.</p>
+        <p class="info-text">재료 준비 및 제작 특성 상 픽업일 기준 2일 전부터는 취소 및 변경, 환불이 어려운 점 양해 부탁드립니다.</p>
+        <p class="info-text">고객님의 소중한 일정에 맞춰 최선을 다해 준비하겠습니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-bg"></div>
+    <div class="footer-overlay"></div>
+    <div class="footer-content">
+      <p class="footer-msg font-serif">사랑하는 마음을</p>
+      <p class="footer-msg font-serif">케이크와 꽃에 담아 전하세요</p>
+      <div class="footer-line"></div>
+      <p class="footer-love font-serif">Love you, Thank you.</p>
+      <p class="footer-brand">Youlovecake</p>
+      <p class="footer-sub">평택 안중 감성 케이크</p>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">주문서가 복사되었습니다</div>
+
+  <script>
+    // ===== Intersection Observer for reveal animations =====
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -80px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ===== Select button logic =====
+    document.querySelectorAll('.select-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const group = this.dataset.group;
+        document.querySelectorAll(`[data-group="${group}"]`).forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        updatePreview();
+      });
+    });
+
+    // ===== Form input listeners =====
+    ['f-name','f-phone','f-pickup','f-lettering'].forEach(id => {
+      document.getElementById(id).addEventListener('input', updatePreview);
+    });
+
+    // ===== Get selected value from button group =====
+    function getSelected(group) {
+      const active = document.querySelector(`[data-group="${group}"].active`);
+      return active ? active.dataset.value : '-';
+    }
+
+    // ===== Update preview =====
+    function updatePreview() {
+      const name = document.getElementById('f-name').value || '-';
+      const phone = document.getElementById('f-phone').value || '-';
+      const pickup = document.getElementById('f-pickup').value || '-';
+      const pkg = getSelected('pkg');
+      const sheet = getSelected('sheet');
+      const lettering = document.getElementById('f-lettering').value || '-';
+      const review = getSelected('review');
+
+      const fields = [
+        ['성함', name],
+        ['연락처', phone],
+        ['픽업 날짜/시간', pickup],
+        ['패키지 선택', pkg],
+        ['시트 선택', sheet],
+        ['레터링 문구', lettering],
+        ['리뷰 이벤트', review],
+      ];
+
+      let html = '';
+      fields.forEach(([label, value]) => {
+        html += `<div class="preview-line">
+          <span class="preview-heart">♥</span>
+          <span class="preview-label">${label}</span>
+          <span class="preview-colon">:</span>
+          <span class="preview-value">${value}</span>
+        </div>`;
+      });
+
+      document.getElementById('preview-content').innerHTML = html;
+    }
+
+    // Initial preview
+    updatePreview();
+
+    // ===== Copy order =====
+    function copyOrder() {
+      const name = document.getElementById('f-name').value || '-';
+      const phone = document.getElementById('f-phone').value || '-';
+      const pickup = document.getElementById('f-pickup').value || '-';
+      const pkg = getSelected('pkg');
+      const sheet = getSelected('sheet');
+      const lettering = document.getElementById('f-lettering').value || '-';
+      const review = getSelected('review');
+
+      const text = `♥ 가정의달 케이크 주문서 ♥
+
+❤️ 성함 : ${name}
+❤️ 연락처 : ${phone}
+❤️ 픽업 날짜/시간 : ${pickup}
+❤️ 패키지 선택 : ${pkg}
+❤️ 시트 선택 : ${sheet}
+❤️ 레터링 문구 : ${lettering}
+❤️ 리뷰 이벤트 : ${review}`;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showCopied();
+        }).catch(() => {
+          fallbackCopy(text);
+        });
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showCopied();
+      } catch(e) {
+        showToast('복사에 실패했습니다. 직접 복사해주세요.');
+      }
+      document.body.removeChild(ta);
+    }
+
+    function showCopied() {
+      const btn = document.getElementById('btn-copy');
+      btn.classList.add('copied');
+      btn.querySelector('span').textContent = '복사 완료';
+      btn.querySelector('svg').innerHTML = '<polyline points="20 6 9 17 4 12" />';
+      showToast('주문서가 복사되었습니다 — 카카오톡 채팅방에 붙여넣기 해주세요');
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.querySelector('span').textContent = '1) 주문서 복사';
+        btn.querySelector('svg').innerHTML = '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>';
+      }, 3000);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+  </script>
+</body>
+</html>
