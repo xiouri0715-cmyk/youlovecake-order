@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>유럽케이크 주문관리</title>
+
+<style>
+body {
+  font-family: sans-serif;
+  background:#f7f3ef;
+  margin:0;
+  padding:12px;
+}
+
+.header {
+  position:sticky;
+  top:0;
+  background:#f7f3ef;
+  z-index:10;
+  padding-bottom:10px;
+}
+
+h1 {
+  margin:0;
+  font-size:19px;
+}
+
+.now {
+  font-size:13px;
+  color:#666;
+  margin-top:4px;
+}
+
+.stats {
+  font-size:13px;
+  margin:6px 0;
+}
+
+textarea {
+  width:100%;
+  height:240px;
+  box-sizing:border-box;
+  border:none;
+  border-radius:14px;
+  padding:14px;
+  font-size:14px;
+  resize:vertical;
+}
+
+textarea::placeholder {
+  color:#b8aaa0;
+}
+
+.search {
+  width:100%;
+  box-sizing:border-box;
+  margin-top:8px;
+  padding:11px;
+  border:none;
+  border-radius:12px;
+  font-size:14px;
+}
+
+.main-btn {
+  width:100%;
+  margin-top:8px;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  background:#c89b7b;
+  color:white;
+  font-weight:bold;
+  font-size:15px;
+}
+
+.date-group {
+  margin-top:20px;
+}
+
+.date-title {
+  font-size:18px;
+  font-weight:bold;
+  color:#6f4a35;
+  margin-bottom:8px;
+}
+
+.card {
+  background:white;
+  border-radius:13px;
+  padding:12px;
+  margin-bottom:8px;
+  box-shadow:0 3px 8px rgba(0,0,0,0.05);
+}
+
+.summary {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+}
+
+.time {
+  font-weight:bold;
+  color:#d85f86;
+  min-width:76px;
+}
+
+.name {
+  font-weight:bold;
+  font-size:16px;
+}
+
+.detail {
+  display:none;
+  margin-top:9px;
+  padding-top:8px;
+  border-top:1px dashed #ddd;
+  font-size:13px;
+  line-height:1.8;
+}
+
+.warn {
+  color:#d33;
+  font-weight:bold;
+}
+
+.time-edit {
+  width:100%;
+  margin-top:7px;
+  padding:9px;
+  border:1px solid #ddd;
+  border-radius:9px;
+  background:white;
+  font-size:14px;
+}
+
+.small-btn {
+  width:100%;
+  margin-top:6px;
+  padding:8px;
+  border:none;
+  border-radius:9px;
+  background:#eee;
+}
+
+.done {
+  opacity:0.45;
+}
+
+.hold {
+  background:#fff3cd;
+}
+
+.cancel {
+  background:#eee;
+  text-decoration:line-through;
+}
+
+.empty {
+  text-align:center;
+  color:#999;
+  margin-top:35px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>🍰 유럽케이크 주문관리</h1>
+  <div class="now" id="nowText"></div>
+  <div class="stats" id="stats"></div>
+
+  <textarea id="input" placeholder="주문서를 꾹 눌러 붙여넣어주세요."></textarea>
+
+  <button class="main-btn" onclick="addOrders()">주문 반영</button>
+
+  <input class="search" id="search" placeholder="이름 / 전화번호 검색">
+</div>
+
+<div id="list"></div>
+
+<script>
+let orders = JSON.parse(localStorage.getItem("europeCakeOrders") || "[]");
+
+function save() {
+  localStorage.setItem("europeCakeOrders", JSON.stringify(orders));
+}
+
+function updateNow() {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  const h = String(d.getHours()).padStart(2, "0");
+  const min = String(d.getMinutes()).padStart(2, "0");
+  nowText.innerText = `현재 ${y}-${m}-${day} ${h}:${min}`;
+}
+
+function getValue(block, label) {
+  const regex = new RegExp(label + "\\s*:\\s*([^\\n]*)");
+  const match = block.match(regex);
+  return match ? match[1].trim() : "";
+}
+
+function korTime(text) {
+  return text
+    .replace(/한시/g, "1시")
+    .replace(/두시/g, "2시")
+    .replace(/세시/g, "3시")
+    .replace(/네시/g, "4시")
+    .replace(/다섯시/g, "5시")
+    .replace(/여섯시/g, "6시")
+    .replace(/일곱시/g, "7시")
+    .replace(/여덟시/g, "8시")
+    .replace(/아홉시/g, "9시")
+    .replace(/열시/g, "10시")
+    .replace(/열한시/g, "11시")
+    .replace(/열두시/g, "12시");
+}
+
+function parsePickup(text) {
+  text = korTime(text || "");
+
+  const year = new Date().getFullYear();
+  const monthMatch = text.match(/(\d+)\s*월/);
+  const dayMatch = text.match(/(\d+)\s*일/);
+
+  if (!monthMatch || !dayMatch) return null;
+
+  const month = Number(monthMatch[1]);
+  const day = Number(dayMatch[1]);
+
+  if (/언제든|아무때나|시간미정/.test(text)) {
+    const date = new Date(year, month - 1, day, 13, 0, 0);
+    return makePickupObject(date, month, day, true);
+  }
+
+  let hour = null;
+
+  const ampmMatch = text.match(/(오전|오후)\s*(\d{1,2})\s*시/);
+  const hourMatch = text.match(/(\d{1,2})\s*시/);
+
+  if (ampmMatch) {
+    hour = Number(ampmMatch[2]);
+
+    if (ampmMatch[1] === "오후" && hour !== 12) hour += 12;
+    if (ampmMatch[1] === "오전" && hour === 12) hour = 0;
+  } else if (hourMatch) {
+    hour = Number(hourMatch[1]);
+  } else {
+    return null;
+  }
+
+  const date = new Date(year, month - 1, day, hour, 0, 0);
+  return makePickupObject(date, month, day, false);
+}
+
+function makePickupObject(date, month, day, unknown) {
+  const hour = date.getHours();
+  const ampm = hour >= 12 ? "오후" : "오전";
+  let displayHour = hour > 12 ? hour - 12 : hour;
+  if (displayHour === 0) displayHour = 12;
+
+  return {
+    timestamp: date.getTime(),
+    dateKey: `${date.getFullYear()}-${String(month).padStart(2,"0")}-${String(day).padStart(2,"0")}`,
+    dateText: `${month}월 ${day}일`,
+    timeText: unknown ? "시간미정" : `${ampm} ${displayHour}시`,
+    hour24: hour,
+    unknown
+  };
+}
+
+function addOrders() {
+  const raw = input.value.trim();
+  if (!raw) return alert("주문서를 붙여넣어 주세요.");
+
+  const blocks = raw
+    .split(/(?=❤️\s*성함\s*:)/g)
+    .map(b => b.trim())
+    .filter(b => b.includes("성함"));
+
+  let success = 0;
+  let fail = 0;
+  let duplicate = 0;
+
+  blocks.forEach(block => {
+    const pickup = parsePickup(getValue(block, "픽업 날짜/시간"));
+
+    if (!pickup) {
+      fail++;
+      return;
+    }
+
+    const order = {
+      id: Date.now() + Math.random(),
+      name: getValue(block, "성함"),
+      phone: getValue(block, "연락처"),
+      package:
+        getValue(block, "패키지 선택") ||
+        getValue(block, "케이크 종류") ||
+        getValue(block, "케이크 사이즈"),
+      size: getValue(block, "케이크 사이즈"),
+      sheet: getValue(block, "시트 선택"),
+      design: getValue(block, "색감 또는 분위기, 디자인"),
+      lettering: getValue(block, "레터링 문구"),
+      review: getValue(block, "리뷰 이벤트"),
+      price: Number((getValue(block, "가격") || "0").replace(/[^0-9]/g, "")),
+      status: "normal",
+      ...pickup
+    };
+
+    const isDuplicate = orders.some(o =>
+      o.name === order.name &&
+      o.phone === order.phone &&
+      o.timestamp === order.timestamp
+    );
+
+    if (isDuplicate) {
+      duplicate++;
+      return;
+    }
+
+    orders.push(order);
+    success++;
+  });
+
+  input.value = "";
+  cleanupOldOrders();
+  save();
+  render();
+
+  alert(`등록 ${success}건 / 중복 ${duplicate}건 / 실패 ${fail}건`);
+}
+
+function cleanupOldOrders() {
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0).getTime();
+  orders = orders.filter(o => o.timestamp >= todayStart);
+}
+
+function updateHour(id, hourValue) {
+  const order = orders.find(o => o.id == id);
+  if (!order) return;
+
+  const date = new Date(order.timestamp);
+  date.setHours(Number(hourValue), 0, 0, 0);
+
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  const updated = makePickupObject(date, month, day, false);
+
+  order.timestamp = updated.timestamp;
+  order.dateKey = updated.dateKey;
+  order.dateText = updated.dateText;
+  order.timeText = updated.timeText;
+  order.hour24 = updated.hour24;
+  order.unknown = false;
+
+  save();
+  render();
+}
+
+function setStatus(id, status) {
+  const order = orders.find(o => o.id == id);
+  if (!order) return;
+
+  order.status = status;
+  save();
+  render();
+}
+
+function toggleDetail(el) {
+  const detail = el.nextElementSibling;
+  detail.style.display = detail.style.display === "block" ? "none" : "block";
+}
+
+function render() {
+  cleanupOldOrders();
+
+  const q = search.value.trim();
+  const filtered = orders
+    .filter(o => !q || o.name.includes(q) || o.phone.includes(q))
+    .sort((a, b) => a.timestamp - b.timestamp);
+
+  list.innerHTML = "";
+
+  let total = 0;
+  filtered.forEach(o => {
+    if (o.status !== "cancel") total += o.price || 0;
+  });
+
+  stats.innerText = `총 ${filtered.length}건 / 예상매출 ${total.toLocaleString()}원`;
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<div class="empty">등록된 주문이 없습니다.</div>`;
+    save();
+    return;
+  }
+
+  const grouped = {};
+  filtered.forEach(order => {
+    if (!grouped[order.dateKey]) grouped[order.dateKey] = [];
+    grouped[order.dateKey].push(order);
+  });
+
+  Object.keys(grouped).sort().forEach(dateKey => {
+    const group = document.createElement("div");
+    group.className = "date-group";
+    group.innerHTML = `<div class="date-title">📅 ${grouped[dateKey][0].dateText}</div>`;
+
+    grouped[dateKey]
+      .sort((a, b) => a.timestamp - b.timestamp)
+      .forEach(order => {
+        const card = document.createElement("div");
+        card.className = `card ${order.status}`;
+
+        card.innerHTML = `
+          <div class="summary" onclick="toggleDetail(this)">
+            <div class="time">${order.timeText}</div>
+            <div class="name">${order.name || "이름없음"}</div>
+          </div>
+
+          <div class="detail">
+            ${order.unknown ? `<div class="warn">⚠ 픽업시간 확인 필요</div>` : ""}
+
+            <b>픽업시간 수정</b>
+            <select class="time-edit" onchange="updateHour(${order.id}, this.value)">
+              ${makeHourOptions(order.hour24)}
+            </select>
+
+            <br>
+            <b>연락처</b> : ${order.phone || "-"}<br>
+            <b>케이크</b> : ${order.package || "-"} ${order.size ? "/ " + order.size : ""}<br>
+            <b>시트</b> : ${order.sheet || "-"}<br>
+            <b>디자인</b> : ${order.design || "-"}<br>
+            <b>레터링</b> : ${order.lettering || "-"}<br>
+            <b>리뷰</b> : ${order.review || "-"}<br>
+            <b>가격</b> : ${order.price ? order.price.toLocaleString() + "원" : "-"}<br>
+
+            <button class="small-btn" onclick="event.stopPropagation(); setStatus(${order.id}, 'done')">픽업완료</button>
+            <button class="small-btn" onclick="event.stopPropagation(); setStatus(${order.id}, 'hold')">보류</button>
+            <button class="small-btn" onclick="event.stopPropagation(); setStatus(${order.id}, 'cancel')">취소</button>
+          </div>
+        `;
+
+        group.appendChild(card);
+      });
+
+    list.appendChild(group);
+  });
+
+  save();
+}
+
+function makeHourOptions(selectedHour) {
+  let html = "";
+
+  for (let h = 9; h <= 20; h++) {
+    const ampm = h >= 12 ? "오후" : "오전";
+    let display = h > 12 ? h - 12 : h;
+    if (display === 0) display = 12;
+
+    html += `<option value="${h}" ${h === selectedHour ? "selected" : ""}>${ampm} ${display}시</option>`;
+  }
+
+  return html;
+}
+
+search.oninput = render;
+
+updateNow();
+render();
+
+setInterval(() => {
+  updateNow();
+  render();
+}, 60000);
+</script>
+
+</body>
+</html>
