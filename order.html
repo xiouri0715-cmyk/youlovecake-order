@@ -31,7 +31,7 @@ textarea{min-height:78px;resize:vertical;line-height:1.5}input:focus,textarea:fo
 .detail{display:none;border-top:1px dashed #eaded8;margin-top:12px;padding-top:12px;font-size:13px;line-height:1.7;white-space:pre-wrap}.detail.show{display:block;animation:fade .25s ease both}@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .actions{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:12px}.actions .full{grid-column:1/3}.editBox{display:none;margin-top:12px;border-top:1px dashed #eaded8;padding-top:12px}.editBox.show{display:block;animation:fade .25s ease both}.editGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.editGrid .full{grid-column:1/3}.empty{text-align:center;color:var(--muted);padding:32px 0;background:rgba(255,255,255,.5);border:1px dashed #eaded8;border-radius:20px}
 .search-result{border-left:4px solid var(--gold)}.muted-line{color:var(--muted);font-size:12px;margin-top:5px}
-.nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);max-width:760px;width:100%;background:rgba(255,255,255,.94);border-top:1px solid #eaded8;display:grid;grid-template-columns:repeat(5,1fr);gap:7px;padding:8px 10px 12px;backdrop-filter:blur(14px);z-index:50}.nav button{font-size:12px;padding:10px 4px;border-radius:14px;font-weight:950}
+.nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);max-width:760px;width:100%;background:rgba(255,255,255,.94);border-top:1px solid #eaded8;display:grid;grid-template-columns:repeat(6,1fr);gap:7px;padding:8px 10px 12px;backdrop-filter:blur(14px);z-index:50}.nav button{font-size:12px;padding:10px 4px;border-radius:14px;font-weight:950}
 
 .review-badge{background:#fff4d8!important;color:#9a6b12!important;border:1px solid #ead49a}
 .summary-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:10px}
@@ -45,14 +45,41 @@ textarea{min-height:78px;resize:vertical;line-height:1.5}input:focus,textarea:fo
 .photoPreview img{width:100%;max-height:360px;object-fit:contain;border-radius:14px;display:block}
 @media(max-width:430px){.photoTop{align-items:flex-start;flex-direction:column}.photoBtns{width:100%;justify-content:stretch}.photoBtns .btn{flex:1}}
 @media(max-width:430px){.wrap{padding-left:10px;padding-right:10px}.summary{gap:6px}.summary b{font-size:17px}.summary span{font-size:10px}.toolbar{grid-template-columns:1fr}.toolbar .wide{grid-column:1}.actions{grid-template-columns:1fr}.actions .full{grid-column:1}.editGrid{grid-template-columns:1fr}.editGrid .full{grid-column:1}.cal-day{min-height:54px;border-radius:13px;padding:6px 4px}.cal-price{display:none}}
+
+.hidden{display:none!important}
+.app.hidden{display:none!important}
+.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(circle at 20% 10%,rgba(234,210,214,.82),transparent 32%),radial-gradient(circle at 88% 18%,rgba(184,147,105,.26),transparent 28%),linear-gradient(180deg,#fbf6f3,#fffaf7)}
+.login-panel{width:100%;max-width:430px;background:rgba(255,253,251,.94);border:1px solid var(--line);border-radius:32px;padding:30px 24px;box-shadow:0 24px 70px rgba(74,42,36,.12);text-align:center;position:relative;overflow:hidden}.login-panel:before{content:"";position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,transparent,var(--gold),var(--wine),var(--gold),transparent);opacity:.55}.login-logo{font-size:12px;letter-spacing:.28em;color:var(--gold);font-weight:900;text-transform:uppercase}.login-title{font-size:30px;font-weight:950;margin:10px 0 5px;letter-spacing:-1.1px}.login-sub{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:22px}.login-panel input{text-align:center;font-size:16px;padding:15px;border-radius:18px}.login-panel .btn{width:100%;margin-top:10px;padding:15px;border-radius:18px}.login-ok{display:none;margin-top:14px;background:#fff5e6;border:1px solid #ead49a;color:#8a5c1d;border-radius:16px;padding:12px;font-weight:900}.login-ok.show{display:block;animation:fade .28s ease both}
+.title-row{display:flex;align-items:center;justify-content:space-between;gap:10px}.title-row h1{font-size:22px}.panel-toggle{background:#f4ebe6;color:#76564e;border-radius:14px;padding:10px 12px;font-size:12px;font-weight:950;white-space:nowrap}.header-panel{display:block;overflow:hidden;transition:.28s ease}.header-panel.closed{display:none}.head-card.compact{padding:14px 16px;border-radius:22px}.head-card.compact .clock{margin-top:2px;font-size:12px}.head-mini{font-size:11px;color:var(--muted);font-weight:800;margin-top:4px}
+.view-title{font-size:18px;font-weight:950;margin:18px 0 10px;display:flex;align-items:center;justify-content:space-between;gap:8px}.history-card{background:rgba(255,253,251,.95);border:1px solid var(--line);border-radius:24px;padding:14px;margin:14px 0;box-shadow:var(--shadow);overflow:hidden}.history-scroll{overflow:auto;border:1px solid #eaded8;border-radius:18px;background:#fff}.history-table{width:100%;border-collapse:collapse;min-width:660px}.history-table th,.history-table td{padding:11px 9px;border-bottom:1px solid #f0e4df;text-align:left;font-size:12px;vertical-align:middle}.history-table th{background:#fff8f5;color:#7a5148;font-weight:950;position:sticky;top:0}.history-table tr:last-child td{border-bottom:0}.minus-btn{width:30px;height:30px;border-radius:999px;background:#ffe9e9;color:#b84444;font-weight:950;font-size:18px;line-height:1}.deleted-row{opacity:.48;text-decoration:line-through}.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(30px);background:#3f3131;color:white;padding:12px 18px;border-radius:999px;font-size:13px;font-weight:850;z-index:999;opacity:0;transition:.28s ease;box-shadow:0 12px 30px rgba(0,0,0,.16)}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:430px){.login-title{font-size:25px}.title-row h1{font-size:19px}.panel-toggle{padding:9px 10px}.history-card{padding:10px}.nav{grid-template-columns:repeat(6,1fr);gap:5px}.nav button{font-size:10px}}
+
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="login-screen" id="loginScreen">
+  <div class="login-panel">
+    <div class="login-logo">youlovecake</div>
+    <div class="login-title">주문관리 로그인</div>
+    <div class="login-sub">관리자 비밀번호를 입력하면<br>유럽케이크 주문관리 페이지로 이동합니다.</div>
+    <input id="adminToken" type="password" placeholder="관리자 비밀번호 입력" onkeydown="if(event.key==='Enter')saveTokenAndLoad()">
+    <button class="btn primary" onclick="saveTokenAndLoad()">로그인</button>
+    <div class="login-ok" id="loginOk">로그인되었습니다 ✨</div>
+  </div>
+</div>
+
+<div class="wrap app hidden" id="app">
   <div class="header">
-    <div class="head-card">
-      <h1>유럽케이크 주문관리</h1>
-      <div class="clock" id="clock">불러오는 중...</div>
+    <div class="head-card compact">
+      <div class="title-row">
+        <div>
+          <h1>유럽케이크 주문관리</h1>
+          <div class="clock" id="clock">불러오는 중...</div>
+          <div class="head-mini">검색/카테고리/현황은 접어서 볼 수 있어요</div>
+        </div>
+        <button class="panel-toggle" id="panelToggle" onclick="toggleTopPanel()">관리메뉴 펼치기</button>
+      </div>
+      <div class="header-panel closed" id="topPanel">
       <div class="summary">
         <div><b id="latestCount">0</b><span>맨위 신규</span></div>
         <div><b id="todayCount">0</b><span>오늘 픽업</span></div>
@@ -66,19 +93,12 @@ textarea{min-height:78px;resize:vertical;line-height:1.5}input:focus,textarea:fo
         </select>
         <select id="statusFilter" onchange="render()">
           <option value="active">진행 주문만</option>
-          <option value="all">누적 원본 전체</option>
-          <option value="completed">픽업완료/지난주문</option>
+          <option value="all">전체 주문 보기</option>
+          <option value="completed">지난 주문/삭제됨</option>
         </select>
       </div>
       <div class="filter-tabs" id="filterTabs"></div>
-    </div>
-  </div>
-
-  <div class="card login-card" id="loginCard">
-    <div class="small">관리자 비밀번호를 입력하면 이 브라우저에 저장되고, 다음부터는 입력창 없이 바로 주문을 불러옵니다.</div>
-    <div class="row" style="margin-top:10px">
-      <input id="adminToken" type="password" placeholder="관리자 비밀번호 / ADMIN_TOKEN">
-      <button class="btn primary" onclick="saveTokenAndLoad()">로그인</button>
+      </div>
     </div>
   </div>
 
@@ -97,13 +117,16 @@ textarea{min-height:78px;resize:vertical;line-height:1.5}input:focus,textarea:fo
   <div id="orders"></div>
 </div>
 
-<div class="nav">
+<div class="nav app hidden" id="bottomNav">
   <button class="soft" onclick="loadOrders()">새로고침</button>
   <button class="soft" onclick="quickMode='all';render()">전체</button>
   <button class="soft" onclick="quickMode='today';render()">오늘</button>
   <button class="soft" onclick="quickMode='new';render()">신규</button>
+  <button class="soft" onclick="quickMode='history';render()">전체내역</button>
   <button class="soft" onclick="logout()">로그아웃</button>
 </div>
+
+<div class="toast" id="toast">알림</div>
 
 <script>
 const API_URL = "https://youlovecake-ai.xiouri0715.workers.dev"; // 주문서 복사 시 자동 등록되는 서버와 동일한 주소
@@ -125,6 +148,10 @@ function dateLabel(iso){if(!iso)return"날짜미정";const d=new Date(iso+"T00:0
 function orderCreated(o){return o.createdAt?new Date(o.createdAt).toLocaleString("ko-KR"):"-"}
 function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 function attr(s){return escapeHtml(s||"")}
+function showToast(msg){const t=document.getElementById("toast");if(!t)return;t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)}
+function showApp(){document.getElementById("loginScreen").classList.add("hidden");document.getElementById("app").classList.remove("hidden");document.getElementById("bottomNav").classList.remove("hidden")}
+function showLogin(){document.getElementById("loginScreen").classList.remove("hidden");document.getElementById("app").classList.add("hidden");document.getElementById("bottomNav").classList.add("hidden");setTimeout(()=>document.getElementById("adminToken")?.focus(),80)}
+function toggleTopPanel(){const panel=document.getElementById("topPanel");const btn=document.getElementById("panelToggle");panel.classList.toggle("closed");btn.textContent=panel.classList.contains("closed")?"관리메뉴 펼치기":"관리메뉴 접기"}
 
 function clock(){
   const d=new Date();const days=["일","월","화","수","목","금","토"];
@@ -136,19 +163,21 @@ function saveTokenAndLoad(){
   const token=document.getElementById("adminToken").value.trim();
   if(!token){alert("관리자 비밀번호를 입력해주세요.");return}
   localStorage.setItem(TOKEN_KEY,token);
-  document.getElementById("loginCard").classList.add("hidden");
+  const ok=document.getElementById("loginOk"); if(ok) ok.classList.add("show");
+  showToast("로그인되었습니다");
+  showApp();
   loadOrders();
 }
 function logout(){
   if(!confirm("저장된 관리자 비밀번호를 지울까요?"))return;
   localStorage.removeItem(TOKEN_KEY);
-  document.getElementById("loginCard").classList.remove("hidden");
   document.getElementById("adminToken").value="";
+  showLogin();
 }
 async function loadOrders(){
   const token=getToken();
-  if(!token){document.getElementById("loginCard").classList.remove("hidden");document.getElementById("adminToken").focus();return}
-  document.getElementById("loginCard").classList.add("hidden");
+  if(!token){showLogin();return}
+  showApp();
   try{
     const res=await fetch(API_URL+"/orders",{headers:{"x-admin-token":token}});
     const data=await res.json().catch(()=>({}));
@@ -158,7 +187,7 @@ async function loadOrders(){
     render();
   }catch(e){
     alert(e.message);
-    document.getElementById("loginCard").classList.remove("hidden");
+    showLogin();
   }
 }
 
@@ -189,7 +218,7 @@ function getFilteredBase(){
   const q=document.getElementById("searchInput").value.trim().toLowerCase();
   const cat=document.getElementById("categoryFilter").value;
   const status=document.getElementById("statusFilter").value;
-  let list=[...orders];
+  let list=[...orders].filter(o=>o.status!=="deleted");
   if(status==="active") list=list.filter(isActive);
   if(status==="completed") list=list.filter(o=>!isActive(o));
   if(cat!=="all") list=list.filter(o=>categoryOf(o)===cat);
@@ -216,6 +245,11 @@ function render(){
   document.getElementById("monthSales").textContent=(orders.filter(o=>(o.pickupDate||"").startsWith(monthKey)).reduce((s,o)=>s+priceNum(o),0)/10000).toFixed(0)+"만";
 
   renderCalendar();
+
+  if(quickMode==="history"){
+    document.getElementById("orders").innerHTML=renderAllOrdersTable();
+    return;
+  }
 
   const q=document.getElementById("searchInput").value.trim();
   let html="";
@@ -246,6 +280,26 @@ function render(){
     </section>
   `).join("");
   document.getElementById("orders").innerHTML=html;
+}
+
+function renderAllOrdersTable(){
+  const q=document.getElementById("searchInput").value.trim().toLowerCase();
+  let list=[...orders].filter(o=>o.status!=="deleted");
+  if(q){list=list.filter(o=>[o.name,o.phone,o.pickupDate,o.pickupTime,o.createdAt,o.cakeType,o.cakeSize,o.sheetType,o.design,o.lettering,o.reviewEvent,o.price,o.orderText].join(" ").toLowerCase().includes(q));}
+  list.sort((a,b)=>((b.pickupDate||"")+(b.pickupTime||"")).localeCompare((a.pickupDate||"")+(a.pickupTime||"")));
+  const rows=list.map(o=>`<tr>
+    <td><button class="minus-btn" title="삭제" onclick="deleteOrder(event,'${o.id}')">-</button></td>
+    <td>${escapeHtml(dateLabel(o.pickupDate))}<br><span class="muted-line">${escapeHtml(o.pickupTime||'시간미정')}</span></td>
+    <td><b>${escapeHtml(o.name||'이름미정')}</b><br><span class="muted-line">${escapeHtml(o.phone||'')}</span></td>
+    <td>${escapeHtml(categoryOf(o))}<br><span class="muted-line">${escapeHtml(o.cakeSize||'-')} / ${escapeHtml(o.sheetType||'-')}</span></td>
+    <td>${won(priceNum(o))}</td>
+    <td>${escapeHtml(o.status||'new')}<br><span class="muted-line">${orderCreated(o)}</span></td>
+  </tr>`).join("");
+  return `<div class="history-card">
+    <div class="view-title">전체 주문내역 <span>${list.length}건</span></div>
+    <div class="small" style="margin-bottom:10px">픽업날짜, 주문자, 종류, 금액을 한 번에 확인하고 왼쪽 - 버튼으로 삭제할 수 있어요.</div>
+    <div class="history-scroll"><table class="history-table"><thead><tr><th>삭제</th><th>픽업</th><th>주문자</th><th>케이크</th><th>금액</th><th>상태</th></tr></thead><tbody>${rows||'<tr><td colspan="6" style="text-align:center;color:#927d78;padding:28px">전체 주문내역이 없습니다.</td></tr>'}</tbody></table></div>
+  </div>`;
 }
 
 function renderCalendar(){
@@ -324,8 +378,7 @@ ${escapeHtml(o.orderText||"")}
         ${newFlag?`<button class="btn green" onclick="confirmOrder(event,'${o.id}')">확인완료</button>`:""}
         <button class="btn primary" onclick="showEdit(event,'${o.id}')">주문서 확인/수정</button>
         <button class="btn soft" onclick="closeDetail('${o.id}',event)">상세보기 닫기</button>
-        <button class="btn gold" onclick="copyText(event,'${o.id}')">주문서 복사</button>
-        <button class="btn danger full" onclick="completeOrder(event,'${o.id}')">픽업완료 처리 · 목록에서 숨김</button>
+        <button class="btn danger" onclick="deleteOrder(event,'${o.id}')">주문 삭제</button>
       </div>
       <div class="editBox" id="edit-${o.id}">
         <div class="editGrid">
@@ -425,8 +478,8 @@ async function copyText(e,id){
 }
 
 document.getElementById("adminToken").value=getToken();
-if(getToken()){document.getElementById("loginCard").classList.add("hidden");loadOrders();}
-else{document.getElementById("loginCard").classList.remove("hidden");}
+if(getToken()){showApp();loadOrders();}
+else{showLogin();}
 </script>
 </body>
 </html>
