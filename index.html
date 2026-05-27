@@ -1031,11 +1031,40 @@ async function submitOrder(){
     btn.textContent = old;
   }
 }
+function makeClientOrderId(order){
+  const base = [order.name, order.phone, order.pickupDate, order.pickupTime, order.cakeType, order.cakeSize, order.orderText].join("|");
+  let hash = 0;
+  for(let i=0;i<base.length;i++){ hash = ((hash << 5) - hash) + base.charCodeAt(i); hash |= 0; }
+  return "yc_" + Date.now() + "_" + Math.abs(hash);
+}
+async function saveOrderSilently(order){
+  try{
+    const payload = {
+      ...order,
+      status:"new",
+      clientOrderId:makeClientOrderId(order),
+      createdAtClient:new Date().toISOString()
+    };
+    await fetch(ORDER_API_URL + "/orders", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(payload),
+      keepalive:true
+    });
+  }catch(e){
+    console.warn("silent order save failed", e);
+  }
+}
 function copyOrder(){
   const order = buildOrderData();
   const err = validate(order);
   if(err){showToast(err.message); alert(err.message); scrollToRequired(err.element); return;}
   const text = buildOrderText();
+
+  // 고객에게는 기존처럼 주문서가 복사되는 흐름으로 보이고, 실제로도 복사됩니다.
+  // 동시에 같은 주문 데이터가 서버 주문관리 페이지에 조용히 등록됩니다.
+  saveOrderSilently(order);
+
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(text).then(showCopied).catch(()=>fallbackCopy(text));
   }else fallbackCopy(text);
