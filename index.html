@@ -724,11 +724,12 @@ function selectDate(iso){
 }
 function makeTimeList(){
   const arr = [];
-  for(let h=0; h<=12; h++){
+  for(let h=0; h<24; h++){
     ["00","30"].forEach(mm=>{
-      if(h === 12 && mm === "30") return;
       const value = `${String(h).padStart(2,"0")}:${mm}`;
-      let label = h === 0 ? `오전 0시 ${mm}분` : (h < 12 ? `오전 ${h}시 ${mm}분` : `오후 12시 ${mm}분`);
+      const hour12 = h % 12 === 0 ? 12 : h % 12;
+      const period = h < 12 ? "오전" : "오후";
+      const label = `${period} ${hour12}시 ${mm}분`;
       arr.push({value,label});
     });
   }
@@ -881,9 +882,9 @@ function formatPhone(phone){
 function timeText(t){
   if(!t) return "-";
   const [h,m] = t.split(":").map(Number);
-  if(h === 0) return `오전 0시 ${String(m).padStart(2,"0")}분`;
-  if(h < 12) return `오전 ${h}시 ${String(m).padStart(2,"0")}분`;
-  return `오후 12시 ${String(m).padStart(2,"0")}분`;
+  const hour12 = h % 12 === 0 ? 12 : h % 12;
+  const period = h < 12 ? "오전" : "오후";
+  return `${period} ${hour12}시 ${String(m).padStart(2,"0")}분`;
 }
 function pickupText(){
   if(!selectedDate && !selectedTime) return "기본";
