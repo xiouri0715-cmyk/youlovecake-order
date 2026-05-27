@@ -27,6 +27,9 @@ button{border:0;cursor:pointer}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(34px)}to{opacity:1;transform:translateY(0)}}
 @keyframes slowFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(9px)}}
 @keyframes scaleX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes luxuryGlow{0%,100%{opacity:.48;transform:translate(-50%,-50%) scale(1)}50%{opacity:.72;transform:translate(-50%,-50%) scale(1.06)}}
+@keyframes titleShine{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes ornamentFloat{0%,100%{transform:translateY(0) rotate(0deg);opacity:.55}50%{transform:translateY(-7px) rotate(3deg);opacity:.9}}
 .reveal{opacity:0;transform:translateY(48px) scale(.985);transition:opacity .95s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1)}
 .reveal.visible{opacity:1;transform:translateY(0) scale(1)}
 .reveal-delay-1{transition-delay:.12s}
@@ -38,10 +41,99 @@ button{border:0;cursor:pointer}
 }
 .hero::before{content:"";position:absolute;inset:20px;border:1px solid rgba(255,255,255,.28);pointer-events:none}
 .hero-content{position:relative;z-index:2;text-align:center;max-width:620px;color:white;animation:fadeInUp .95s cubic-bezier(.16,1,.3,1) both}
-.hero-brand{font-family:'Cormorant Garamond',serif;letter-spacing:.38em;text-transform:lowercase;color:rgba(255,255,255,.72);font-size:14px;margin-bottom:24px}
-.hero-title{font-family:'Cormorant Garamond','Noto Sans KR',serif;font-weight:300;font-size:3.45rem;line-height:1.06;letter-spacing:.05em}
-.hero-subtitle{margin-top:12px;font-size:15px;font-weight:300;color:rgba(255,255,255,.78);letter-spacing:.08em}
-.hero-line{width:68px;height:1px;margin:30px auto;background:linear-gradient(90deg,transparent,#D4B896,transparent);animation:scaleX .9s .4s ease both}
+.hero-content::before{
+  content:"";
+  position:absolute;
+  left:50%;top:42%;
+  width:min(440px,82vw);height:min(440px,82vw);
+  border-radius:999px;
+  background:radial-gradient(circle,rgba(255,248,230,.18) 0%,rgba(212,184,150,.10) 34%,transparent 68%);
+  transform:translate(-50%,-50%);
+  z-index:-1;
+  animation:luxuryGlow 5.6s ease-in-out infinite;
+}
+.hero-brand{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  font-family:'Noto Sans KR','DM Sans',sans-serif;
+  letter-spacing:.22em;text-transform:none;color:rgba(255,255,255,.82);
+  font-size:11px;font-weight:500;margin-bottom:18px;
+  padding:7px 14px;border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.06);backdrop-filter:blur(4px);
+}
+.hero-brand::before,.hero-brand::after{content:"✦";color:#E8CFA6;font-size:10px;letter-spacing:0;animation:ornamentFloat 3.8s ease-in-out infinite}
+.hero-brand::after{animation-delay:1.1s}
+.hero-title{
+  position:relative;display:inline-block;
+  font-family:'Cormorant Garamond','Noto Sans KR',serif;
+  font-weight:400;font-size:3.05rem;line-height:1.16;letter-spacing:-.035em;
+  word-break:keep-all;text-wrap:balance;
+  padding:8px 4px 12px;
+  color:transparent;
+  background:linear-gradient(110deg,#fff 0%,#F7E9CC 28%,#fff 48%,#D4B896 72%,#fff 100%);
+  background-size:240% 240%;-webkit-background-clip:text;background-clip:text;
+  text-shadow:0 12px 34px rgba(0,0,0,.22);
+  animation:titleShine 6.8s ease-in-out infinite;
+}
+.hero-title::before,.hero-title::after{
+  content:"";position:absolute;left:50%;transform:translateX(-50%);
+  width:min(265px,70vw);height:1px;
+  background:linear-gradient(90deg,transparent,rgba(242,231,201,.85),transparent);
+}
+.hero-title::before{top:-4px}.hero-title::after{bottom:-3px}
+.hero-subtitle{
+  margin-top:18px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+  color:rgba(255,255,255,.86);
+}
+.hero-subtitle span{
+  font-family:'Cormorant Garamond','Noto Sans KR',serif;
+  font-size:18px;
+  font-weight:500;
+  letter-spacing:.24em;
+  text-transform:lowercase;
+  color:#F8EBCF;
+  text-shadow:0 8px 26px rgba(0,0,0,.25);
+}
+.hero-subtitle em{
+  font-style:normal;
+  font-family:'DM Sans','Noto Sans KR',sans-serif;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.42em;
+  color:rgba(255,255,255,.72);
+  padding-left:.42em;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 18% 24%, rgba(255,248,230,.18), transparent 18%),
+    radial-gradient(circle at 82% 70%, rgba(242,231,201,.12), transparent 24%),
+    linear-gradient(115deg, transparent 0%, rgba(255,255,255,.08) 48%, transparent 56%);
+  mix-blend-mode:screen;
+  opacity:.75;
+}
+.hero-content::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:min(560px,92vw);
+  height:min(560px,92vw);
+  transform:translate(-50%,-50%);
+  border-radius:999px;
+  border:1px solid rgba(242,231,201,.14);
+  box-shadow:
+    0 0 80px rgba(242,231,201,.08),
+    inset 0 0 55px rgba(255,255,255,.04);
+  z-index:-1;
+}
+.hero-line{width:84px;height:1px;margin:28px auto;background:linear-gradient(90deg,transparent,#F2E7C9,#B8956A,#F2E7C9,transparent);animation:scaleX .9s .4s ease both}
 .hero-copy{font-family:'Cormorant Garamond',serif;font-style:italic;letter-spacing:.08em;color:rgba(255,255,255,.78);margin-bottom:36px}
 .hero-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 34px;background:#FDFBF8;color:var(--wine);border:1px solid rgba(255,255,255,.7);letter-spacing:.18em;font-size:12px;font-weight:700;box-shadow:0 10px 28px rgba(0,0,0,.12);transition:.35s ease}
 .hero-cta:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,0,0,.18)}
@@ -252,8 +344,9 @@ button{border:0;cursor:pointer}
   word-break:keep-all;
 }
 
-@media (min-width:640px){.hero-title{font-size:5.2rem}.hero-subtitle{font-size:17px}.section-title{font-size:2.55rem}.form-box,.admin-box{padding:34px}.grid4{grid-template-columns:repeat(5,1fr)}.actions{grid-template-columns:1fr}.time-grid{grid-template-columns:repeat(4,1fr)}}
-@media (max-width:380px){.hero-title{font-size:2.9rem}.section-title{font-size:1.85rem}.grid3{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.time-grid{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:640px){.hero-title{font-size:4.45rem}.hero-subtitle{font-size:16px}.section-title{font-size:2.55rem}.form-box,.admin-box{padding:34px}.grid4{grid-template-columns:repeat(5,1fr)}.actions{grid-template-columns:1fr}.time-grid{grid-template-columns:repeat(4,1fr)}}
+@media (max-width:420px){.hero-title{font-size:2.62rem;line-height:1.22;letter-spacing:-.045em}.hero-brand{font-size:10px;letter-spacing:.15em;padding:6px 11px}.hero-subtitle span{font-size:15px;letter-spacing:.2em}.hero-subtitle em{font-size:9px;letter-spacing:.34em}.hero-copy{font-size:14px}}
+@media (max-width:380px){.hero-title{font-size:2.38rem}.section-title{font-size:1.85rem}.grid3{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.time-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -262,9 +355,9 @@ button{border:0;cursor:pointer}
 
 <section class="hero" id="top">
   <div class="hero-content">
-    <p class="hero-brand">youlovecake</p>
-    <h1 class="hero-title">Order Form</h1>
-    <p class="hero-subtitle">유럽케이크 주문서</p>
+    <p class="hero-brand">평택 안중 수제케이크 전문점</p>
+    <h1 class="hero-title">소중한 순간을<br>더 특별하게</h1>
+    <p class="hero-subtitle"><span>youlovecake</span><em>ORDER FORM</em></p>
     <div class="hero-line"></div>
     <p class="hero-copy">A little cake for your sweetest moment.</p>
     <button class="hero-cta" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">주문서 작성하기</button>
@@ -434,12 +527,13 @@ button{border:0;cursor:pointer}
           <button type="button" class="info-toggle" onclick="togglePanel('sizeGuide')">사이즈별 금액 안내 ↓</button>
         </label>
         <div class="toggle-panel" id="sizeGuide">
+          <div class="guide-item">아래 안내된 사이즈별 금액은 기본 케이크 기준이며, 플라워 및 기타 디자인 케이크는 별도 문의 부탁드립니다😊<br>
+          디자인 / 레터링 / 장식 추가 여부에 따라 추가금이 발생할 수 있습니다💛</div>
           <div class="guide-item"><b>❤️ 초미니 (1~2인용)</b>지름 10cm 내외 : 23,000원 ~</div>
           <div class="guide-item"><b>❤️ 미니 (2~3인용)</b>지름 12cm 내외 : 33,000원 ~</div>
           <div class="guide-item"><b>❤️ 1호 (3~5인용)</b>지름 15cm 내외 : 49,000원 ~</div>
           <div class="guide-item"><b>❤️ 2호 (5~7인용)</b>지름 18cm 내외 : 59,000원 ~</div>
           <div class="guide-item"><b>❤️ 3호 이상</b>카카오톡 채팅 문의</div>
-          <div class="guide-item">※ 사이즈별 기본 금액이며 디자인 / 레터링 / 장식 추가에 따라 추가금이 발생할 수 있습니다 😊</div>
         </div>
         <div class="grid4 choice-panel" id="cakeSizeGrid"></div>
       </div>
