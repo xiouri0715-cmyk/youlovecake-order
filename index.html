@@ -359,6 +359,117 @@ button{border:0;cursor:pointer}
   font-weight:700;
 }
 
+
+/* 관리자모드 전용 화면 정리 */
+body.admin-mode{
+  min-height:100svh;
+  background:radial-gradient(circle at 20% 0%, rgba(232,214,214,.7), transparent 28%),
+             radial-gradient(circle at 90% 15%, rgba(212,184,150,.22), transparent 30%),var(--bg);
+}
+body.admin-mode .hero,
+body.admin-mode > .divider,
+body.admin-mode section.section-bg,
+body.admin-mode footer{
+  display:none !important;
+}
+body.admin-mode #order{
+  padding:42px 16px 72px;
+}
+body.admin-mode .section-header .section-label{
+  display:none;
+}
+body.admin-mode .section-header{
+  margin-bottom:20px;
+}
+body.admin-mode .section-title{
+  font-family:'Noto Sans KR','DM Sans',sans-serif;
+  font-size:24px;
+  font-weight:700;
+  letter-spacing:-.04em;
+}
+body.admin-mode .form-box{
+  display:none;
+}
+body.admin-mode .admin-box{
+  display:block;
+}
+body.admin-mode #pickupDateGroup{
+  margin-bottom:18px;
+}
+body.admin-mode #pickupDateGroup > .form-label{
+  font-size:13px;
+  color:var(--wine);
+}
+body.admin-mode .date-display{
+  background:#fff;
+}
+body.admin-mode .time-area{
+  display:none !important;
+}
+.admin-control-title{
+  font-size:17px;
+  font-weight:800;
+  color:var(--wine);
+  margin-bottom:6px;
+  letter-spacing:-.03em;
+}
+.admin-control-sub{
+  font-size:12px;
+  color:#756861;
+  line-height:1.65;
+  margin-bottom:16px;
+}
+.admin-close-row{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+  margin-top:14px;
+}
+.admin-inline-row{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+}
+.admin-inline-row .admin-time-select{
+  grid-column:1 / -1;
+}
+.admin-time-select{
+  width:100%;
+  border:1px solid var(--line);
+  background:#fff;
+  color:#3A3A3A;
+  padding:12px 14px;
+  font-size:13px;
+  outline:none;
+  max-height:240px;
+}
+.admin-save-btn{
+  width:100%;
+  margin-top:14px;
+  padding:14px;
+  background:var(--wine);
+  color:#fff;
+  font-weight:800;
+  letter-spacing:.08em;
+}
+.admin-save-btn:hover{
+  background:var(--wine2);
+}
+.admin-date-btn,.admin-time-btn{
+  width:100%;
+  padding:13px 14px;
+  background:#F6F0E8;
+  color:#5d514c;
+  font-weight:700;
+}
+.admin-time-btn{
+  background:#FDFBF8;
+  border:1px solid var(--line);
+}
+@media (min-width:560px){
+  .admin-inline-row{grid-template-columns:1fr 1fr;}
+}
+
 @media (min-width:640px){.hero-title{font-size:4.45rem}.hero-subtitle{font-size:16px}.section-title{font-size:2.55rem}.form-box,.admin-box{padding:34px}.grid4{grid-template-columns:repeat(5,1fr)}.actions{grid-template-columns:1fr}.time-grid{grid-template-columns:repeat(4,1fr)}}
 @media (max-width:420px){.hero-title{font-size:2.62rem;line-height:1.22;letter-spacing:-.045em}.hero-brand{font-size:10px;letter-spacing:.15em;padding:6px 11px}.hero-subtitle span{font-size:15px;letter-spacing:.2em}.hero-subtitle em{font-size:9px;letter-spacing:.34em}.hero-copy{font-size:14px}}
 @media (max-width:380px){.hero-title{font-size:2.38rem}.section-title{font-size:1.85rem}.grid3{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.time-grid{grid-template-columns:repeat(2,1fr)}}
@@ -459,17 +570,30 @@ button{border:0;cursor:pointer}
       <div class="section-line"></div>
     </div>
 
-    <div class="admin-box admin-only reveal">
-      <div class="form-group">
-        <label class="form-label">관리자 마감 설정</label>
-        <p class="form-hint">달력에서 날짜를 선택한 뒤 날짜 전체 마감 또는 시간별 마감을 설정할 수 있어요.</p>
-      </div>
+    <div class="admin-box admin-only reveal" id="adminClosureBox">
+      <div class="admin-control-title">관리자 마감 설정</div>
+      <p class="admin-control-sub">날짜를 먼저 선택한 뒤 해당일 전체 마감 또는 지정시간 마감을 설정해주세요.</p>
+
+      <div id="adminDateMount"></div>
+
       <div id="adminSelectedDateText" class="review-benefit">선택된 날짜가 없습니다.</div>
-      <div class="admin-actions">
-        <button onclick="toggleDateClosed()">선택 날짜 마감/해제</button>
-        <button class="danger" onclick="clearAllClosures()">전체 마감 초기화</button>
+
+      <div class="admin-close-row">
+        <div class="admin-inline-row">
+          <button type="button" class="admin-date-btn" onclick="closeSelectedDate()">해당일 마감</button>
+          <button type="button" class="admin-date-btn" onclick="openSelectedDate()">해당일 마감해제</button>
+        </div>
+
+        <div class="admin-inline-row">
+          <select id="adminClosureTime" class="admin-time-select">
+            <option value="">지정시간 선택</option>
+          </select>
+          <button type="button" class="admin-time-btn" onclick="closeSelectedTime()">지정시간 마감</button>
+          <button type="button" class="admin-time-btn" onclick="openSelectedTime()">지정시간 마감해제</button>
+        </div>
+
+        <button type="button" class="admin-save-btn" onclick="saveClosureSettings()">저장</button>
       </div>
-      <p class="form-hint">※ HTML 단독 버전은 같은 브라우저 저장 방식입니다. 모든 고객에게 실시간 반영하려면 Worker 저장 API 연결이 필요합니다.</p>
     </div>
 
     <div class="form-box reveal">
@@ -483,8 +607,8 @@ button{border:0;cursor:pointer}
         <input class="form-input" id="phone" type="tel" placeholder="010-0000-0000" />
       </div>
 
-      <div class="form-group">
-        <label class="form-label">픽업 날짜</label>
+      <div class="form-group" id="pickupDateGroup">
+        <label class="form-label" id="pickupDateLabel">픽업 날짜</label>
 
         <div class="date-dropdown-wrap">
           <button type="button" class="date-display" id="dateDisplay" onclick="toggleDateDropdown()">날짜 선택</button>
@@ -657,7 +781,7 @@ const creamRules = {
   "플라워": ["오레오", "딸기", "블루베리", "생크림"],
   "당근케이크": ["기본"],
   "2단케이크": ["오레오", "딸기", "블루베리", "생크림"],
-  "생크림케이크": ["오레오", "딸기", "블루베리"]
+  "생크림케이크": ["오레오", "딸기", "블루베리", "생크림"]
 };
 
 const observer = new IntersectionObserver((entries)=>{
@@ -675,9 +799,16 @@ function getClosures(){
   catch(e){return {dates:{},times:{}};}
 }
 function saveClosures(data){localStorage.setItem(CLOSURE_KEY, JSON.stringify(data));}
+function todayIso(){
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
+}
+function isPastDate(date){
+  return !!date && date < todayIso();
+}
 function isDateClosed(date){
   const c = getClosures();
-  return !!c.dates[date];
+  return isPastDate(date) || !!c.dates[date];
 }
 function isTimeClosed(date,time){
   const c = getClosures();
@@ -777,7 +908,11 @@ function selectTime(time){
     return;
   }
   if(isAdminMode){
-    toggleTimeClosed(time);
+    selectedTime = time;
+    const adminSelect = document.getElementById("adminClosureTime");
+    if(adminSelect) adminSelect.value = time;
+    renderTimeGrid();
+    updateAdminText();
     return;
   }
   if(isTimeClosed(selectedDate,time)){
@@ -796,25 +931,69 @@ function selectTime(time){
   renderTimeGrid();
   updatePreview();
 }
-function toggleDateClosed(){
+function closeSelectedDate(){
   if(!selectedDate){alert("마감 설정할 날짜를 먼저 선택해주세요.");return;}
+  if(!confirm("마감하시겠습니까?")) return;
   const c = getClosures();
-  c.dates[selectedDate] = !c.dates[selectedDate];
-  if(!c.dates[selectedDate]) delete c.dates[selectedDate];
+  c.dates[selectedDate] = true;
   saveClosures(c);
   renderCalendar();
   renderTimeGrid();
   updateAdminText();
+  alert(`${formatDateLabel(selectedDate)}의 예약이 정상적으로 마감되었습니다.`);
 }
-function toggleTimeClosed(time){
+function closeSelectedTime(){
   if(!selectedDate){alert("날짜를 먼저 선택해주세요.");return;}
+  const select = document.getElementById("adminClosureTime");
+  const time = select ? select.value : "";
+  if(!time){alert("마감할 시간을 선택해주세요.");return;}
+  if(!confirm("마감하시겠습니까?")) return;
   const c = getClosures();
   if(!c.times[selectedDate]) c.times[selectedDate] = {};
-  c.times[selectedDate][time] = !c.times[selectedDate][time];
-  if(!c.times[selectedDate][time]) delete c.times[selectedDate][time];
+  c.times[selectedDate][time] = true;
   saveClosures(c);
   renderTimeGrid();
   updateAdminText();
+  alert(`${formatDateLabel(selectedDate)} ${timeText(time)} 예약이 정상적으로 마감되었습니다.`);
+}
+function openSelectedDate(){
+  if(!selectedDate){alert("마감 해제할 날짜를 먼저 선택해주세요.");return;}
+  if(isPastDate(selectedDate)){
+    alert("오늘 기준 전일 이전 날짜는 자동 마감 처리되어 해제할 수 없습니다.");
+    return;
+  }
+  if(!confirm("마감해제하시겠습니까?")) return;
+  const c = getClosures();
+  if(c.dates[selectedDate]) delete c.dates[selectedDate];
+  saveClosures(c);
+  renderCalendar();
+  renderTimeGrid();
+  updateAdminText();
+  alert(`${formatDateLabel(selectedDate)}의 예약 마감이 해제되었습니다.`);
+}
+function openSelectedTime(){
+  if(!selectedDate){alert("날짜를 먼저 선택해주세요.");return;}
+  const select = document.getElementById("adminClosureTime");
+  const time = select ? select.value : "";
+  if(!time){alert("마감 해제할 시간을 선택해주세요.");return;}
+  if(!confirm("마감해제하시겠습니까?")) return;
+  const c = getClosures();
+  if(c.times[selectedDate] && c.times[selectedDate][time]){
+    delete c.times[selectedDate][time];
+    if(Object.keys(c.times[selectedDate]).length === 0) delete c.times[selectedDate];
+  }
+  saveClosures(c);
+  renderTimeGrid();
+  updateAdminText();
+  alert(`${formatDateLabel(selectedDate)} ${timeText(time)} 예약 마감이 해제되었습니다.`);
+}
+function saveClosureSettings(){
+  saveClosures(getClosures());
+  renderCalendar();
+  renderTimeGrid();
+  updateAdminText();
+  showToast("저장되었습니다.");
+  alert("저장되었습니다.");
 }
 function clearAllClosures(){
   if(confirm("모든 날짜/시간 마감 설정을 초기화할까요?")){
@@ -833,7 +1012,8 @@ function updateAdminText(){
   }
   const c = getClosures();
   const closedTimes = c.times[selectedDate] ? Object.keys(c.times[selectedDate]).sort() : [];
-  box.innerHTML = `<b>${formatDateLabel(selectedDate)}</b><br>날짜 마감: ${isDateClosed(selectedDate) ? "마감" : "가능"}<br>시간 마감: ${closedTimes.length ? closedTimes.join(", ") : "없음"}`;
+  const timeLabels = closedTimes.map(t => timeText(t)).join(", ");
+  box.innerHTML = `<b>${formatDateLabel(selectedDate)}</b><br>해당일 상태: ${isPastDate(selectedDate) ? "자동마감" : (isDateClosed(selectedDate) ? "마감" : "예약 가능")}<br>지정시간 마감: ${timeLabels || "없음"}`;
 }
 function toggleDateDropdown(){
   const panel = document.getElementById("dateDropdown");
@@ -1094,6 +1274,35 @@ function showToast(msg){
   setTimeout(()=>toast.classList.remove("show"),2800);
 }
 
+
+function renderAdminTimeSelect(){
+  const select = document.getElementById("adminClosureTime");
+  if(!select) return;
+  select.innerHTML = `<option value="">지정시간 선택</option>` + makeTimeList().map(t=>`<option value="${t.value}">${t.label}</option>`).join("");
+}
+function setupAdminMode(){
+  if(!isAdminMode) return;
+  const sectionTitle = document.querySelector("#order .section-title");
+  if(sectionTitle) sectionTitle.textContent = "유럽케이크 주문서 관리자모드";
+  const dateLabel = document.getElementById("pickupDateLabel");
+  if(dateLabel) dateLabel.textContent = "날짜 선택";
+  const dateGroup = document.getElementById("pickupDateGroup");
+  const mount = document.getElementById("adminDateMount");
+  if(dateGroup && mount) mount.appendChild(dateGroup);
+  const dateHint = document.querySelector("#pickupDateGroup .form-hint.customer-only");
+  if(dateHint) dateHint.style.display = "none";
+  const adminTimeSelect = document.getElementById("adminClosureTime");
+  if(adminTimeSelect){
+    adminTimeSelect.addEventListener("change", function(){
+      selectedTime = this.value;
+      renderTimeGrid();
+      updateAdminText();
+    });
+  }
+  renderAdminTimeSelect();
+}
+
+setupAdminMode();
 bindSelectButtons();
 updateCakeOptions(getSelected("cakeType"));
 renderCalendar();
