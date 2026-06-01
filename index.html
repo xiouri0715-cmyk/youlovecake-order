@@ -794,11 +794,61 @@ const observer = new IntersectionObserver((entries)=>{
 },{threshold:.08, rootMargin:'0px 0px -80px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 
-function getClosures(){
-  try{return JSON.parse(localStorage.getItem(CLOSURE_KEY) || '{"dates":{},"times":{}}');}
-  catch(e){return {dates:{},times:{}};}
+let closuresCache = {dates:{},times:{}};
+
+function normalizeClosures(data){
+  return {
+    dates: data && data.dates && typeof data.dates === "object" ? data.dates : {},
+    times: data && data.times && typeof data.times === "object" ? data.times : {}
+  };
 }
-function saveClosures(data){localStorage.setItem(CLOSURE_KEY, JSON.stringify(data));}
+function getClosures(){
+  return normalizeClosures(closuresCache);
+}
+function saveClosures(data){
+  closuresCache = normalizeClosures(data);
+  try{localStorage.setItem(CLOSURE_KEY, JSON.stringify(closuresCache));}catch(e){}
+}
+async function loadClosureCacheFromLocal(){
+  try{
+    const cached = JSON.parse(localStorage.getItem(CLOSURE_KEY) || '{"dates":{},"times":{}}');
+    closuresCache = normalizeClosures(cached);
+  }catch(e){
+    closuresCache = {dates:{},times:{}};
+  }
+}
+async function fetchClosures(date){
+  const url = date ? `${ORDER_API_URL}/closures?date=${encodeURIComponent(date)}` : `${ORDER_API_URL}/closures`;
+  const res = await fetch(url, {method:"GET", cache:"no-store"});
+  const data = await res.json().catch(()=>({}));
+  if(!res.ok) throw new Error(data.message || data.error || "마감 정보를 불러오지 못했습니다.");
+
+  const current = getClosures();
+  if(date && data && data.date){
+    if(data.dateClosed) current.dates[data.date] = true;
+    else delete current.dates[data.date];
+    current.times[data.date] = data.times && typeof data.times === "object" ? data.times : {};
+    saveClosures(current);
+    return current;
+  }
+
+  saveClosures(data);
+  return getClosures();
+}
+async function refreshClosures(date){
+  try{
+    await fetchClosures(date);
+  }catch(e){
+    console.warn("closure refresh failed", e);
+    // 서버 조회 실패 시 화면이 비어 보이지 않도록 마지막 캐시만 임시 사용합니다. 최종 저장 판단은 서버가 합니다.
+    await loadClosureCacheFromLocal();
+  }finally{
+    renderCalendar();
+    renderTimeGrid();
+    updateAdminText();
+    updatePreview();
+  }
+}
 function todayIso(){
   const now = new Date();
   return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
@@ -813,6 +863,20 @@ function isDateClosed(date){
 function isTimeClosed(date,time){
   const c = getClosures();
   return !!(c.times[date] && c.times[date][time]);
+}
+async function apiRequest(path, options={}){
+  const res = await fetch(ORDER_API_URL + path, {
+    ...options,
+    headers:{"Content-Type":"application/json", ...(options.headers || {})}
+  });
+  const data = await res.json().catch(()=>({}));
+  if(!res.ok){
+    const err = new Error(data.message || data.error || "요청 처리에 실패했습니다.");
+    err.status = res.status;
+    err.data = data;
+    throw err;
+  }
+  return data;
 }
 function formatDateLabel(iso){
   if(!iso) return "-";
@@ -846,7 +910,8 @@ function moveMonth(delta){
   currentMonth.setMonth(currentMonth.getMonth()+delta);
   renderCalendar();
 }
-function selectDate(iso){
+async function selectDate(iso){
+  await refreshClosures(iso);
   if(!isAdminMode && isDateClosed(iso)){
     showToast("해당 날짜는 마감되었습니다.");
     return;
@@ -931,77 +996,67 @@ function selectTime(time){
   renderTimeGrid();
   updatePreview();
 }
-function closeSelectedDate(){
+async function closeSelectedDate(){
   if(!selectedDate){alert("마감 설정할 날짜를 먼저 선택해주세요.");return;}
   if(!confirm("마감하시겠습니까?")) return;
-  const c = getClosures();
-  c.dates[selectedDate] = true;
-  saveClosures(c);
-  renderCalendar();
-  renderTimeGrid();
-  updateAdminText();
-  alert(`${formatDateLabel(selectedDate)}의 예약이 정상적으로 마감되었습니다.`);
+  try{
+    await apiRequest("/closures/date", {method:"POST", body:JSON.stringify({date:selectedDate})});
+    await refreshClosures(selectedDate);
+    alert(`${formatDateLabel(selectedDate)}의 예약이 정상적으로 마감되었습니다.`);
+  }catch(e){
+    alert(e.message || "마감 처리에 실패했습니다.");
+  }
 }
-function closeSelectedTime(){
+async function closeSelectedTime(){
   if(!selectedDate){alert("날짜를 먼저 선택해주세요.");return;}
   const select = document.getElementById("adminClosureTime");
   const time = select ? select.value : "";
   if(!time){alert("마감할 시간을 선택해주세요.");return;}
   if(!confirm("마감하시겠습니까?")) return;
-  const c = getClosures();
-  if(!c.times[selectedDate]) c.times[selectedDate] = {};
-  c.times[selectedDate][time] = true;
-  saveClosures(c);
-  renderTimeGrid();
-  updateAdminText();
-  alert(`${formatDateLabel(selectedDate)} ${timeText(time)} 예약이 정상적으로 마감되었습니다.`);
+  try{
+    await apiRequest("/closures/time", {method:"POST", body:JSON.stringify({date:selectedDate,time})});
+    await refreshClosures(selectedDate);
+    alert(`${formatDateLabel(selectedDate)} ${timeText(time)} 예약이 정상적으로 마감되었습니다.`);
+  }catch(e){
+    alert(e.message || "마감 처리에 실패했습니다.");
+  }
 }
-function openSelectedDate(){
+async function openSelectedDate(){
   if(!selectedDate){alert("마감 해제할 날짜를 먼저 선택해주세요.");return;}
   if(isPastDate(selectedDate)){
     alert("오늘 기준 전일 이전 날짜는 자동 마감 처리되어 해제할 수 없습니다.");
     return;
   }
   if(!confirm("마감해제하시겠습니까?")) return;
-  const c = getClosures();
-  if(c.dates[selectedDate]) delete c.dates[selectedDate];
-  saveClosures(c);
-  renderCalendar();
-  renderTimeGrid();
-  updateAdminText();
-  alert(`${formatDateLabel(selectedDate)}의 예약 마감이 해제되었습니다.`);
+  try{
+    await apiRequest("/closures/date", {method:"DELETE", body:JSON.stringify({date:selectedDate})});
+    await refreshClosures(selectedDate);
+    alert(`${formatDateLabel(selectedDate)}의 예약 마감이 해제되었습니다.`);
+  }catch(e){
+    alert(e.message || "마감 해제에 실패했습니다.");
+  }
 }
-function openSelectedTime(){
+async function openSelectedTime(){
   if(!selectedDate){alert("날짜를 먼저 선택해주세요.");return;}
   const select = document.getElementById("adminClosureTime");
   const time = select ? select.value : "";
   if(!time){alert("마감 해제할 시간을 선택해주세요.");return;}
   if(!confirm("마감해제하시겠습니까?")) return;
-  const c = getClosures();
-  if(c.times[selectedDate] && c.times[selectedDate][time]){
-    delete c.times[selectedDate][time];
-    if(Object.keys(c.times[selectedDate]).length === 0) delete c.times[selectedDate];
+  try{
+    await apiRequest("/closures/time", {method:"DELETE", body:JSON.stringify({date:selectedDate,time})});
+    await refreshClosures(selectedDate);
+    alert(`${formatDateLabel(selectedDate)} ${timeText(time)} 예약 마감이 해제되었습니다.`);
+  }catch(e){
+    alert(e.message || "마감 해제에 실패했습니다.");
   }
-  saveClosures(c);
-  renderTimeGrid();
-  updateAdminText();
-  alert(`${formatDateLabel(selectedDate)} ${timeText(time)} 예약 마감이 해제되었습니다.`);
 }
-function saveClosureSettings(){
-  saveClosures(getClosures());
-  renderCalendar();
-  renderTimeGrid();
-  updateAdminText();
+async function saveClosureSettings(){
+  await refreshClosures(selectedDate || undefined);
   showToast("저장되었습니다.");
   alert("저장되었습니다.");
 }
-function clearAllClosures(){
-  if(confirm("모든 날짜/시간 마감 설정을 초기화할까요?")){
-    localStorage.removeItem(CLOSURE_KEY);
-    renderCalendar();
-    renderTimeGrid();
-    updateAdminText();
-  }
+async function clearAllClosures(){
+  alert("전체 초기화는 서버 데이터 삭제가 필요합니다. 필요한 경우 Worker에 별도 관리자 API를 추가해주세요.");
 }
 function updateAdminText(){
   const box = document.getElementById("adminSelectedDateText");
@@ -1218,36 +1273,50 @@ function makeClientOrderId(order){
   return "yc_" + Date.now() + "_" + Math.abs(hash);
 }
 async function saveOrderSilently(order){
-  try{
-    const payload = {
-      ...order,
-      status:"new",
-      clientOrderId:makeClientOrderId(order),
-      createdAtClient:new Date().toISOString()
-    };
-    await fetch(ORDER_API_URL + "/orders", {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(payload),
-      keepalive:true
-    });
-  }catch(e){
-    console.warn("silent order save failed", e);
-  }
+  const payload = {
+    ...order,
+    status:"new",
+    clientOrderId:makeClientOrderId(order),
+    createdAtClient:new Date().toISOString()
+  };
+  return await apiRequest("/orders", {
+    method:"POST",
+    body:JSON.stringify(payload)
+  });
 }
-function copyOrder(){
+async function copyOrder(){
   const order = buildOrderData();
+  await refreshClosures(order.pickupDate);
   const err = validate(order);
   if(err){showToast(err.message); alert(err.message); scrollToRequired(err.element); return;}
-  const text = buildOrderText();
 
-  // 고객에게는 기존처럼 주문서가 복사되는 흐름으로 보이고, 실제로도 복사됩니다.
-  // 동시에 같은 주문 데이터가 서버 주문관리 페이지에 조용히 등록됩니다.
-  saveOrderSilently(order);
+  const btn = document.getElementById("copyBtn");
+  const oldText = btn ? btn.textContent : "";
+  if(btn){ btn.disabled = true; btn.textContent = "저장 확인 중..."; }
 
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(showCopied).catch(()=>fallbackCopy(text));
-  }else fallbackCopy(text);
+  try{
+    // 서버가 주문 저장과 해당 날짜+시간 자동 마감을 한 번에 처리합니다.
+    // 이미 마감된 시간은 서버에서 409로 거절되므로 동시 주문도 방지됩니다.
+    await saveOrderSilently(order);
+    await refreshClosures(order.pickupDate);
+
+    const text = buildOrderText();
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      await navigator.clipboard.writeText(text);
+      showCopied();
+    }else{
+      fallbackCopy(text);
+    }
+  }catch(e){
+    console.error(e);
+    await refreshClosures(order.pickupDate);
+    const alreadyClosed = e.status === 409 || (e.data && e.data.error === "TIME_ALREADY_CLOSED");
+    const message = alreadyClosed ? "해당 시간은 이미 마감되었습니다. 다른 시간을 선택해주세요." : (e.message || "주문 저장에 실패했습니다. 잠시 후 다시 시도해주세요.");
+    showToast(message);
+    alert(message);
+  }finally{
+    if(btn){ btn.disabled = false; btn.textContent = oldText || "주문서 복사"; }
+  }
 }
 function fallbackCopy(text){
   const ta=document.createElement("textarea");
@@ -1302,13 +1371,18 @@ function setupAdminMode(){
   renderAdminTimeSelect();
 }
 
-setupAdminMode();
-bindSelectButtons();
-updateCakeOptions(getSelected("cakeType"));
-renderCalendar();
-renderTimeGrid();
-updateAdminText();
-updatePreview();
+async function initPage(){
+  setupAdminMode();
+  bindSelectButtons();
+  updateCakeOptions(getSelected("cakeType"));
+  await loadClosureCacheFromLocal();
+  renderCalendar();
+  renderTimeGrid();
+  updateAdminText();
+  updatePreview();
+  await refreshClosures();
+}
+initPage();
 </script>
 </body>
 </html>
