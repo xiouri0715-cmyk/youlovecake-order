@@ -1,0 +1,15 @@
+{
+  "name": "유럽케이크 주문서",
+  "short_name": "주문서",
+  "display": "standalone",
+  "start_url": "./index.html",
+  "background_color": "#faf8f5",
+  "theme_color": "#faf8f5",
+  "icons": [
+    {
+      "src": "index.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
+}
