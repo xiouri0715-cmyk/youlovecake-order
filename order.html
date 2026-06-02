@@ -6,54 +6,30 @@
 <title>유럽케이크 주문관리</title>
 <style>
 :root{
-  --bg:#fbf6f3;--paper:#fffdfb;--paper2:#fff7f7;--ink:#3f3131;--muted:#927d78;
-  --line:#eaded8;--gold:#b89369;--wine:#7a1b2e;--rose:#ead2d6;--shadow:0 18px 45px rgba(74,42,36,.08)
+  --bg:#fbf6f3;--paper:#fffdfb;--ink:#3f3131;--muted:#927d78;
+  --line:#eaded8;--gold:#b89369;--wine:#7a1b2e;--rose:#ead2d6;
+  --shadow:0 18px 45px rgba(74,42,36,.08);--danger:#b84444;--green:#287a50
 }
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;background:radial-gradient(circle at 10% 0%,rgba(234,210,214,.6),transparent 28%),linear-gradient(180deg,#fbf6f3,#fffaf7);color:var(--ink)}
-button,input,textarea,select{font-family:inherit}button{border:0;cursor:pointer;transition:.22s ease}button:active{transform:scale(.965)}
-.wrap{max-width:760px;margin:0 auto;padding:14px 14px 98px}
-.header{position:sticky;top:0;z-index:20;padding:12px 0 14px;background:linear-gradient(#fbf6f3 82%,rgba(251,246,243,0));backdrop-filter:blur(8px)}
-.head-card{background:rgba(255,253,251,.92);border:1px solid var(--line);border-radius:26px;padding:18px;box-shadow:var(--shadow)}
-h1{font-size:25px;margin:0;font-weight:950;letter-spacing:-.8px}.clock{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
-.summary div{background:#fff;border:1px solid #efe2dc;border-radius:18px;text-align:center;padding:11px 4px}.summary b{display:block;font-size:19px;color:var(--wine)}.summary span{font-size:11px;color:var(--muted);font-weight:800}
-.card{background:rgba(255,253,251,.95);border:1px solid var(--line);border-radius:24px;padding:16px;margin:14px 0;box-shadow:var(--shadow)}.login-card.hidden{display:none}
-.small{font-size:12px;color:var(--muted);line-height:1.55}.row{display:flex;gap:8px}.row>*{min-width:0}
-input,textarea,select{width:100%;border:1px solid #eadcd6;border-radius:15px;padding:12px;background:#fffdfb;outline:none;font-size:14px;color:var(--ink)}
-textarea{min-height:78px;resize:vertical;line-height:1.5}input:focus,textarea:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(184,147,105,.13)}
-.btn{border-radius:15px;padding:12px 13px;font-weight:900;font-size:13px;white-space:nowrap}.primary{background:linear-gradient(135deg,#8d283b,#681627);color:#fff;box-shadow:0 10px 22px rgba(122,27,46,.16)}
-.soft{background:#f4ebe6;color:#76564e}.danger{background:#ffe9e9;color:#b84444}.green{background:#e8f8ef;color:#287a50}.gold{background:#f7eddb;color:#79522a}
-.toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.toolbar .wide{grid-column:1/3}
-.filter-tabs{display:flex;gap:7px;overflow:auto;padding:2px 0 4px;margin-top:12px}.chip{flex:0 0 auto;border:1px solid #eaded8;background:#fff;border-radius:999px;padding:9px 12px;font-size:12px;font-weight:900;color:#806760}.chip.active{background:#7a1b2e;color:white;border-color:#7a1b2e;box-shadow:0 8px 18px rgba(122,27,46,.14)}
-.section-title{font-size:18px;font-weight:950;margin:18px 0 10px;display:flex;justify-content:space-between;align-items:end;gap:8px}.section-title span{font-size:12px;color:var(--muted);font-weight:800}.new-title{background:linear-gradient(135deg,#fff0f4,#fffaf2);border:1px solid #efd4d8;border-radius:18px;padding:13px 14px;color:#93364a}
-.calendar-card{overflow:hidden}.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.cal-title{font-weight:950}.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.dayname{text-align:center;color:var(--gold);font-size:11px;font-weight:900;padding:4px 0}.cal-day{min-height:58px;background:#fff;border:1px solid #efe2dc;border-radius:15px;padding:7px 5px;text-align:left;position:relative}.cal-day.blank{background:transparent;border:0}.cal-day.today{border-color:var(--wine);box-shadow:inset 0 0 0 1px rgba(122,27,46,.16)}.cal-day.selected{background:#fff1f4;border-color:#b76f7f}.cal-num{font-weight:950;font-size:13px}.cal-count{display:inline-flex;margin-top:4px;background:#f7eddb;color:#79522a;border-radius:999px;padding:2px 6px;font-size:10px;font-weight:950}.cal-price{display:block;color:#8d6d63;font-size:10px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.calendar-detail{border-top:1px dashed #eaded8;margin-top:14px;padding-top:13px}
-.order{background:#fff;border:1px solid #eaded8;border-radius:22px;padding:14px;margin:10px 0;box-shadow:0 10px 26px rgba(74,42,36,.055);overflow:hidden}.order.new{border:2px solid #dfa2b0;box-shadow:0 14px 35px rgba(188,114,138,.14)}
-.order-head{display:flex;align-items:center;gap:9px}.time{background:#fff0f4;color:#9b3d52;font-weight:950;border-radius:14px;padding:8px 10px;min-width:70px;text-align:center}.name{font-weight:950;font-size:17px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.badge{font-size:11px;background:#edf8f1;color:#3b9b66;border-radius:999px;padding:5px 8px;font-weight:900}.badge.new-badge{background:#fff0f5;color:#bf5578}.badge.price{background:#f7eddb;color:#7b552f}.meta{font-size:13px;color:#604f4b;line-height:1.6;margin-top:9px}
-.detail{display:none;border-top:1px dashed #eaded8;margin-top:12px;padding-top:12px;font-size:13px;line-height:1.7;white-space:pre-wrap}.detail.show{display:block;animation:fade .25s ease both}@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:12px}.actions .full{grid-column:1/3}.editBox{display:none;margin-top:12px;border-top:1px dashed #eaded8;padding-top:12px}.editBox.show{display:block;animation:fade .25s ease both}.editGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.editGrid .full{grid-column:1/3}.empty{text-align:center;color:var(--muted);padding:32px 0;background:rgba(255,255,255,.5);border:1px dashed #eaded8;border-radius:20px}
-.search-result{border-left:4px solid var(--gold)}.muted-line{color:var(--muted);font-size:12px;margin-top:5px}
-.nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);max-width:760px;width:100%;background:rgba(255,255,255,.94);border-top:1px solid #eaded8;display:grid;grid-template-columns:repeat(6,1fr);gap:7px;padding:8px 10px 12px;backdrop-filter:blur(14px);z-index:50}.nav button{font-size:12px;padding:10px 4px;border-radius:14px;font-weight:950}
-
-.review-badge{background:#fff4d8!important;color:#9a6b12!important;border:1px solid #ead49a}
-.summary-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:10px}
-.summary-actions .btn{padding:9px 11px;font-size:12px;border-radius:13px}
-.photoBox{margin-top:12px;background:linear-gradient(135deg,#fffaf5,#fff7f9);border:1px solid #eaded8;border-radius:18px;padding:13px;white-space:normal}
-.photoTop{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
-.photoTitle{font-weight:950;color:#6f4b42;font-size:13px}
-.photoHint{font-size:11px;color:var(--muted);line-height:1.45;margin-top:3px}
-.photoBtns{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-.photoPreview{min-height:74px;border:1px dashed #e4d3cc;border-radius:16px;background:rgba(255,255,255,.62);display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--muted);font-size:12px;text-align:center;padding:10px}
-.photoPreview img{width:100%;max-height:360px;object-fit:contain;border-radius:14px;display:block}
-@media(max-width:430px){.photoTop{align-items:flex-start;flex-direction:column}.photoBtns{width:100%;justify-content:stretch}.photoBtns .btn{flex:1}}
-@media(max-width:430px){.wrap{padding-left:10px;padding-right:10px}.summary{gap:6px}.summary b{font-size:17px}.summary span{font-size:10px}.toolbar{grid-template-columns:1fr}.toolbar .wide{grid-column:1}.actions{grid-template-columns:1fr}.actions .full{grid-column:1}.editGrid{grid-template-columns:1fr}.editGrid .full{grid-column:1}.cal-day{min-height:54px;border-radius:13px;padding:6px 4px}.cal-price{display:none}}
-
-.hidden{display:none!important}
-.app.hidden{display:none!important}
-.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(circle at 20% 10%,rgba(234,210,214,.82),transparent 32%),radial-gradient(circle at 88% 18%,rgba(184,147,105,.26),transparent 28%),linear-gradient(180deg,#fbf6f3,#fffaf7)}
-.login-panel{width:100%;max-width:430px;background:rgba(255,253,251,.94);border:1px solid var(--line);border-radius:32px;padding:30px 24px;box-shadow:0 24px 70px rgba(74,42,36,.12);text-align:center;position:relative;overflow:hidden}.login-panel:before{content:"";position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,transparent,var(--gold),var(--wine),var(--gold),transparent);opacity:.55}.login-logo{font-size:12px;letter-spacing:.28em;color:var(--gold);font-weight:900;text-transform:uppercase}.login-title{font-size:30px;font-weight:950;margin:10px 0 5px;letter-spacing:-1.1px}.login-sub{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:22px}.login-panel input{text-align:center;font-size:16px;padding:15px;border-radius:18px}.login-panel .btn{width:100%;margin-top:10px;padding:15px;border-radius:18px}.login-ok{display:none;margin-top:14px;background:#fff5e6;border:1px solid #ead49a;color:#8a5c1d;border-radius:16px;padding:12px;font-weight:900}.login-ok.show{display:block;animation:fade .28s ease both}
-.title-row{display:flex;align-items:center;justify-content:space-between;gap:10px}.title-row h1{font-size:22px}.panel-toggle{background:#f4ebe6;color:#76564e;border-radius:14px;padding:10px 12px;font-size:12px;font-weight:950;white-space:nowrap}.header-panel{display:block;overflow:hidden;transition:.28s ease}.header-panel.closed{display:none}.head-card.compact{padding:14px 16px;border-radius:22px}.head-card.compact .clock{margin-top:2px;font-size:12px}.head-mini{font-size:11px;color:var(--muted);font-weight:800;margin-top:4px}
-.view-title{font-size:18px;font-weight:950;margin:18px 0 10px;display:flex;align-items:center;justify-content:space-between;gap:8px}.history-card{background:rgba(255,253,251,.95);border:1px solid var(--line);border-radius:24px;padding:14px;margin:14px 0;box-shadow:var(--shadow);overflow:hidden}.history-scroll{overflow:auto;border:1px solid #eaded8;border-radius:18px;background:#fff}.history-table{width:100%;border-collapse:collapse;min-width:660px}.history-table th,.history-table td{padding:11px 9px;border-bottom:1px solid #f0e4df;text-align:left;font-size:12px;vertical-align:middle}.history-table th{background:#fff8f5;color:#7a5148;font-weight:950;position:sticky;top:0}.history-table tr:last-child td{border-bottom:0}.minus-btn{width:30px;height:30px;border-radius:999px;background:#ffe9e9;color:#b84444;font-weight:950;font-size:18px;line-height:1}.deleted-row{opacity:.48;text-decoration:line-through}.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(30px);background:#3f3131;color:white;padding:12px 18px;border-radius:999px;font-size:13px;font-weight:850;z-index:999;opacity:0;transition:.28s ease;box-shadow:0 12px 30px rgba(0,0,0,.16)}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(max-width:430px){.login-title{font-size:25px}.title-row h1{font-size:19px}.panel-toggle{padding:9px 10px}.history-card{padding:10px}.nav{grid-template-columns:repeat(6,1fr);gap:5px}.nav button{font-size:10px}}
-
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;background:radial-gradient(circle at 10% 0%,rgba(234,210,214,.62),transparent 28%),linear-gradient(180deg,#fbf6f3,#fffaf7);color:var(--ink)}
+button,input,textarea,select{font-family:inherit}button{border:0;cursor:pointer;transition:.2s ease}button:active{transform:scale(.965)}
+.wrap{max-width:760px;margin:0 auto;padding:14px 14px 98px}.header{position:sticky;top:0;z-index:20;padding:12px 0 14px;background:linear-gradient(#fbf6f3 82%,rgba(251,246,243,0));backdrop-filter:blur(8px)}
+.head-card,.card{background:rgba(255,253,251,.95);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}.head-card{padding:14px 16px}.card{padding:16px;margin:14px 0}.title-row{display:flex;align-items:center;justify-content:space-between;gap:10px}h1{font-size:22px;margin:0;font-weight:950;letter-spacing:-.8px}.clock{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5}.head-mini{font-size:11px;color:var(--muted);font-weight:800;margin-top:3px}
+.panel-toggle{background:#f4ebe6;color:#76564e;border-radius:14px;padding:10px 12px;font-size:12px;font-weight:950;white-space:nowrap}.header-panel{display:block;overflow:hidden}.header-panel.closed{display:none}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}.summary div{min-height:82px;background:#fff;border:1px solid #efe2dc;border-radius:18px;text-align:center;padding:12px 5px;display:flex;flex-direction:column;justify-content:center}.summary b{display:block;font-size:24px;line-height:1.1;color:var(--wine);font-weight:950;word-break:keep-all}.summary b.money{color:var(--gold);font-size:18px}.summary span{font-size:11px;color:var(--muted);font-weight:900;margin-top:6px}.summary small{font-size:10px;color:#b8a19a;font-weight:800;margin-top:3px}
+.small{font-size:12px;color:var(--muted);line-height:1.55}.row{display:flex;gap:8px}.row>*{min-width:0}input,textarea,select{width:100%;border:1px solid #eadcd6;border-radius:15px;padding:12px;background:#fffdfb;outline:none;font-size:14px;color:var(--ink);min-height:48px;line-height:1.25}select{padding-right:34px;appearance:auto}textarea{min-height:100px;resize:vertical;line-height:1.55}input:focus,textarea:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(184,147,105,.13)}
+.btn{min-height:44px;border-radius:15px;padding:12px 13px;font-weight:950;font-size:13px;white-space:nowrap}.primary{background:linear-gradient(135deg,#8d283b,#681627);color:#fff;box-shadow:0 10px 22px rgba(122,27,46,.16)}.soft{background:#f4ebe6;color:#76564e}.danger{background:#ffe9e9;color:var(--danger)}.green{background:#e8f8ef;color:var(--green)}.gold{background:#f7eddb;color:#79522a}
+.toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.toolbar .wide{grid-column:1/3}.filter-tabs{display:flex;gap:7px;overflow:auto;padding:2px 0 4px;margin-top:12px}.chip{flex:0 0 auto;border:1px solid #eaded8;background:#fff;border-radius:999px;padding:9px 12px;font-size:12px;font-weight:900;color:#806760}.chip.active{background:#7a1b2e;color:#fff;border-color:#7a1b2e;box-shadow:0 8px 18px rgba(122,27,46,.14)}
+.section-title{font-size:18px;font-weight:950;margin:18px 0 10px;display:flex;justify-content:space-between;align-items:end;gap:8px}.section-title span{font-size:12px;color:var(--muted);font-weight:800;text-align:right}.new-title{background:linear-gradient(135deg,#fff0f4,#fffaf2);border:1px solid #efd4d8;border-radius:18px;padding:13px 14px;color:#93364a}
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.cal-title{font-weight:950}.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.dayname{text-align:center;color:var(--gold);font-size:11px;font-weight:950;padding:4px 0}.cal-day{min-height:58px;background:#fff;border:1px solid #efe2dc;border-radius:15px;padding:7px 5px;text-align:left;position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start}.cal-day.blank{background:transparent;border:0}.cal-day.today{border-color:var(--wine);box-shadow:inset 0 0 0 1px rgba(122,27,46,.16)}.cal-day.selected{background:#fff1f4;border-color:#b76f7f}.cal-num{font-weight:950;font-size:13px;display:block;align-self:flex-start;text-align:left;margin:0 0 2px 0}.cal-count{display:inline-flex;margin-top:4px;background:#f7eddb;color:#79522a;border-radius:999px;padding:2px 6px;font-size:10px;font-weight:950}.cal-price{display:block;color:#8d6d63;font-size:10px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.calendar-detail{border-top:1px dashed #eaded8;margin-top:14px;padding-top:13px}
+.order{background:#fff;border:1px solid #eaded8;border-radius:22px;padding:12px 36px 38px 12px;margin:10px 0;box-shadow:0 10px 26px rgba(74,42,36,.055);overflow:hidden;position:relative;cursor:pointer}
+.order.detail-open{border-color:#b76f7f;box-shadow:0 14px 34px rgba(122,27,46,.13);background:linear-gradient(180deg,#fff,#fffafa)}.order.new{border:2px solid #dfa2b0;box-shadow:0 14px 35px rgba(188,114,138,.14)}.order-head{display:flex;align-items:flex-start;gap:9px}.time-stack{display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:76px}
+.time{background:#fff0f4;color:#9b3d52;font-weight:950;border-radius:14px;padding:8px 10px;min-width:70px;text-align:center}
+.time-badges{display:flex;flex-wrap:nowrap;gap:4px;max-width:none;white-space:nowrap;align-items:center}.name{font-weight:950;font-size:17px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.name-row{flex:1;min-width:0;display:flex;align-items:center;gap:6px;padding-top:6px}.order-side{display:flex;flex-direction:column;align-items:flex-end;gap:5px;min-width:74px}.badge{font-size:11px;background:#edf8f1;color:#3b9b66;border-radius:999px;padding:5px 8px;font-weight:950;line-height:1;display:inline-flex;align-items:center;white-space:nowrap}.badge.new-badge{background:#fff0f5;color:#bf5578}.badge.price{background:#f7eddb;color:#7b552f}.review-badge{background:#fff4d8!important;color:#9a6b12!important;border:1px solid #ead49a}.edit-mini{position:absolute;right:10px;bottom:9px;min-height:0;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:950;background:#fff0f4;color:#8d283b;line-height:1;border:1px solid #f0d4da}.confirm-mini{position:absolute;left:10px;bottom:9px;min-height:0;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:950;background:#e8f8ef;color:#287a50;line-height:1;border:1px solid #cdebd9}.detail-mini{display:none}.delete-x{position:absolute;top:9px;right:9px;width:24px;height:24px;min-height:24px;border-radius:999px;background:#fff1f1;color:#b84444;font-size:16px;font-weight:950;line-height:1;padding:0;display:flex;align-items:center;justify-content:center;border:1px solid #ffd6d6}.meta{font-size:13px;color:#604f4b;line-height:1.6;margin-top:9px}.muted-line{color:var(--muted);font-size:12px;margin-top:5px}.detail{display:none;border-top:1px dashed #eaded8;margin-top:12px;padding-top:12px;font-size:13px;line-height:1.75;white-space:pre-wrap}.detail.show{display:block;animation:fade .25s ease both}@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:12px}.actions:empty{display:none}.actions.three{grid-template-columns:repeat(2,1fr)}.actions .full{grid-column:1/3}.editBox{display:none;margin-top:12px;border-top:1px dashed #eaded8;padding-top:12px}.editBox.show{display:block;animation:fade .25s ease both}.editGrid{display:grid;grid-template-columns:1fr;gap:8px}.editGrid .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}.edit-label{font-size:12px;font-weight:950;color:#76564e;margin:4px 0 -3px}.empty{text-align:center;color:var(--muted);padding:32px 0;background:rgba(255,255,255,.5);border:1px dashed #eaded8;border-radius:20px}.search-result{border-left:4px solid var(--gold)}
+.history-card{background:rgba(255,253,251,.95);border:1px solid var(--line);border-radius:24px;padding:14px;margin:14px 0;box-shadow:var(--shadow);overflow:hidden}.view-title{font-size:18px;font-weight:950;margin:6px 0 10px;display:flex;align-items:center;justify-content:space-between;gap:8px}.history-scroll{overflow:auto;border:1px solid #eaded8;border-radius:18px;background:#fff}.history-table{width:100%;border-collapse:collapse;min-width:660px}.history-table th,.history-table td{padding:11px 9px;border-bottom:1px solid #f0e4df;text-align:left;font-size:12px;vertical-align:middle}.history-table th{background:#fff8f5;color:#7a5148;font-weight:950;position:sticky;top:0}.history-table tr:last-child td{border-bottom:0}.minus-btn{width:30px;height:30px;border-radius:999px;background:#ffe9e9;color:#b84444;font-weight:950;font-size:18px;line-height:1}
+.nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);max-width:760px;width:100%;background:rgba(255,255,255,.94);border-top:1px solid #eaded8;display:grid;grid-template-columns:repeat(6,1fr);gap:7px;padding:8px 10px 12px;backdrop-filter:blur(14px);z-index:50}.nav button{font-size:12px;padding:10px 4px;border-radius:14px;font-weight:950}.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(30px);background:#3f3131;color:#fff;padding:12px 18px;border-radius:999px;font-size:13px;font-weight:850;z-index:999;opacity:0;transition:.28s ease;box-shadow:0 12px 30px rgba(0,0,0,.16)}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.hidden{display:none!important}.app.hidden{display:none!important}.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(circle at 20% 10%,rgba(234,210,214,.82),transparent 32%),radial-gradient(circle at 88% 18%,rgba(184,147,105,.26),transparent 28%),linear-gradient(180deg,#fbf6f3,#fffaf7)}.login-panel{width:100%;max-width:430px;background:rgba(255,253,251,.94);border:1px solid var(--line);border-radius:32px;padding:30px 24px;box-shadow:0 24px 70px rgba(74,42,36,.12);text-align:center;position:relative;overflow:hidden}.login-panel:before{content:"";position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,transparent,var(--gold),var(--wine),var(--gold),transparent);opacity:.55}.login-logo{font-size:12px;letter-spacing:.28em;color:var(--gold);font-weight:900;text-transform:uppercase}.login-title{font-size:30px;font-weight:950;margin:10px 0 5px;letter-spacing:-1.1px}.login-sub{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:22px}.login-panel input{text-align:center;font-size:16px;padding:15px;border-radius:18px}.login-panel .btn{width:100%;margin-top:10px;padding:15px;border-radius:18px}.login-ok{display:none;margin-top:14px;background:#fff5e6;border:1px solid #ead49a;color:#8a5c1d;border-radius:16px;padding:12px;font-weight:900}.login-ok.show{display:block;animation:fade .28s ease both}
+@media(max-width:430px){.wrap{padding-left:10px;padding-right:10px}.title-row h1{font-size:19px}.login-title{font-size:25px}.panel-toggle{padding:9px 10px}.summary{gap:6px}.summary div{min-height:76px;padding:10px 3px}.summary b{font-size:22px}.summary b.money{font-size:14px}.summary span{font-size:10px}.toolbar{grid-template-columns:1fr}.toolbar .wide{grid-column:1}.actions,.actions.three{grid-template-columns:1fr 1fr}.actions .full{grid-column:1/3}.editGrid .two{grid-template-columns:1fr 1fr}.cal-day{min-height:54px;border-radius:13px;padding:6px 4px}.cal-price{display:none}.history-card{padding:10px}.nav{grid-template-columns:repeat(6,1fr);gap:5px}.nav button{font-size:10px}.btn{min-height:44px}.order{padding:12px 34px 38px 10px}.badge.price{display:inline-flex}.editGrid .two{grid-template-columns:1fr}.editGrid input,.editGrid select{font-size:15px;min-height:50px}}
 </style>
 </head>
 <body>
@@ -70,7 +46,7 @@ textarea{min-height:78px;resize:vertical;line-height:1.5}input:focus,textarea:fo
 
 <div class="wrap app hidden" id="app">
   <div class="header">
-    <div class="head-card compact">
+    <div class="head-card">
       <div class="title-row">
         <div>
           <h1>유럽케이크 주문관리</h1>
@@ -80,24 +56,22 @@ textarea{min-height:78px;resize:vertical;line-height:1.5}input:focus,textarea:fo
         <button class="panel-toggle" id="panelToggle" onclick="toggleTopPanel()">관리메뉴 펼치기</button>
       </div>
       <div class="header-panel closed" id="topPanel">
-      <div class="summary">
-        <div><b id="latestCount">0</b><span>맨위 신규</span></div>
-        <div><b id="todayCount">0</b><span>오늘 픽업</span></div>
-        <div><b id="visibleCount">0</b><span>진행 주문</span></div>
-        <div><b id="monthSales">0</b><span>당월 금액</span></div>
-      </div>
-      <div class="toolbar">
-        <input id="searchInput" class="wide" placeholder="이름 검색 · 주문일 · 종류 · 금액까지 확인" oninput="render()">
-        <select id="categoryFilter" onchange="render()">
-          <option value="all">전체 카테고리</option>
-        </select>
-        <select id="statusFilter" onchange="render()">
-          <option value="active">진행 주문만</option>
-          <option value="all">전체 주문 보기</option>
-          <option value="completed">지난 주문/삭제됨</option>
-        </select>
-      </div>
-      <div class="filter-tabs" id="filterTabs"></div>
+        <div class="summary">
+          <div><b id="latestCount">0</b><span>신규</span><small>가장 최근</small></div>
+          <div><b id="todayCount">0</b><span>오늘 픽업</span><small>현재 월 기준</small></div>
+          <div><b id="visibleCount">0</b><span>진행 주문</span><small>현재 월 기준</small></div>
+          <div><b id="monthSales" class="money">0원</b><span>당월 금액</span><small>현재 월 합계</small></div>
+        </div>
+        <div class="toolbar">
+          <input id="searchInput" class="wide" placeholder="이름 검색 · 주문일 · 종류 · 금액까지 확인" oninput="render()">
+          <select id="categoryFilter" onchange="render()"><option value="all">전체 카테고리</option></select>
+          <select id="statusFilter" onchange="render()">
+            <option value="active">진행 주문만</option>
+            <option value="all">전체 주문 보기</option>
+            <option value="completed">지난 주문/삭제됨</option>
+          </select>
+        </div>
+        <div class="filter-tabs" id="filterTabs"></div>
       </div>
     </div>
   </div>
@@ -109,9 +83,7 @@ textarea{min-height:78px;resize:vertical;line-height:1.5}input:focus,textarea:fo
       <button class="btn soft" onclick="moveMonth(1)">다음 ›</button>
     </div>
     <div class="cal-grid" id="calendarGrid"></div>
-    <div class="calendar-detail" id="calendarDetail">
-      <div class="small">달력에서 날짜를 누르면 해당일 주문을 간단히 확인할 수 있어요.</div>
-    </div>
+    <div class="calendar-detail" id="calendarDetail"><div class="small">달력 날짜를 누르면 해당 날짜 주문만 표시됩니다.</div></div>
   </div>
 
   <div id="orders"></div>
@@ -119,32 +91,35 @@ textarea{min-height:78px;resize:vertical;line-height:1.5}input:focus,textarea:fo
 
 <div class="nav app hidden" id="bottomNav">
   <button class="soft" onclick="loadOrders()">새로고침</button>
-  <button class="soft" onclick="quickMode='all';render()">전체</button>
-  <button class="soft" onclick="quickMode='today';render()">오늘</button>
-  <button class="soft" onclick="quickMode='new';render()">신규</button>
-  <button class="soft" onclick="quickMode='history';render()">전체내역</button>
+  <button class="soft" onclick="quickMode='all';selectedCalendarDate='';render()">전체</button>
+  <button class="soft" onclick="quickMode='today';selectedCalendarDate='';render()">오늘</button>
+  <button class="soft" onclick="quickMode='new';selectedCalendarDate='';render()">신규</button>
+  <button class="soft" onclick="quickMode='history';selectedCalendarDate='';render()">전체내역</button>
   <button class="soft" onclick="logout()">로그아웃</button>
 </div>
 
 <div class="toast" id="toast">알림</div>
 
 <script>
-const API_URL = "https://youlovecake-ai.xiouri0715.workers.dev"; // 주문서 복사 시 자동 등록되는 서버와 동일한 주소
+const API_URL = "https://youlovecake-ai.xiouri0715.workers.dev";
 const TOKEN_KEY = "EUROPE_CAKE_ADMIN_TOKEN";
+const CACHE_KEY = "EUROPE_CAKE_ORDERS_CACHE";
 let orders = [];
 let quickMode = "all";
 let calendarMonth = new Date();
 calendarMonth.setDate(1);
 let selectedCalendarDate = "";
+let openedDetails = new Set();
+let openedEditors = new Set();
 
 function pad(n){return String(n).padStart(2,"0")}
 function todayISO(){const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`}
 function nowMinutes(){const d=new Date();return d.getHours()*60+d.getMinutes()}
 function toMinutes(t){if(!t)return 24*60+999;const [h,m]=String(t).split(":").map(Number);return (h||0)*60+(m||0)}
-function won(n){n=Number(String(n||"").replace(/[^\d]/g,""));return n? n.toLocaleString("ko-KR")+"원":"-"}
+function won(n){n=Number(String(n||"").replace(/[^\d]/g,""));return n? n.toLocaleString("ko-KR")+"원":"0원"}
 function priceNum(o){return Number(String(o.price||o.amount||"").replace(/[^\d]/g,""))||0}
 function getToken(){return localStorage.getItem(TOKEN_KEY)||""}
-function dateLabel(iso){if(!iso)return"날짜미정";const d=new Date(iso+"T00:00:00");const days=["일","월","화","수","목","금","토"];const [y,m,day]=iso.split("-");return `${Number(m)}월 ${Number(day)}일 (${days[d.getDay()]})`}
+function dateLabel(iso){if(!iso)return"날짜미정";const d=new Date(iso+"T00:00:00");const days=["일","월","화","수","목","금","토"];const parts=iso.split("-");return `${Number(parts[1])}월 ${Number(parts[2])}일 (${days[d.getDay()]})`}
 function orderCreated(o){return o.createdAt?new Date(o.createdAt).toLocaleString("ko-KR"):"-"}
 function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 function attr(s){return escapeHtml(s||"")}
@@ -152,355 +127,67 @@ function showToast(msg){const t=document.getElementById("toast");if(!t)return;t.
 function showApp(){document.getElementById("loginScreen").classList.add("hidden");document.getElementById("app").classList.remove("hidden");document.getElementById("bottomNav").classList.remove("hidden")}
 function showLogin(){document.getElementById("loginScreen").classList.remove("hidden");document.getElementById("app").classList.add("hidden");document.getElementById("bottomNav").classList.add("hidden");setTimeout(()=>document.getElementById("adminToken")?.focus(),80)}
 function toggleTopPanel(){const panel=document.getElementById("topPanel");const btn=document.getElementById("panelToggle");panel.classList.toggle("closed");btn.textContent=panel.classList.contains("closed")?"관리메뉴 펼치기":"관리메뉴 접기"}
-
-function clock(){
-  const d=new Date();const days=["일","월","화","수","목","금","토"];
-  document.getElementById("clock").textContent=`오늘 ${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]}) ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-}
+function clock(){const d=new Date();const days=["일","월","화","수","목","금","토"];document.getElementById("clock").textContent=`오늘 ${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]}) ${pad(d.getHours())}:${pad(d.getMinutes())}`}
 setInterval(clock,15000);clock();
 
-function saveTokenAndLoad(){
-  const token=document.getElementById("adminToken").value.trim();
-  if(!token){alert("관리자 비밀번호를 입력해주세요.");return}
-  localStorage.setItem(TOKEN_KEY,token);
-  const ok=document.getElementById("loginOk"); if(ok) ok.classList.add("show");
-  showToast("로그인되었습니다");
-  showApp();
-  loadOrders();
-}
-function logout(){
-  if(!confirm("저장된 관리자 비밀번호를 지울까요?"))return;
-  localStorage.removeItem(TOKEN_KEY);
-  document.getElementById("adminToken").value="";
-  showLogin();
-}
-async function loadOrders(){
-  const token=getToken();
-  if(!token){showLogin();return}
-  showApp();
-  try{
-    const res=await fetch(API_URL+"/orders",{headers:{"x-admin-token":token}});
-    const data=await res.json().catch(()=>({}));
-    if(!res.ok)throw new Error(data.error||"주문을 불러오지 못했습니다.");
-    orders=(data.orders||[]).map(o=>({...o, status:o.status||"new"}));
-    buildCategoryFilter();
-    render();
-  }catch(e){
-    alert(e.message);
-    showLogin();
-  }
-}
+function timeOptions(value){let html='<option value="">시간 선택</option>';for(let h=0;h<24;h++){for(let m=0;m<60;m+=30){const v=`${pad(h)}:${pad(m)}`;const hour12=h%12===0?12:h%12;const label=`${h<12?'오전':'오후'} ${hour12}:${pad(m)}`;html+=`<option value="${v}" ${v===value?'selected':''}>${label}</option>`}}return html}
 
-function isPastPickup(o){
-  if(!o.pickupDate)return false;
-  const today=todayISO();
-  if(o.pickupDate<today)return true;
-  if(o.pickupDate===today && o.pickupTime && toMinutes(o.pickupTime)<nowMinutes())return true;
-  return false;
-}
-function isCompleted(o){return o.status==="completed" || o.status==="done" || o.status==="deleted" || o.status==="pickedup"}
-function isActive(o){return !isCompleted(o) && !isPastPickup(o)}
-function isNew(o){return (o.status||"new")==="new" && isActive(o)}
+function loadCachedOrders(){try{const cached=JSON.parse(localStorage.getItem(CACHE_KEY)||"[]");if(Array.isArray(cached)&&cached.length){orders=cached.map(o=>({...o,status:o.status||"new"}));buildCategoryFilter();render();showToast("저장된 주문을 먼저 표시했습니다")}}catch(e){}}
+function saveCachedOrders(){try{localStorage.setItem(CACHE_KEY,JSON.stringify(orders))}catch(e){}}
+function saveTokenAndLoad(){const token=document.getElementById("adminToken").value.trim();if(!token){alert("관리자 비밀번호를 입력해주세요.");return}localStorage.setItem(TOKEN_KEY,token);document.getElementById("loginOk")?.classList.add("show");showToast("로그인되었습니다");showApp();loadOrders()}
+function logout(){if(!confirm("저장된 관리자 비밀번호를 지울까요?"))return;localStorage.removeItem(TOKEN_KEY);document.getElementById("adminToken").value="";showLogin()}
+async function loadOrders(){const token=getToken();if(!token){showLogin();return}showApp();if(!orders.length)loadCachedOrders();try{const res=await fetch(API_URL+"/orders",{headers:{"x-admin-token":token}});const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data.error||"주문을 불러오지 못했습니다.");orders=(data.orders||[]).map(o=>({...o,status:o.status||"new"}));saveCachedOrders();buildCategoryFilter();render()}catch(e){if(!orders.length){alert(e.message);showLogin()}else{showToast("저장된 주문을 표시 중입니다")}}}
+
+function isPastPickup(o){if(!o.pickupDate)return false;const today=todayISO();if(o.pickupDate<today)return true;if(o.pickupDate===today&&o.pickupTime&&toMinutes(o.pickupTime)<nowMinutes())return true;return false}
+function isCompleted(o){return o.status==="completed"||o.status==="done"||o.status==="deleted"||o.status==="pickedup"}
+function isActive(o){return !isCompleted(o)&&!isPastPickup(o)}
+function isNew(o){return (o.status||"new")==="new"&&isActive(o)}
 function categoryOf(o){return (o.cakeType||"미분류").trim()||"미분류"}
+function currentMonthKey(){return `${calendarMonth.getFullYear()}-${pad(calendarMonth.getMonth()+1)}`}
+function inCurrentMonth(o){return (o.pickupDate||"").startsWith(currentMonthKey())}
 
-function buildCategoryFilter(){
-  const sel=document.getElementById("categoryFilter");
-  const current=sel.value||"all";
-  const cats=[...new Set(orders.map(categoryOf))].sort();
-  sel.innerHTML='<option value="all">전체 카테고리</option>'+cats.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
-  sel.value=[...sel.options].some(o=>o.value===current)?current:"all";
-  const tabs=document.getElementById("filterTabs");
-  tabs.innerHTML=['all',...cats].map(c=>`<button class="chip ${sel.value===c?'active':''}" onclick="setCategory('${escapeHtml(c).replace(/'/g,"&#039;")}')">${c==='all'?'전체':escapeHtml(c)}</button>`).join("");
-}
+function buildCategoryFilter(){const sel=document.getElementById("categoryFilter");if(!sel)return;const current=sel.value||"all";const cats=[...new Set(orders.map(categoryOf))].sort();sel.innerHTML='<option value="all">전체 카테고리</option>'+cats.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");sel.value=[...sel.options].some(o=>o.value===current)?current:"all";const tabs=document.getElementById("filterTabs");tabs.innerHTML=['all',...cats].map(c=>`<button class="chip ${sel.value===c?'active':''}" onclick="setCategory('${escapeHtml(c).replace(/'/g,"&#039;")}')">${c==='all'?'전체':escapeHtml(c)}</button>`).join("")}
 function setCategory(c){document.getElementById("categoryFilter").value=c;render()}
 
-function getFilteredBase(){
-  const q=document.getElementById("searchInput").value.trim().toLowerCase();
-  const cat=document.getElementById("categoryFilter").value;
-  const status=document.getElementById("statusFilter").value;
-  let list=[...orders].filter(o=>o.status!=="deleted");
-  if(status==="active") list=list.filter(isActive);
-  if(status==="completed") list=list.filter(o=>!isActive(o));
-  if(cat!=="all") list=list.filter(o=>categoryOf(o)===cat);
-  if(quickMode==="today") list=list.filter(o=>o.pickupDate===todayISO());
-  if(quickMode==="new") list=list.filter(isNew);
-  if(q){
-    list=list.filter(o=>[
-      o.name,o.phone,o.pickupDate,o.pickupTime,o.createdAt,o.cakeType,o.cakeSize,o.sheetType,o.design,o.lettering,o.reviewEvent,o.price,o.orderText
-    ].join(" ").toLowerCase().includes(q));
-  }
-  return list;
-}
+function getFilteredBase(){const q=document.getElementById("searchInput").value.trim().toLowerCase();const cat=document.getElementById("categoryFilter").value;const status=document.getElementById("statusFilter").value;let list=[...orders].filter(o=>o.status!=="deleted");if(status==="active")list=list.filter(isActive);if(status==="completed")list=list.filter(o=>!isActive(o));if(cat!=="all")list=list.filter(o=>categoryOf(o)===cat);if(selectedCalendarDate)list=list.filter(o=>o.pickupDate===selectedCalendarDate);if(quickMode==="today")list=list.filter(o=>o.pickupDate===todayISO());if(quickMode==="new")list=list.filter(isNew);if(q){list=list.filter(o=>[o.name,o.phone,o.pickupDate,o.pickupTime,o.createdAt,o.cakeType,o.cakeSize,o.sheetType,o.design,o.lettering,o.reviewEvent,o.price,o.orderText].join(" ").toLowerCase().includes(q))}return list}
 function sortByPickup(a,b){return ((a.pickupDate||"9999-99-99")+" "+(a.pickupTime||"99:99")).localeCompare((b.pickupDate||"9999-99-99")+" "+(b.pickupTime||"99:99"))}
 
-function render(){
-  buildCategoryFilter();
-  const activeOrders=orders.filter(isActive);
-  const latestNew=orders.filter(isNew).sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0))[0]||null;
-  const today=todayISO();
-  const monthKey=`${calendarMonth.getFullYear()}-${pad(calendarMonth.getMonth()+1)}`;
-  document.getElementById("latestCount").textContent=latestNew?1:0;
-  document.getElementById("todayCount").textContent=activeOrders.filter(o=>o.pickupDate===today).length;
-  document.getElementById("visibleCount").textContent=activeOrders.length;
-  document.getElementById("monthSales").textContent=(orders.filter(o=>(o.pickupDate||"").startsWith(monthKey)).reduce((s,o)=>s+priceNum(o),0)/10000).toFixed(0)+"만";
+function render(){buildCategoryFilter();const monthOrders=orders.filter(o=>o.status!=="deleted"&&inCurrentMonth(o));const currentMonthActive=monthOrders.filter(isActive);const latestNew=currentMonthActive.filter(isNew).sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0))[0]||null;document.getElementById("latestCount").textContent=latestNew?1:0;document.getElementById("todayCount").textContent=currentMonthActive.filter(o=>o.pickupDate===todayISO()).length;document.getElementById("visibleCount").textContent=currentMonthActive.length;document.getElementById("monthSales").textContent=won(monthOrders.reduce((s,o)=>s+priceNum(o),0));renderCalendar();if(quickMode==="history"){document.getElementById("orders").innerHTML=renderAllOrdersTable();restoreOpenStates();return}const q=document.getElementById("searchInput").value.trim();let html="";if(latestNew&&quickMode!=="today"&&!q&&!selectedCalendarDate&&document.getElementById("statusFilter").value==="active"){html+=`<div class="section-title new-title">🔔 신규 주문 <span>가장 최근 1건</span></div>${orderCard(latestNew,true)}`}let list=getFilteredBase();if(latestNew&&quickMode==="all"&&!q&&!selectedCalendarDate&&document.getElementById("statusFilter").value==="active"){list=list.filter(o=>o.id!==latestNew.id)}list.sort(sortByPickup);if(q){html+=`<div class="section-title">🔎 검색 결과 <span>${list.length}건</span></div>`;html+=list.length?list.map(o=>orderCard(o,isNew(o),true)).join(""):`<div class="empty">검색 결과가 없습니다.</div>`;document.getElementById("orders").innerHTML=html;restoreOpenStates();return}if(selectedCalendarDate){const total=list.reduce((s,o)=>s+priceNum(o),0);html+=`<div class="section-title">📅 ${dateLabel(selectedCalendarDate)} 주문 <span>${list.length}건 · ${won(total)}</span></div>`;html+=list.length?list.map(o=>orderCard(o,isNew(o))).join(""):`<div class="empty">해당 날짜 주문이 없습니다.</div>`;document.getElementById("orders").innerHTML=html;restoreOpenStates();return}const grouped={};list.forEach(o=>{const key=o.pickupDate||"날짜미정";(grouped[key]||(grouped[key]=[])).push(o)});html+=`<div class="section-title">📅 날짜별 자동 정렬 <span>픽업시간 지난 주문은 진행 목록에서 숨김</span></div>`;if(!list.length)html+=`<div class="empty">표시할 주문이 없습니다.</div>`;else html+=Object.keys(grouped).sort().map(date=>`<section><div class="section-title">${date==="날짜미정"?"날짜미정":dateLabel(date)} <span>${grouped[date].length}건 · ${won(grouped[date].reduce((s,o)=>s+priceNum(o),0))}</span></div>${grouped[date].map(o=>orderCard(o,isNew(o))).join("")}</section>`).join("");document.getElementById("orders").innerHTML=html;restoreOpenStates()}
 
-  renderCalendar();
+function restoreOpenStates(){openedDetails.forEach(id=>{const el=document.getElementById("detail-"+id);el?.classList.add("show");el?.closest(".order")?.classList.add("detail-open")});openedEditors.forEach(id=>document.getElementById("edit-"+id)?.classList.add("show"))}
 
-  if(quickMode==="history"){
-    document.getElementById("orders").innerHTML=renderAllOrdersTable();
-    return;
-  }
+function renderAllOrdersTable(){const q=document.getElementById("searchInput").value.trim().toLowerCase();let list=[...orders].filter(o=>o.status!=="deleted");if(q){list=list.filter(o=>[o.name,o.phone,o.pickupDate,o.pickupTime,o.createdAt,o.cakeType,o.cakeSize,o.sheetType,o.design,o.lettering,o.reviewEvent,o.price,o.orderText].join(" ").toLowerCase().includes(q))}list.sort((a,b)=>((b.pickupDate||"")+(b.pickupTime||"")).localeCompare((a.pickupDate||"")+(a.pickupTime||"")));const rows=list.map(o=>`<tr><td><button class="minus-btn" title="삭제" onclick="deleteOrder(event,'${o.id}')">-</button></td><td>${escapeHtml(dateLabel(o.pickupDate))}<br><span class="muted-line">${escapeHtml(o.pickupTime||'시간미정')}</span></td><td><b>${escapeHtml(o.name||'이름미정')}</b><br><span class="muted-line">${escapeHtml(o.phone||'')}</span></td><td>${escapeHtml(categoryOf(o))}<br><span class="muted-line">${escapeHtml(o.cakeSize||'-')} / ${escapeHtml(o.sheetType||'-')}</span></td><td>${won(priceNum(o))}</td><td>${escapeHtml(o.status||'new')}<br><span class="muted-line">${orderCreated(o)}</span></td></tr>`).join("");return `<div class="history-card"><div class="view-title">전체 주문내역 <span>${list.length}건</span></div><div class="small" style="margin-bottom:10px">픽업날짜, 주문자, 종류, 금액을 한 번에 확인하고 왼쪽 - 버튼으로 삭제할 수 있어요.</div><div class="history-scroll"><table class="history-table"><thead><tr><th>삭제</th><th>픽업</th><th>주문자</th><th>케이크</th><th>금액</th><th>상태</th></tr></thead><tbody>${rows||'<tr><td colspan="6" style="text-align:center;color:#927d78;padding:28px">전체 주문내역이 없습니다.</td></tr>'}</tbody></table></div></div>`}
 
-  const q=document.getElementById("searchInput").value.trim();
-  let html="";
-  if(latestNew && quickMode!=="today" && !q && document.getElementById("statusFilter").value==="active"){
-    html+=`<div class="section-title new-title">🔔 가장 최근 신규 주문 <span>1건만 맨 위 표시</span></div>${orderCard(latestNew,true)}`;
-  }
+function renderCalendar(){const y=calendarMonth.getFullYear(),m=calendarMonth.getMonth();document.getElementById("calendarTitle").textContent=`${y}년 ${m+1}월 주문 달력`;const grid=document.getElementById("calendarGrid");const names=["일","월","화","수","목","금","토"];let html=names.map(n=>`<div class="dayname">${n}</div>`).join("");const first=new Date(y,m,1),last=new Date(y,m+1,0);for(let i=0;i<first.getDay();i++)html+=`<button class="cal-day blank" type="button"></button>`;for(let d=1;d<=last.getDate();d++){const iso=`${y}-${pad(m+1)}-${pad(d)}`;const list=orders.filter(o=>o.pickupDate===iso&&isActive(o));const total=list.reduce((s,o)=>s+priceNum(o),0);html+=`<button type="button" class="cal-day ${iso===todayISO()?'today':''} ${iso===selectedCalendarDate?'selected':''}" onclick="selectCalendarDate('${iso}')"><span class="cal-num">${d}</span><br>${list.length?`<span class="cal-count">${list.length}건</span><span class="cal-price">${won(total)}</span>`:""}</button>`}grid.innerHTML=html;renderCalendarDetail()}
+function renderCalendarDetail(){const box=document.getElementById("calendarDetail");if(!selectedCalendarDate){box.innerHTML=`<div class="small">달력 날짜를 누르면 해당 날짜 주문만 표시됩니다.</div>`;return}box.innerHTML=`<div class="small">${dateLabel(selectedCalendarDate).replace(/ \(.+\)/,"")} 주문만 보고 있습니다. 같은 날짜를 다시 누르면 전체 목록으로 돌아갑니다.</div>`}
+function selectCalendarDate(iso){if(selectedCalendarDate===iso){selectedCalendarDate=""}else{selectedCalendarDate=iso;quickMode="all"}render()}
+function moveMonth(delta){calendarMonth.setMonth(calendarMonth.getMonth()+delta);selectedCalendarDate="";quickMode="all";render()}
 
-  let list=getFilteredBase();
-  if(latestNew && quickMode==="all" && !q && document.getElementById("statusFilter").value==="active"){
-    list=list.filter(o=>o.id!==latestNew.id);
-  }
-  list.sort(sortByPickup);
-
-  if(q){
-    html+=`<div class="section-title">🔎 검색 결과 <span>${list.length}건</span></div>`;
-    html+=list.length?list.map(o=>orderCard(o,false,true)).join(""):`<div class="empty">검색 결과가 없습니다.</div>`;
-    document.getElementById("orders").innerHTML=html; return;
-  }
-
-  const grouped={};
-  list.forEach(o=>{const key=o.pickupDate||"날짜미정";(grouped[key]||(grouped[key]=[])).push(o)});
-  html+=`<div class="section-title">📅 날짜별 자동 정렬 <span>픽업시간 지난 주문은 진행 목록에서 숨김</span></div>`;
-  if(!list.length) html+=`<div class="empty">표시할 주문이 없습니다.</div>`;
-  else html+=Object.keys(grouped).sort().map(date=>`
-    <section>
-      <div class="section-title">${date==="날짜미정"?"날짜미정":dateLabel(date)} <span>${grouped[date].length}건 · ${won(grouped[date].reduce((s,o)=>s+priceNum(o),0))}</span></div>
-      ${grouped[date].map(o=>orderCard(o,isNew(o))).join("")}
-    </section>
-  `).join("");
-  document.getElementById("orders").innerHTML=html;
-}
-
-function renderAllOrdersTable(){
-  const q=document.getElementById("searchInput").value.trim().toLowerCase();
-  let list=[...orders].filter(o=>o.status!=="deleted");
-  if(q){list=list.filter(o=>[o.name,o.phone,o.pickupDate,o.pickupTime,o.createdAt,o.cakeType,o.cakeSize,o.sheetType,o.design,o.lettering,o.reviewEvent,o.price,o.orderText].join(" ").toLowerCase().includes(q));}
-  list.sort((a,b)=>((b.pickupDate||"")+(b.pickupTime||"")).localeCompare((a.pickupDate||"")+(a.pickupTime||"")));
-  const rows=list.map(o=>`<tr>
-    <td><button class="minus-btn" title="삭제" onclick="deleteOrder(event,'${o.id}')">-</button></td>
-    <td>${escapeHtml(dateLabel(o.pickupDate))}<br><span class="muted-line">${escapeHtml(o.pickupTime||'시간미정')}</span></td>
-    <td><b>${escapeHtml(o.name||'이름미정')}</b><br><span class="muted-line">${escapeHtml(o.phone||'')}</span></td>
-    <td>${escapeHtml(categoryOf(o))}<br><span class="muted-line">${escapeHtml(o.cakeSize||'-')} / ${escapeHtml(o.sheetType||'-')}</span></td>
-    <td>${won(priceNum(o))}</td>
-    <td>${escapeHtml(o.status||'new')}<br><span class="muted-line">${orderCreated(o)}</span></td>
-  </tr>`).join("");
-  return `<div class="history-card">
-    <div class="view-title">전체 주문내역 <span>${list.length}건</span></div>
-    <div class="small" style="margin-bottom:10px">픽업날짜, 주문자, 종류, 금액을 한 번에 확인하고 왼쪽 - 버튼으로 삭제할 수 있어요.</div>
-    <div class="history-scroll"><table class="history-table"><thead><tr><th>삭제</th><th>픽업</th><th>주문자</th><th>케이크</th><th>금액</th><th>상태</th></tr></thead><tbody>${rows||'<tr><td colspan="6" style="text-align:center;color:#927d78;padding:28px">전체 주문내역이 없습니다.</td></tr>'}</tbody></table></div>
-  </div>`;
-}
-
-function renderCalendar(){
-  const y=calendarMonth.getFullYear(), m=calendarMonth.getMonth();
-  document.getElementById("calendarTitle").textContent=`${y}년 ${m+1}월 주문 달력`;
-  const grid=document.getElementById("calendarGrid");
-  const names=["일","월","화","수","목","금","토"];
-  let html=names.map(n=>`<div class="dayname">${n}</div>`).join("");
-  const first=new Date(y,m,1), last=new Date(y,m+1,0);
-  for(let i=0;i<first.getDay();i++) html+=`<button class="cal-day blank"></button>`;
-  for(let d=1;d<=last.getDate();d++){
-    const iso=`${y}-${pad(m+1)}-${pad(d)}`;
-    const list=orders.filter(o=>o.pickupDate===iso && isActive(o));
-    const total=list.reduce((s,o)=>s+priceNum(o),0);
-    html+=`<button class="cal-day ${iso===todayISO()?'today':''} ${iso===selectedCalendarDate?'selected':''}" onclick="selectCalendarDate('${iso}')">
-      <span class="cal-num">${d}</span><br>${list.length?`<span class="cal-count">${list.length}건</span><span class="cal-price">${won(total)}</span>`:""}
-    </button>`;
-  }
-  grid.innerHTML=html;
-  renderCalendarDetail();
-}
-function moveMonth(delta){calendarMonth.setMonth(calendarMonth.getMonth()+delta);selectedCalendarDate="";renderCalendar()}
-function selectCalendarDate(iso){selectedCalendarDate=iso;renderCalendar()}
-function renderCalendarDetail(){
-  const box=document.getElementById("calendarDetail");
-  if(!selectedCalendarDate){box.innerHTML=`<div class="small">달력에서 날짜를 누르면 해당일 주문을 이름과 간단한 내용으로 볼 수 있어요.</div>`;return}
-  const list=orders.filter(o=>o.pickupDate===selectedCalendarDate && isActive(o)).sort(sortByPickup);
-  box.innerHTML=`<div class="section-title" style="margin:0 0 8px">${dateLabel(selectedCalendarDate)} <span>${list.length}건</span></div>`+
-    (list.length?list.map(o=>`<div class="small" style="padding:8px 0;border-top:1px dashed #eaded8"><b>${escapeHtml(o.pickupTime||"시간미정")} ${escapeHtml(o.name||"이름미정")}</b> · ${escapeHtml(categoryOf(o))} / ${escapeHtml(o.cakeSize||"-")} · ${won(priceNum(o))}</div>`).join(""):`<div class="empty">해당 날짜 주문이 없습니다.</div>`);
-}
-
-function orderCard(o,newFlag,searchFlag=false){
-  const price=priceNum(o);
-  const reviewJoined=(o.reviewEvent||"").includes("리뷰") && !(o.reviewEvent||"").includes("해당");
-  return `<article class="order ${newFlag?'new':''} ${searchFlag?'search-result':''}">
-    <div class="order-head" onclick="openDetail('${o.id}')">
-      <div class="time">${escapeHtml(o.pickupTime||"미정")}</div>
-      <div class="name">${escapeHtml(o.name||"이름미정")}</div>
-      ${reviewJoined?'<div class="badge review-badge">리뷰</div>':''}
-      ${newFlag?'<div class="badge new-badge">NEW</div>':''}
-      ${price?`<div class="badge price">${won(price)}</div>`:''}
-    </div>
-    <div class="meta">
-      ${escapeHtml(dateLabel(o.pickupDate))} · ${escapeHtml(categoryOf(o))} / ${escapeHtml(o.cakeSize||"-")} / ${escapeHtml(o.sheetType||"-")}<br>
-      ${escapeHtml(o.phone||"")} ${isPastPickup(o)?'· 지난 픽업':''}
-      ${searchFlag?`<div class="muted-line">주문 접수: ${orderCreated(o)} · 상태: ${escapeHtml(o.status||"new")}</div>`:''}
-    </div>
-    <div class="summary-actions">
-      <button class="btn soft" onclick="openDetail('${o.id}',event)">상세보기</button>
-    </div>
-    <div class="detail" id="detail-${o.id}">
-<b>픽업</b> : ${escapeHtml(o.pickupText||((o.pickupDate||"")+" "+(o.pickupTime||"")))} 
+function orderCard(o,newFlag,searchFlag=false){const price=priceNum(o);const reviewJoined=(o.reviewEvent||"").includes("리뷰")&&!(o.reviewEvent||"").includes("해당");const detailOpen=openedDetails.has(o.id);const editOpen=openedEditors.has(o.id);return `<article class="order ${detailOpen?'detail-open':''} ${newFlag?'new':''} ${searchFlag?'search-result':''}" onclick="toggleDetail('${o.id}',event)"><button class="delete-x" title="삭제" onclick="deleteOrder(event,'${o.id}')">×</button><div class="order-head"><div class="time-stack"><div class="time">${escapeHtml(o.pickupTime||"미정")}</div><div class="time-badges">${reviewJoined?'<div class="badge review-badge">리뷰</div>':''}${price?`<div class="badge price">${won(price)}</div>`:''}</div></div><div class="name-row"><div class="name">${escapeHtml(o.name||"이름미정")}</div>${newFlag?'<div class="badge new-badge">NEW</div>':''}</div></div><div class="meta">${escapeHtml(dateLabel(o.pickupDate))} · ${escapeHtml(categoryOf(o))} / ${escapeHtml(o.cakeSize||"-")} / ${escapeHtml(o.sheetType||"-")}<br>${escapeHtml(o.phone||"")} ${isPastPickup(o)?'· 지난 픽업':''}${searchFlag?`<div class="muted-line">주문 접수: ${orderCreated(o)} · 상태: ${escapeHtml(o.status||"new")}</div>`:''}</div>${newFlag?`<button class="confirm-mini" onclick="confirmOrder(event,'${o.id}')">확인완료</button>`:""}<button class="edit-mini" onclick="showEdit(event,'${o.id}')">주문서 수정</button><div class="detail ${detailOpen?'show':''}" id="detail-${o.id}"><b>픽업</b> : ${escapeHtml(o.pickupText||((o.pickupDate||"")+" "+(o.pickupTime||""))) }
 <b>가격</b> : ${won(price)}
-<b>디자인</b> : ${escapeHtml(o.design||"-")}
-<b>레터링</b> : ${escapeHtml(o.lettering||"-")}
-<b>리뷰 이벤트</b> : ${escapeHtml(o.reviewEvent||"-")}
-<b>접수시간</b> : ${orderCreated(o)}
 
 <b>원본 주문서</b>
-${escapeHtml(o.orderText||"")}
-      <div class="photoBox">
-        <div class="photoTop">
-          <div>
-            <div class="photoTitle">📷 원하는 스타일 사진</div>
-            <div class="photoHint">사진추가를 누르면 이 주문자 참고 이미지를 저장해서 상세보기에서 바로 확인할 수 있어요.</div>
-          </div>
-          <div class="photoBtns">
-            <button class="btn gold" onclick="chooseOrderPhoto(event,'${o.id}')">사진추가</button>
-            <button class="btn soft" onclick="removeOrderPhoto(event,'${o.id}')">사진삭제</button>
-          </div>
-        </div>
-        <input type="file" id="photoInput-${o.id}" accept="image/*" style="display:none" onchange="saveOrderPhoto(event,'${o.id}')">
-        <div class="photoPreview" id="photoPreview-${o.id}">${photoPreviewHtml(o.id)}</div>
-      </div>
-      <div class="actions">
-        ${newFlag?`<button class="btn green" onclick="confirmOrder(event,'${o.id}')">확인완료</button>`:""}
-        <button class="btn primary" onclick="showEdit(event,'${o.id}')">주문서 확인/수정</button>
-        <button class="btn soft" onclick="closeDetail('${o.id}',event)">상세보기 닫기</button>
-        <button class="btn danger" onclick="deleteOrder(event,'${o.id}')">주문 삭제</button>
-      </div>
-      <div class="editBox" id="edit-${o.id}">
-        <div class="editGrid">
-          <input id="name-${o.id}" value="${attr(o.name)}" placeholder="성함">
-          <input id="phone-${o.id}" value="${attr(o.phone)}" placeholder="연락처">
-          <input id="date-${o.id}" type="date" value="${attr(o.pickupDate)}">
-          <input id="time-${o.id}" type="time" value="${attr(o.pickupTime)}">
-          <input id="price-${o.id}" inputmode="numeric" value="${attr(o.price||o.amount)}" placeholder="가격 입력 예: 49000">
-          <input id="type-${o.id}" value="${attr(o.cakeType)}" placeholder="카테고리/케이크 종류">
-          <input id="size-${o.id}" value="${attr(o.cakeSize)}" placeholder="사이즈">
-          <input id="sheet-${o.id}" value="${attr(o.sheetType)}" placeholder="크림맛/시트">
-          <input id="review-${o.id}" class="full" value="${attr(o.reviewEvent)}" placeholder="리뷰 이벤트">
-          <textarea class="full" id="design-${o.id}" placeholder="디자인">${escapeHtml(o.design||"")}</textarea>
-          <textarea class="full" id="lettering-${o.id}" placeholder="레터링">${escapeHtml(o.lettering||"")}</textarea>
-        </div>
-        <div class="actions">
-          <button class="btn primary full" onclick="saveEdit(event,'${o.id}')">저장하기</button>
-          <button class="btn soft full" onclick="showEdit(event,'${o.id}')">수정창 닫기</button>
-        </div>
-      </div>
-    </div>
-  </article>`;
-}
-function toggleDetail(id){const el=document.getElementById("detail-"+id);if(el)el.classList.toggle("show")}
-function openDetail(id,e){if(e)e.stopPropagation();const el=document.getElementById("detail-"+id);if(el)el.classList.add("show")}
-function closeDetail(id,e){if(e)e.stopPropagation();const el=document.getElementById("detail-"+id);if(el)el.classList.remove("show")}
-function showEdit(e,id){e.stopPropagation();const box=document.getElementById("edit-"+id);if(box)box.classList.toggle("show")}
-function photoKey(id){return "EUROPE_CAKE_ORDER_PHOTO_"+id}
-function getOrderPhoto(id){try{return localStorage.getItem(photoKey(id))||""}catch(e){return ""}}
-function photoPreviewHtml(id){const src=getOrderPhoto(id);return src?`<img src="${src}" alt="주문 참고 사진">`:`사진추가를 누르면 참고 사진이 여기에 표시됩니다.`}
-function refreshPhotoPreview(id){const el=document.getElementById("photoPreview-"+id);if(el)el.innerHTML=photoPreviewHtml(id)}
-function chooseOrderPhoto(e,id){e.stopPropagation();const input=document.getElementById("photoInput-"+id);if(input)input.click()}
-function removeOrderPhoto(e,id){e.stopPropagation();if(!confirm("이 주문의 참고 사진을 삭제할까요?"))return;try{localStorage.removeItem(photoKey(id))}catch(err){}refreshPhotoPreview(id)}
-function saveOrderPhoto(e,id){
-  e.stopPropagation();
-  const file=e.target.files&&e.target.files[0];
-  if(!file)return;
-  if(!file.type.startsWith("image/")){alert("이미지 파일만 추가할 수 있어요.");return;}
-  const reader=new FileReader();
-  reader.onload=function(ev){
-    const img=new Image();
-    img.onload=function(){
-      const max=1200;
-      let w=img.width,h=img.height;
-      if(w>h&&w>max){h=Math.round(h*max/w);w=max}else if(h>=w&&h>max){w=Math.round(w*max/h);h=max}
-      const canvas=document.createElement("canvas");canvas.width=w;canvas.height=h;
-      const ctx=canvas.getContext("2d");ctx.drawImage(img,0,0,w,h);
-      const data=canvas.toDataURL("image/jpeg",0.82);
-      try{localStorage.setItem(photoKey(id),data);refreshPhotoPreview(id);alert("참고 사진이 추가되었습니다.")}
-      catch(err){alert("사진 용량이 커서 저장하지 못했어요. 더 작은 사진으로 다시 넣어주세요.")}
-    };
-    img.src=ev.target.result;
-  };
-  reader.readAsDataURL(file);
+${escapeHtml(o.orderText||"")}</div><div class="editBox ${editOpen?'show':''}" id="edit-${o.id}" onclick="event.stopPropagation()"><div class="editGrid"><div class="edit-label">성함</div><input id="name-${o.id}" value="${attr(o.name)}" placeholder="성함"><div class="edit-label">연락처</div><input id="phone-${o.id}" value="${attr(o.phone)}" placeholder="연락처"><div class="two"><div><div class="edit-label">픽업 날짜</div><input id="date-${o.id}" type="date" value="${attr(o.pickupDate)}"></div><div><div class="edit-label">픽업 시간</div><select id="time-${o.id}">${timeOptions(o.pickupTime||"")}</select></div></div><div class="edit-label">가격</div><input id="price-${o.id}" inputmode="numeric" value="${attr(o.price||o.amount)}" placeholder="가격 입력 예: 49000"><div class="edit-label">케이크 종류</div><input id="type-${o.id}" value="${attr(o.cakeType)}" placeholder="케이크 종류"><div class="edit-label">사이즈</div><input id="size-${o.id}" value="${attr(o.cakeSize)}" placeholder="사이즈"><div class="edit-label">크림맛</div><input id="sheet-${o.id}" value="${attr(o.sheetType)}" placeholder="크림맛"></div><div class="actions"><button class="btn primary full" onclick="saveEdit(event,'${o.id}')">저장하기</button><button class="btn soft full" onclick="showEdit(event,'${o.id}')">수정창 닫기</button></div></div></article>`}
+function toggleDetail(id,event){if(event)event.stopPropagation();if(openedEditors.has(id))return;const el=document.getElementById("detail-"+id);if(!el)return;const card=el.closest(".order");if(openedDetails.has(id)){openedDetails.delete(id);el.classList.remove("show");if(card)card.classList.remove("detail-open")}else{openedDetails.add(id);el.classList.add("show");if(card)card.classList.add("detail-open")}}
+function showEdit(event,id){if(event)event.stopPropagation();const box=document.getElementById("edit-"+id);if(!box)return;const detail=document.getElementById("detail-"+id);const card=box.closest(".order");if(openedEditors.has(id)){openedEditors.delete(id);box.classList.remove("show")}else{openedEditors.add(id);box.classList.add("show");openedDetails.delete(id);if(detail)detail.classList.remove("show");if(card)card.classList.remove("detail-open")}}
+
+function buildOrderTextFromPatch(current,patch){
+  const header=(String(current.orderText||"").split("\n").find(line=>line.includes("주문서"))||"❤️유럽케이크 기본 주문서❤️").trim();
+  const design=current.design||"기본";
+  const lettering=current.lettering||"없음";
+  const review=current.reviewEvent||"해당사항없음";
+  return `${header}\n\n❤️ 성함 : ${patch.name||""}\n❤️ 연락처 : ${patch.phone||""}\n❤️ 픽업 날짜/시간 : ${patch.pickupText||""}\n❤️ 케이크 종류 : ${patch.cakeType||""}\n❤️ 케이크 사이즈 : ${patch.cakeSize||""}\n❤️ 크림맛 선택 : ${patch.sheetType||""}\n❤️ 색감 또는 분위기, 디자인 : ${design}\n❤️ 레터링 문구 : ${lettering}\n❤️ 리뷰 이벤트 : ${review}\n❤️ 가격 : ${patch.price?won(patch.price):"0원"}`;
 }
 
-async function patchOrder(id,patch){
-  const res=await fetch(API_URL+"/orders/"+id,{method:"PATCH",headers:{"Content-Type":"application/json","x-admin-token":getToken()},body:JSON.stringify(patch)});
-  const data=await res.json().catch(()=>({}));
-  if(!res.ok)throw new Error(data.error||"저장 실패");
-  const idx=orders.findIndex(o=>o.id===id);
-  if(idx>=0)orders[idx]=data.order||{...orders[idx],...patch};
-  buildCategoryFilter();render();
-}
-async function confirmOrder(e,id){e.stopPropagation();try{await patchOrder(id,{status:"confirmed",confirmedAt:new Date().toISOString()})}catch(err){alert(err.message)}}
-async function completeOrder(e,id){
-  e.stopPropagation();
-  if(!confirm("목록에서 숨김 처리할까요?\n원본 데이터는 삭제하지 않고 픽업완료 상태로 보관됩니다."))return;
-  try{await patchOrder(id,{status:"completed",completedAt:new Date().toISOString()})}catch(err){alert(err.message)}
-}
-async function saveEdit(e,id){
-  e.stopPropagation();
-  const pickupDate=document.getElementById("date-"+id).value;
-  const pickupTime=document.getElementById("time-"+id).value;
-  const patch={
-    status:"confirmed",
-    name:document.getElementById("name-"+id).value,
-    phone:document.getElementById("phone-"+id).value,
-    pickupDate,pickupTime,
-    pickupText:pickupDate+" "+pickupTime,
-    price:document.getElementById("price-"+id).value,
-    cakeType:document.getElementById("type-"+id).value,
-    cakeSize:document.getElementById("size-"+id).value,
-    sheetType:document.getElementById("sheet-"+id).value,
-    reviewEvent:document.getElementById("review-"+id).value,
-    design:document.getElementById("design-"+id).value,
-    lettering:document.getElementById("lettering-"+id).value,
-    updatedAt:new Date().toISOString()
-  };
-  try{await patchOrder(id,patch);alert("저장 완료되었습니다.")}catch(err){alert(err.message)}
-}
+async function patchOrder(id,patch){const res=await fetch(API_URL+"/orders/"+encodeURIComponent(id),{method:"PATCH",headers:{"Content-Type":"application/json","x-admin-token":getToken()},body:JSON.stringify(patch)});const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data.error||"저장 실패");const idx=orders.findIndex(o=>o.id===id);if(idx>=0)orders[idx]=data.order||{...orders[idx],...patch};saveCachedOrders();buildCategoryFilter();render();return data.order}
+async function confirmOrder(event,id){if(event)event.stopPropagation();try{await patchOrder(id,{status:"confirmed",confirmedAt:new Date().toISOString()});showToast("확인 완료되었습니다")}catch(err){alert(err.message)}}
+async function saveEdit(event,id){if(event)event.stopPropagation();const current=orders.find(o=>o.id===id)||{};const pickupDate=document.getElementById("date-"+id).value;const pickupTime=document.getElementById("time-"+id).value;const patch={status:"confirmed",name:document.getElementById("name-"+id).value,phone:document.getElementById("phone-"+id).value,pickupDate,pickupTime,pickupText:pickupDate+" "+pickupTime,price:document.getElementById("price-"+id).value,cakeType:document.getElementById("type-"+id).value,cakeSize:document.getElementById("size-"+id).value,sheetType:document.getElementById("sheet-"+id).value,design:current.design,lettering:current.lettering,reviewEvent:current.reviewEvent,updatedAt:new Date().toISOString()};patch.orderText=buildOrderTextFromPatch(current,patch);try{await patchOrder(id,patch);openedEditors.delete(id);openedDetails.add(id);showToast("저장 완료되었습니다");render()}catch(err){alert(err.message)}}
+async function deleteOrder(event,id){if(event)event.stopPropagation();if(!confirm("주문서를 삭제하겠습니까?\n삭제하면 진행 목록에서 사라집니다."))return;try{const res=await fetch(API_URL+"/orders/"+encodeURIComponent(id),{method:"DELETE",headers:{"x-admin-token":getToken()}});const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data.message||data.error||"삭제 실패");openedDetails.delete(id);openedEditors.delete(id);const idx=orders.findIndex(o=>o.id===id);if(idx>=0)orders[idx]={...orders[idx],status:"deleted",deletedAt:new Date().toISOString()};saveCachedOrders();buildCategoryFilter();render();showToast("삭제되었습니다")}catch(err){alert(err.message)}}
 
-async function deleteOrder(e,id){
-  if(e)e.stopPropagation();
-  if(!confirm("이 주문을 삭제할까요?\n삭제하면 진행 목록에서 사라집니다."))return;
-  try{
-    const res=await fetch(API_URL+"/orders/"+encodeURIComponent(id),{
-      method:"DELETE",
-      headers:{"x-admin-token":getToken()}
-    });
-    const data=await res.json().catch(()=>({}));
-    if(!res.ok)throw new Error(data.message||data.error||"삭제 실패");
-    const idx=orders.findIndex(o=>o.id===id);
-    if(idx>=0)orders[idx]={...orders[idx],status:"deleted",deletedAt:new Date().toISOString()};
-    buildCategoryFilter();
-    render();
-    showToast("삭제되었습니다");
-  }catch(err){
-    alert(err.message);
-  }
-}
-
-async function copyText(e,id){
-  e.stopPropagation();
-  const o=orders.find(x=>x.id===id);if(!o)return;
-  const text=o.orderText||`성함: ${o.name||""}\n픽업: ${o.pickupDate||""} ${o.pickupTime||""}\n종류: ${o.cakeType||""}\n사이즈: ${o.cakeSize||""}\n가격: ${won(priceNum(o))}`;
-  try{await navigator.clipboard.writeText(text);alert("주문서를 복사했어요.")}catch(err){alert("복사에 실패했어요.")}
-}
+function copyText(event,id){if(event)event.stopPropagation();const o=orders.find(x=>x.id===id);if(!o)return;const text=o.orderText||`성함: ${o.name||""}\n픽업: ${o.pickupDate||""} ${o.pickupTime||""}\n종류: ${o.cakeType||""}\n사이즈: ${o.cakeSize||""}\n가격: ${won(priceNum(o))}`;navigator.clipboard.writeText(text).then(()=>showToast("주문서를 복사했어요.")).catch(()=>alert("복사에 실패했어요."))}
 
 document.getElementById("adminToken").value=getToken();
-if(getToken()){showApp();loadOrders();}
-else{showLogin();}
+if(getToken()){showApp();loadCachedOrders();loadOrders()}else{showLogin()}
 </script>
 </body>
 </html>
