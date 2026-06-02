@@ -753,7 +753,7 @@ body.admin-mode .time-area{
       </div>
 
       <div class="actions customer-only">
-        <button class="action-btn btn-submit" id="copyBtn" onclick="copyOrder()">주문서 복사</button>
+        <button class="action-btn btn-submit" id="copyBtn" onclick="copyOrder()">주문서 저장</button>
         <button class="action-btn btn-kakao" onclick="window.open('https://pf.kakao.com/_cxkzzX/chat','_blank')">카카오톡 채팅방 열기</button>
       </div>
     </div>
@@ -1385,16 +1385,38 @@ function makeClientOrderId(order){
   return "yc_" + Date.now() + "_" + Math.abs(hash);
 }
 async function saveOrderSilently(order){
-  const payload = {
+  // 서버에는 반드시 기존 주문관리와 동일한 형식으로 저장합니다.
+  // pickupTime은 24시간 HH:MM 값(예: 12:00, 17:30)으로만 전송합니다.
+  const cleanOrder = {
     ...order,
+    pickupTime:String(order.pickupTime || "").trim(),
+    pickupText:pickupText(),
+    orderText:buildOrderText()
+  };
+  const payload = {
+    ...cleanOrder,
     status:"new",
-    clientOrderId:makeClientOrderId(order),
+    clientOrderId:makeClientOrderId(cleanOrder),
     createdAtClient:new Date().toISOString()
   };
-  return await apiRequest("/orders", {
-    method:"POST",
-    body:JSON.stringify(payload)
-  });
+
+  try{
+    return await apiRequest("/orders", {
+      method:"POST",
+      body:JSON.stringify(payload)
+    });
+  }catch(firstError){
+    // 일부 서버 코드가 추가 필드(clientOrderId/status 등)를 엄격하게 막는 경우를 대비해
+    // 기존 주문서 기본 필드만 한 번 더 저장 시도합니다.
+    try{
+      return await apiRequest("/orders", {
+        method:"POST",
+        body:JSON.stringify(cleanOrder)
+      });
+    }catch(secondError){
+      throw firstError;
+    }
+  }
 }
 async function copyOrder(){
   const order = buildOrderData();
@@ -1445,7 +1467,7 @@ function showCopied(){
     btn.textContent="복사 완료";
     setTimeout(()=>{btn.classList.remove("copied"); btn.textContent=old;},2300);
   }
-  showToast("주문서가 복사되었습니다. 카카오톡 채팅방을 열어 주문서를 붙여넣기 해주세요.");
+  showToast("주문서가 복사되었습니다. 카카오톡 채팅방을 열어 해당 주문서를 붙여넣어주세요.");
   alert("주문서가 복사되었습니다.\n카카오톡 채팅방을 열어 주문서를 붙여넣기 해주세요 😊");
 }
 function showToast(msg){

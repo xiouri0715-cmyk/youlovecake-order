@@ -30,6 +30,10 @@ button,input,textarea,select{font-family:inherit}button{border:0;cursor:pointer;
 .nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);max-width:760px;width:100%;background:rgba(255,255,255,.94);border-top:1px solid #eaded8;display:grid;grid-template-columns:repeat(6,1fr);gap:7px;padding:8px 10px 12px;backdrop-filter:blur(14px);z-index:50}.nav button{font-size:12px;padding:10px 4px;border-radius:14px;font-weight:950}.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(30px);background:#3f3131;color:#fff;padding:12px 18px;border-radius:999px;font-size:13px;font-weight:850;z-index:999;opacity:0;transition:.28s ease;box-shadow:0 12px 30px rgba(0,0,0,.16)}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .hidden{display:none!important}.app.hidden{display:none!important}.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(circle at 20% 10%,rgba(234,210,214,.82),transparent 32%),radial-gradient(circle at 88% 18%,rgba(184,147,105,.26),transparent 28%),linear-gradient(180deg,#fbf6f3,#fffaf7)}.login-panel{width:100%;max-width:430px;background:rgba(255,253,251,.94);border:1px solid var(--line);border-radius:32px;padding:30px 24px;box-shadow:0 24px 70px rgba(74,42,36,.12);text-align:center;position:relative;overflow:hidden}.login-panel:before{content:"";position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,transparent,var(--gold),var(--wine),var(--gold),transparent);opacity:.55}.login-logo{font-size:12px;letter-spacing:.28em;color:var(--gold);font-weight:900;text-transform:uppercase}.login-title{font-size:30px;font-weight:950;margin:10px 0 5px;letter-spacing:-1.1px}.login-sub{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:22px}.login-panel input{text-align:center;font-size:16px;padding:15px;border-radius:18px}.login-panel .btn{width:100%;margin-top:10px;padding:15px;border-radius:18px}.login-ok{display:none;margin-top:14px;background:#fff5e6;border:1px solid #ead49a;color:#8a5c1d;border-radius:16px;padding:12px;font-weight:900}.login-ok.show{display:block;animation:fade .28s ease both}
 @media(max-width:430px){.wrap{padding-left:10px;padding-right:10px}.title-row h1{font-size:19px}.login-title{font-size:25px}.panel-toggle{padding:9px 10px}.summary{gap:6px}.summary div{min-height:76px;padding:10px 3px}.summary b{font-size:22px}.summary b.money{font-size:14px}.summary span{font-size:10px}.toolbar{grid-template-columns:1fr}.toolbar .wide{grid-column:1}.actions,.actions.three{grid-template-columns:1fr 1fr}.actions .full{grid-column:1/3}.editGrid .two{grid-template-columns:1fr 1fr}.cal-day{min-height:54px;border-radius:13px;padding:6px 4px}.cal-price{display:none}.history-card{padding:10px}.nav{grid-template-columns:repeat(6,1fr);gap:5px}.nav button{font-size:10px}.btn{min-height:44px}.order{padding:12px 34px 38px 10px}.badge.price{display:inline-flex}.editGrid .two{grid-template-columns:1fr}.editGrid input,.editGrid select{font-size:15px;min-height:50px}}
+
+.close-admin-card{background:linear-gradient(135deg,#fffdfb,#fff7f6);border:1px solid var(--line);border-radius:24px;padding:16px;margin:14px 0;box-shadow:var(--shadow)}
+.close-admin-card h2{font-size:18px;margin:0 0 6px;font-weight:950;color:var(--wine);letter-spacing:-.5px}.close-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.close-grid .full{grid-column:1/3}.close-status{margin-top:10px;background:#fff;border:1px dashed #eaded8;border-radius:16px;padding:12px;font-size:12px;color:#76564e;line-height:1.6}.close-admin-card select,.close-admin-card input{background:#fff}
+@media(max-width:430px){.close-grid{grid-template-columns:1fr}.close-grid .full{grid-column:1}}
 </style>
 </head>
 <body>
@@ -86,6 +90,27 @@ button,input,textarea,select{font-family:inherit}button{border:0;cursor:pointer;
     <div class="calendar-detail" id="calendarDetail"><div class="small">달력 날짜를 누르면 해당 날짜 주문만 표시됩니다.</div></div>
   </div>
 
+
+  <div class="close-admin-card" id="closureAdminCard">
+    <h2>날짜/시간 마감 설정</h2>
+    <div class="small">주문서와 동일하게 오전/오후를 고르고 30분 단위로 지정시간을 마감할 수 있습니다. 저장 즉시 주문서 달력과 시간 선택창에 반영됩니다.</div>
+    <div class="close-grid">
+      <input id="closureDate" type="date" onchange="onClosureDateChange()">
+      <button class="btn gold" onclick="closeAdminDate()">해당일 마감</button>
+      <button class="btn soft" onclick="openAdminDate()">해당일 마감해제</button>
+      <select id="closurePeriod" onchange="renderClosureClockOptions()">
+        <option value="">오전/오후</option>
+        <option value="AM">오전</option>
+        <option value="PM">오후</option>
+      </select>
+      <select id="closureClock"><option value="">시간 선택</option></select>
+      <button class="btn danger" onclick="closeAdminTime()">지정시간 마감</button>
+      <button class="btn soft" onclick="openAdminTime()">지정시간 마감해제</button>
+      <button class="btn primary full" onclick="refreshClosuresFromServer(true)">마감정보 새로고침</button>
+    </div>
+    <div class="close-status" id="closureStatus">마감 정보를 불러오는 중...</div>
+  </div>
+
   <div id="orders"></div>
 </div>
 
@@ -111,6 +136,24 @@ calendarMonth.setDate(1);
 let selectedCalendarDate = "";
 let openedDetails = new Set();
 let openedEditors = new Set();
+let closures = {dates:{},times:{}};
+
+function normalizeClosures(data){return {dates:(data&&typeof data.dates==="object"&&data.dates)||{},times:(data&&typeof data.times==="object"&&data.times)||{}}}
+function isDateClosedAdmin(date){return !!(closures.dates&&closures.dates[date])}
+function isTimeClosedAdmin(date,time){return !!(closures.times&&closures.times[date]&&closures.times[date][time])}
+async function adminApi(path,options={}){const res=await fetch(API_URL+path,{...options,headers:{"Content-Type":"application/json","x-admin-token":getToken(),...(options.headers||{})}});const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data.message||data.error||"요청 처리에 실패했습니다.");return data}
+function timeText(t){if(!t)return"";const [h,m]=String(t).split(":").map(Number);const p=h<12?"오전":"오후";const hh=h%12===0?12:h%12;return `${p} ${hh}시 ${pad(m)}분`}
+function makeClockOptions(){let arr=[];[12,1,2,3,4,5,6,7,8,9,10,11].forEach(h=>["00","30"].forEach(m=>arr.push({value:`${pad(h)}:${m}`,label:`${h}시 ${m}분`})));return arr}
+function convertPeriodClock(period,clock){if(!period||!clock)return"";let [h,m]=clock.split(":").map(Number);if(period==="AM")h=h===12?0:h;if(period==="PM")h=h===12?12:h+12;return `${pad(h)}:${pad(m)}`}
+function renderClosureClockOptions(){const p=document.getElementById("closurePeriod")?.value||"";const sel=document.getElementById("closureClock");if(!sel)return;sel.innerHTML='<option value="">시간 선택</option>'+(p?makeClockOptions().map(o=>`<option value="${o.value}">${o.label}</option>`).join(""):"")}
+function updateClosureStatus(){const date=document.getElementById("closureDate")?.value||"";const box=document.getElementById("closureStatus");if(!box)return;if(!date){box.textContent="마감할 날짜를 선택해주세요.";return}const times=Object.keys((closures.times&&closures.times[date])||{}).sort();box.innerHTML=`<b>${dateLabel(date)}</b><br>해당일 상태: ${isDateClosedAdmin(date)?"마감":"예약 가능"}<br>지정시간 마감: ${times.length?times.map(timeText).join(", "):"없음"}`}
+async function refreshClosuresFromServer(show){try{const data=await adminApi("/closures");closures=normalizeClosures(data);updateClosureStatus();if(show)showToast("마감정보를 새로고침했습니다")}catch(e){updateClosureStatus();if(show)alert(e.message)}}
+function onClosureDateChange(){updateClosureStatus()}
+async function closeAdminDate(){const date=document.getElementById("closureDate").value;if(!date){alert("날짜를 먼저 선택해주세요.");return}if(!confirm("해당일을 마감하시겠습니까?"))return;try{await adminApi("/closures/date",{method:"POST",body:JSON.stringify({date})});await refreshClosuresFromServer(false);showToast("해당일 마감 완료")}catch(e){alert(e.message)}}
+async function openAdminDate(){const date=document.getElementById("closureDate").value;if(!date){alert("날짜를 먼저 선택해주세요.");return}if(!confirm("해당일 마감을 해제하시겠습니까?"))return;try{await adminApi("/closures/date",{method:"DELETE",body:JSON.stringify({date})});await refreshClosuresFromServer(false);showToast("해당일 마감해제 완료")}catch(e){alert(e.message)}}
+function selectedClosureTime(){const p=document.getElementById("closurePeriod").value;const c=document.getElementById("closureClock").value;return convertPeriodClock(p,c)}
+async function closeAdminTime(){const date=document.getElementById("closureDate").value;const time=selectedClosureTime();if(!date){alert("날짜를 먼저 선택해주세요.");return}if(!time){alert("오전/오후와 시간을 선택해주세요.");return}if(!confirm(`${dateLabel(date)} ${timeText(time)}을 마감하시겠습니까?`))return;try{await adminApi("/closures/time",{method:"POST",body:JSON.stringify({date,time})});await refreshClosuresFromServer(false);showToast("지정시간 마감 완료")}catch(e){alert(e.message)}}
+async function openAdminTime(){const date=document.getElementById("closureDate").value;const time=selectedClosureTime();if(!date){alert("날짜를 먼저 선택해주세요.");return}if(!time){alert("오전/오후와 시간을 선택해주세요.");return}if(!confirm(`${dateLabel(date)} ${timeText(time)} 마감을 해제하시겠습니까?`))return;try{await adminApi("/closures/time",{method:"DELETE",body:JSON.stringify({date,time})});await refreshClosuresFromServer(false);showToast("지정시간 마감해제 완료")}catch(e){alert(e.message)}}
 
 function pad(n){return String(n).padStart(2,"0")}
 function todayISO(){const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`}
@@ -136,7 +179,7 @@ function loadCachedOrders(){try{const cached=JSON.parse(localStorage.getItem(CAC
 function saveCachedOrders(){try{localStorage.setItem(CACHE_KEY,JSON.stringify(orders))}catch(e){}}
 function saveTokenAndLoad(){const token=document.getElementById("adminToken").value.trim();if(!token){alert("관리자 비밀번호를 입력해주세요.");return}localStorage.setItem(TOKEN_KEY,token);document.getElementById("loginOk")?.classList.add("show");showToast("로그인되었습니다");showApp();loadOrders()}
 function logout(){if(!confirm("저장된 관리자 비밀번호를 지울까요?"))return;localStorage.removeItem(TOKEN_KEY);document.getElementById("adminToken").value="";showLogin()}
-async function loadOrders(){const token=getToken();if(!token){showLogin();return}showApp();if(!orders.length)loadCachedOrders();try{const res=await fetch(API_URL+"/orders",{headers:{"x-admin-token":token}});const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data.error||"주문을 불러오지 못했습니다.");orders=(data.orders||[]).map(o=>({...o,status:o.status||"new"}));saveCachedOrders();buildCategoryFilter();render()}catch(e){if(!orders.length){alert(e.message);showLogin()}else{showToast("저장된 주문을 표시 중입니다")}}}
+async function loadOrders(){const token=getToken();if(!token){showLogin();return}showApp();if(!orders.length)loadCachedOrders();try{const res=await fetch(API_URL+"/orders",{headers:{"x-admin-token":token}});const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data.error||"주문을 불러오지 못했습니다.");orders=(data.orders||[]).map(o=>({...o,status:o.status||"new"}));saveCachedOrders();buildCategoryFilter();render();refreshClosuresFromServer(false)}catch(e){if(!orders.length){alert(e.message);showLogin()}else{showToast("저장된 주문을 표시 중입니다")}}}
 
 function isPastPickup(o){if(!o.pickupDate)return false;const today=todayISO();if(o.pickupDate<today)return true;if(o.pickupDate===today&&o.pickupTime&&toMinutes(o.pickupTime)<nowMinutes())return true;return false}
 function isCompleted(o){return o.status==="completed"||o.status==="done"||o.status==="deleted"||o.status==="pickedup"}
@@ -186,6 +229,10 @@ async function deleteOrder(event,id){if(event)event.stopPropagation();if(!confir
 
 function copyText(event,id){if(event)event.stopPropagation();const o=orders.find(x=>x.id===id);if(!o)return;const text=o.orderText||`성함: ${o.name||""}\n픽업: ${o.pickupDate||""} ${o.pickupTime||""}\n종류: ${o.cakeType||""}\n사이즈: ${o.cakeSize||""}\n가격: ${won(priceNum(o))}`;navigator.clipboard.writeText(text).then(()=>showToast("주문서를 복사했어요.")).catch(()=>alert("복사에 실패했어요."))}
 
+
+renderClosureClockOptions();
+const cd=document.getElementById("closureDate");if(cd&&!cd.value)cd.value=todayISO();
+updateClosureStatus();
 document.getElementById("adminToken").value=getToken();
 if(getToken()){showApp();loadCachedOrders();loadOrders()}else{showLogin()}
 </script>
