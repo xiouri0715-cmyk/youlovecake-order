@@ -268,6 +268,37 @@ button{border:0;cursor:pointer}
   padding:12px 14px;
 }
 
+.time-split-wrap{
+  display:grid;
+  grid-template-columns:.82fr 1.18fr;
+  gap:8px;
+}
+.time-period-select,.time-clock-select{
+  min-height:46px;
+  border:1px solid var(--line);
+  background:#FDFBF8;
+  color:#5d514c;
+  padding:12px 14px;
+  font-size:13px;
+  outline:none;
+}
+.time-period-select:focus,.time-clock-select:focus{
+  border-color:var(--gold);
+  background:#fff;
+  box-shadow:0 0 0 4px rgba(212,184,150,.12);
+}
+.time-period-select.active,.time-clock-select.active{
+  border-color:var(--wine);
+  background:rgba(122,27,46,.045);
+  color:var(--wine);
+  font-weight:700;
+}
+.time-clock-select:disabled{
+  background:#eee9e3;
+  color:#aaa;
+}
+@media (max-width:380px){.time-split-wrap{grid-template-columns:1fr 1fr;gap:7px}.time-period-select,.time-clock-select{font-size:12px;padding:11px 10px}}
+
 .must-read-card{
   margin-top:24px;
   background:linear-gradient(135deg,rgba(255,253,249,.98),rgba(248,245,240,.94));
@@ -629,11 +660,15 @@ body.admin-mode .time-area{
 
         <div class="time-area" id="timeArea">
           <label class="form-label" style="margin-top:12px;">픽업 시간</label>
-          <div class="time-dropdown-wrap customer-only">
-            <button type="button" class="time-display" id="timeDisplay" onclick="toggleTimeDropdown()">시간 선택</button>
-            <div class="dropdown-panel" id="timeDropdown">
-              <div class="time-list" id="timeGrid"></div>
-            </div>
+          <div class="time-split-wrap customer-only">
+            <select id="timePeriod" class="time-period-select" onchange="selectTimePeriod(this.value)">
+              <option value="">오전/오후</option>
+              <option value="AM">오전</option>
+              <option value="PM">오후</option>
+            </select>
+            <select id="timeClock" class="time-clock-select" onchange="selectTimeClock(this.value)" disabled>
+              <option value="">시간 선택</option>
+            </select>
           </div>
           <div class="time-grid admin-only" id="adminTimeGrid"></div>
         </div>
@@ -768,6 +803,7 @@ let currentMonth = new Date();
 currentMonth.setDate(1);
 let selectedDate = "";
 let selectedTime = "";
+let selectedPeriod = "";
 
 const sizeRules = {
   "기본": ["초미니", "미니", "1호", "2호"],
@@ -925,11 +961,8 @@ async function selectDate(iso){
     dateDisplay.textContent = formatDateLabel(iso);
     dateDisplay.classList.add("active");
   }
-  const timeDisplay = document.getElementById("timeDisplay");
-  if(timeDisplay){
-    timeDisplay.textContent = "시간 선택";
-    timeDisplay.classList.remove("active");
-  }
+  selectedPeriod = "";
+  syncTimeSplitControls();
   const dateDropdown = document.getElementById("dateDropdown");
   if(dateDropdown && !isAdminMode) dateDropdown.classList.remove("show");
   renderCalendar();
@@ -950,9 +983,95 @@ function makeTimeList(){
   }
   return arr;
 }
+function makeClockList(){
+  const arr = [];
+  [12,1,2,3,4,5,6,7,8,9,10,11].forEach(h=>{
+    ["00","30"].forEach(mm=>{
+      const value = `${String(h).padStart(2,"0")}:${mm}`;
+      const label = `${h}시 ${mm}분`;
+      arr.push({value,label});
+    });
+  });
+  return arr;
+}
+function convertPeriodClockToTime(period, clock){
+  if(!period || !clock) return "";
+  let [h,m] = clock.split(":").map(Number);
+  if(period === "AM") h = h === 12 ? 0 : h;
+  if(period === "PM") h = h === 12 ? 12 : h + 12;
+  return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
+}
+function periodClockFromTime(time){
+  if(!time) return {period:"", clock:""};
+  const [h,m] = time.split(":").map(Number);
+  const period = h < 12 ? "AM" : "PM";
+  const hour12 = h % 12 === 0 ? 12 : h % 12;
+  return {period, clock:`${String(hour12).padStart(2,"0")}:${String(m).padStart(2,"0")}`};
+}
+function syncTimeSplitControls(){
+  const periodSelect = document.getElementById("timePeriod");
+  const clockSelect = document.getElementById("timeClock");
+  if(!periodSelect || !clockSelect) return;
+  const current = periodClockFromTime(selectedTime);
+  const period = selectedPeriod || current.period || "";
+  periodSelect.value = period;
+  periodSelect.classList.toggle("active", !!period);
+  const clockValue = current.clock || "";
+  let html = `<option value="">시간 선택</option>`;
+  if(period){
+    html += makeClockList().map(t=>{
+      const realTime = convertPeriodClockToTime(period, t.value);
+      const closed = selectedDate && isTimeClosed(selectedDate, realTime);
+      const disabled = closed && !isAdminMode;
+      return `<option value="${t.value}" ${t.value===clockValue?'selected':''} ${disabled?'disabled':''}>${t.label}${closed?' 마감':''}</option>`;
+    }).join("");
+  }
+  clockSelect.innerHTML = html;
+  clockSelect.disabled = !period;
+  clockSelect.classList.toggle("active", !!selectedTime);
+}
+function selectTimePeriod(period){
+  if(!selectedDate){
+    showToast("먼저 날짜를 선택해주세요.");
+    const el = document.getElementById("timePeriod");
+    if(el) el.value = "";
+    return;
+  }
+  selectedPeriod = period;
+  selectedTime = "";
+  syncTimeSplitControls();
+  updatePreview();
+}
+function selectTimeClock(clock){
+  if(!selectedDate){
+    showToast("먼저 날짜를 선택해주세요.");
+    return;
+  }
+  if(!selectedPeriod){
+    showToast("오전/오후를 먼저 선택해주세요.");
+    return;
+  }
+  const time = convertPeriodClockToTime(selectedPeriod, clock);
+  if(!time){
+    selectedTime = "";
+    updatePreview();
+    return;
+  }
+  if(isTimeClosed(selectedDate,time)){
+    showToast("해당 시간은 마감되었습니다.");
+    selectedTime = "";
+    syncTimeSplitControls();
+    updatePreview();
+    return;
+  }
+  selectedTime = time;
+  syncTimeSplitControls();
+  updatePreview();
+}
 function renderTimeGrid(){
   const customerGrid = document.getElementById("timeGrid");
   const adminGrid = document.getElementById("adminTimeGrid");
+  syncTimeSplitControls();
   if(!selectedDate){
     if(customerGrid) customerGrid.innerHTML = "";
     if(adminGrid) adminGrid.innerHTML = "";
@@ -985,14 +1104,7 @@ function selectTime(time){
     return;
   }
   selectedTime = time;
-  const chosen = makeTimeList().find(t => t.value === time);
-  const timeDisplay = document.getElementById("timeDisplay");
-  if(timeDisplay){
-    timeDisplay.textContent = chosen ? chosen.label : "시간 선택";
-    timeDisplay.classList.add("active");
-  }
-  const timeDropdown = document.getElementById("timeDropdown");
-  if(timeDropdown) timeDropdown.classList.remove("show");
+  selectedPeriod = periodClockFromTime(time).period;
   renderTimeGrid();
   updatePreview();
 }
@@ -1202,7 +1314,7 @@ function validate(order){
   if(!order.pickupDate) return validationError("픽업 날짜를 선택해주세요.", dateEl);
   if(isDateClosed(order.pickupDate)) return validationError("해당 날짜는 마감되었습니다.", dateEl);
 
-  const timeEl = document.getElementById("timeDisplay");
+  const timeEl = document.getElementById("timeClock") || document.getElementById("timePeriod");
   if(!order.pickupTime) return validationError("픽업 시간을 선택해주세요.", timeEl);
   if(isTimeClosed(order.pickupDate, order.pickupTime)) return validationError("해당 시간은 마감되었습니다.", timeEl);
 
